@@ -1,0 +1,349 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SENTINEL AI - PROTECTION CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#363a3b",
+                    "on-surface-variant": "#c2c6d6",
+                    "primary-fixed-dim": "#adc6ff",
+                    "outline-variant": "#424754",
+                    "on-primary-fixed": "#001a41",
+                    "surface-container-low": "#191c1e",
+                    "on-secondary-fixed-variant": "#004f59",
+                    "surface-container-high": "#272a2c",
+                    "on-tertiary": "#233148",
+                    "on-background": "#e0e3e5",
+                    "on-primary-container": "#ffffff",
+                    "on-tertiary-fixed": "#0d1c32",
+                    "tertiary": "#b9c7e4",
+                    "background": "#101415",
+                    "primary-container": "#1b72e8",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2d3133",
+                    "on-tertiary-fixed-variant": "#39475f",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#00daf4",
+                    "outline": "#8c909f",
+                    "on-secondary-container": "#005d69",
+                    "surface-container": "#1d2022",
+                    "on-primary-fixed-variant": "#004494",
+                    "tertiary-container": "#687691",
+                    "primary-fixed": "#d8e2ff",
+                    "inverse-surface": "#e0e3e5",
+                    "on-primary": "#002e69",
+                    "error-container": "#93000a",
+                    "surface": "#101415",
+                    "primary": "#adc6ff",
+                    "on-tertiary-container": "#fffeff",
+                    "on-surface": "#e0e3e5",
+                    "tertiary-fixed": "#d6e3ff",
+                    "on-secondary": "#00363e",
+                    "tertiary-fixed-dim": "#b9c7e4",
+                    "on-secondary-fixed": "#001f24",
+                    "surface-variant": "#323537",
+                    "surface-tint": "#adc6ff",
+                    "surface-container-lowest": "#0b0f10",
+                    "secondary": "#a9f1ff",
+                    "inverse-primary": "#005ac1",
+                    "surface-dim": "#101415",
+                    "surface-container-highest": "#323537",
+                    "secondary-fixed": "#9defff",
+                    "secondary-container": "#01ddf7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "title-lg": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "title-lg": [
+                            "22px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "57px",
+                            {
+                                    "lineHeight": "64px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ambient-shadow {
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.4);
+        }
+        .electric-flow {
+            background: linear-gradient(135deg, #1b72e8 0%, #00daf4 100%);
+        }
+        .ghost-glass {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .glow-focus:focus-within {
+            box-shadow: 0 0 0 2px #24E5FF;
+            background: rgba(255, 255, 255, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#0A192F] text-on-surface min-h-screen pb-24 pt-20 selection:bg-primary-container selection:text-on-primary-container font-body-md antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center px-margin-mobile h-16 bg-white/5 backdrop-blur-md dark:bg-white/5 border-b border-white/10 shadow-sm transition-all duration-300">
+<div class="flex items-center space-x-3 w-full max-w-container-max mx-auto justify-between">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="security" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary dark:text-primary-fixed truncate">SENTINEL AI</h1>
+</div>
+<!-- Optional Actions can go here -->
+<button class="p-2 rounded-full hover:bg-white/10 transition-colors text-on-surface-variant dark:text-outline active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-6">
+<!-- Header & Search -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">PROTECTION CENTER</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Active modules and continuous monitoring status.</p>
+</div>
+<div class="relative w-full md:w-96 glass-card rounded-lg overflow-hidden glow-focus transition-all duration-300">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-transparent border-none py-3 pl-10 pr-4 text-on-surface placeholder-outline focus:ring-0 font-body-md text-body-md" placeholder="Filter modules..." type="text">
+</div>
+</div>
+<!-- Module Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Card 1: Live Call Protection -->
+<div class="glass-card rounded-xl p-6 ambient-shadow hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-surface-container-low border border-white/5 group-hover:border-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="phone_in_talk" data-weight="fill" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+</div>
+<div class="flex items-center space-x-2 bg-surface-container-low px-3 py-1 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="font-label-md text-label-md text-secondary-container uppercase tracking-wider">Active</span>
+</div>
+</div>
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">Live Call Protection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Real-time AI analysis of incoming audio to detect deepfakes and social engineering.</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-outline">LAST SCAN</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Just now</span>
+</div>
+<button class="ghost-glass hover:bg-white/10 text-on-surface font-label-md text-label-md py-2 px-4 rounded-lg transition-colors active:scale-95 uppercase tracking-wide">
+                        Configure
+                    </button>
+</div>
+</div>
+<!-- Card 2: Conversation Analysis -->
+<div class="glass-card rounded-xl p-6 ambient-shadow hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-surface-container-low border border-white/5 group-hover:border-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="forum" data-weight="fill" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<div class="flex items-center space-x-2 bg-surface-container-low px-3 py-1 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Idle</span>
+</div>
+</div>
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">Conversation Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Scans chat histories for manipulative patterns, phishing links, and coercion tactics.</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-outline">LAST SCAN</span>
+<span class="font-body-md text-body-md text-on-surface-variant">2h ago</span>
+</div>
+<button class="electric-flow text-on-primary-container font-label-md text-label-md py-2 px-4 rounded-lg shadow-lg hover:opacity-90 transition-opacity active:scale-95 uppercase tracking-wide">
+                        Analyze
+                    </button>
+</div>
+</div>
+<!-- Card 3: Screenshot Analysis -->
+<div class="glass-card rounded-xl p-6 ambient-shadow hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-surface-container-low border border-white/5 group-hover:border-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="screenshot_monitor" data-weight="fill" style="font-variation-settings: 'FILL' 1;">screenshot_monitor</span>
+</div>
+<div class="flex items-center space-x-2 bg-surface-container-low px-3 py-1 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-md text-label-md text-error uppercase tracking-wider">Alert</span>
+</div>
+</div>
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">Screenshot Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Extracts text and validates UI integrity from captured images to detect spoofed screens.</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-outline">LAST SCAN</span>
+<span class="font-body-md text-body-md text-error">1 threat found</span>
+</div>
+<button class="ghost-glass hover:bg-white/10 text-on-surface font-label-md text-label-md py-2 px-4 rounded-lg transition-colors active:scale-95 uppercase tracking-wide">
+                        Review
+                    </button>
+</div>
+</div>
+<!-- Card 4: Document Verification -->
+<div class="glass-card rounded-xl p-6 ambient-shadow hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-lg bg-surface-container-low border border-white/5 group-hover:border-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-tertiary-fixed text-3xl" data-icon="description" data-weight="fill" style="font-variation-settings: 'FILL' 1;">description</span>
+</div>
+<div class="flex items-center space-x-2 bg-surface-container-low px-3 py-1 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="font-label-md text-label-md text-secondary-container uppercase tracking-wider">Monitoring</span>
+</div>
+</div>
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">Document Verification</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Analyzes PDFs and Office docs for embedded malware, macros, and logical inconsistencies.</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-outline">LAST SCAN</span>
+<span class="font-body-md text-body-md text-on-surface-variant">10m ago</span>
+</div>
+<button class="electric-flow text-on-primary-container font-label-md text-label-md py-2 px-4 rounded-lg shadow-lg hover:opacity-90 transition-opacity active:scale-95 uppercase tracking-wide">
+                        Scan File
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-white/5 backdrop-blur-xl dark:bg-white/5 border-t border-white/10 shadow-2xl rounded-t-xl md:hidden"><a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<div class="px-4 py-1 rounded-full transition-colors group-hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</div>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<div class="px-4 py-1 rounded-full transition-colors group-hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</div>
+<span class="font-label-md text-label-md mt-1">Threats</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary dark:text-secondary-fixed rounded-full px-4 py-1 transition-all active:scale-90 duration-150" href="#">
+<div class="px-4 py-1 rounded-full">
+<span class="material-symbols-outlined" data-icon="radar" data-weight="fill" style="font-variation-settings: 'FILL' 1;">radar</span>
+</div>
+<span class="font-label-md text-label-md mt-1">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant hover:text-primary transition-all active:scale-90 duration-150 group" href="#">
+<div class="px-4 py-1 rounded-full transition-colors group-hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</div>
+<span class="font-label-md text-label-md mt-1">Settings</span>
+</a></nav>
+</body></html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="en" class="dark" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#363a3b",
+                    "on-surface-variant": "#c2c6d6",
+                    "primary-fixed-dim": "#adc6ff",
+                    "outline-variant": "#424754",
+                    "on-primary-fixed": "#001a41",
+                    "surface-container-low": "#191c1e",
+                    "on-secondary-fixed-variant": "#004f59",
+                    "surface-container-high": "#272a2c",
+                    "on-tertiary": "#233148",
+                    "on-background": "#e0e3e5",
+                    "on-primary-container": "#ffffff",
+                    "on-tertiary-fixed": "#0d1c32",
+                    "tertiary": "#b9c7e4",
+                    "background": "#101415",
+                    "primary-container": "#1b72e8",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2d3133",
+                    "on-tertiary-fixed-variant": "#39475f",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#00daf4",
+                    "outline": "#8c909f",
+                    "on-secondary-container": "#005d69",
+                    "surface-container": "#1d2022",
+                    "on-primary-fixed-variant": "#004494",
+                    "tertiary-container": "#687691",
+                    "primary-fixed": "#d8e2ff",
+                    "inverse-surface": "#e0e3e5",
+                    "on-primary": "#002e69",
+                    "error-container": "#93000a",
+                    "surface": "#101415",
+                    "primary": "#adc6ff",
+                    "on-tertiary-container": "#fffeff",
+                    "on-surface": "#e0e3e5",
+                    "tertiary-fixed": "#d6e3ff",
+                    "on-secondary": "#00363e",
+                    "tertiary-fixed-dim": "#b9c7e4",
+                    "on-secondary-fixed": "#001f24",
+                    "surface-variant": "#323537",
+                    "surface-tint": "#adc6ff",
+                    "surface-container-lowest": "#0b0f10",
+                    "secondary": "#a9f1ff",
+                    "inverse-primary": "#005ac1",
+                    "surface-dim": "#101415",
+                    "surface-container-highest": "#323537",
+                    "secondary-fixed": "#9defff",
+                    "secondary-container": "#01ddf7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    }catch(_e){}</script></head><body class="antialiased font-body-md pt-20 md:pb-8 pb-32">
+
+    <!-- TopAppBar -->
+    <header class="fixed top-0 left-0 w-full z-50 flex items-center px-margin-mobile h-16 bg-white/5 backdrop-blur-md dark:bg-white/5 shadow-sm border-b border-white/10 text-primary dark:text-primary-fixed">
+        <button class="mr-4 p-2 rounded-full hover:bg-white/10 transition-colors active:scale-95 duration-200">
+            <span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+        </button>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary dark:text-primary-fixed flex-grow text-center mr-12">
+            Live Call Analysis
+        </h1>
+    </header>
+
+    <main class="container mx-auto px-margin-mobile md:px-margin-desktop max-w-container-max flex flex-col gap-6">
+        
+        <!-- Top Section: Grid for Gauge and Summary -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Hero: Fraud Confidence Index Gauge -->
+            <div class="glass-surface-2 rounded-xl p-6 lg:col-span-1 flex flex-col items-center justify-center ambient-shadow relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-error/20 rounded-full blur-3xl"></div>
+                
+                <h2 class="font-title-lg text-title-lg text-on-surface mb-4">Fraud Confidence Index</h2>
+                
+                <div class="relative w-full aspect-square max-w-[280px]">
+                    <svg viewBox="0 0 36 36" class="circular-chart text-error">
+                        <path class="circle-bg" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                        <path class="circle stroke-current" stroke-dasharray="92, 100" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="font-display-lg text-display-lg text-error">92<span class="text-3xl">%</span></span>
+                        <span class="font-label-md text-label-md text-error-container bg-error/10 px-3 py-1 rounded-full mt-2 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+                            Critical Risk
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Summary & AI Insights -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <!-- Risk Summary Cards -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-surface-1 rounded-xl p-5 flex flex-col gap-2">
+                        <span class="font-label-md text-label-md text-outline">THREAT LEVEL</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center border border-error/20">
+                                <span class="material-symbols-outlined text-error text-2xl" style="font-variation-settings: 'FILL' 1;">gpp_bad</span>
+                            </div>
+                            <span class="font-headline-lg-mobile text-headline-lg-mobile text-error">HIGH</span>
+                        </div>
+                    </div>
+                    <div class="glass-surface-1 rounded-xl p-5 flex flex-col gap-2">
+                        <span class="font-label-md text-label-md text-outline">ANALYSIS DURATION</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+                                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 0;">timer</span>
+                            </div>
+                            <span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">14:22</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insight Card: Evidence Summary -->
+                <div class="glass-surface-1 rounded-xl p-6 flex-grow flex flex-col">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+                        <h3 class="font-title-lg text-title-lg text-on-surface">AI Evidence Summary</h3>
+                    </div>
+                    <ul class="flex flex-col gap-3 font-body-lg text-body-lg text-on-surface-variant flex-grow justify-center">
+                        <li class="flex items-start gap-3 bg-white/[0.02] p-3 rounded-lg border border-white/5">
+                            <span class="material-symbols-outlined text-error mt-0.5 text-xl">fiber_manual_record</span>
+                            Voice biometrics mismatch detected against known authorized user profile.
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/[0.05] p-3 rounded-lg border border-white/5">
+                            <span class="material-symbols-outlined text-error mt-0.5 text-xl">fiber_manual_record</span>
+                            High emotional stress indicators and unusual pacing detected in speech patterns.
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/[0.02] p-3 rounded-lg border border-white/5">
+                            <span class="material-symbols-outlined text-secondary mt-0.5 text-xl">fiber_manual_record</span>
+                            Caller origin obfuscation (VoIP proxy) identified via network packet analysis.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Section: Explainable AI & Detected Risks -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Explainable AI -->
+            <div class="glass-surface-1 rounded-xl p-6 flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                    <h3 class="font-title-lg text-title-lg text-on-surface">Explainable AI: Risk Timeline</h3>
+                    <span class="material-symbols-outlined text-outline">insights</span>
+                </div>
+                <div class="flex-grow min-h-[200px] relative mt-4">
+                    <!-- Faux Bar Chart for Probabilities -->
+                    <div class="absolute inset-0 flex items-end justify-between px-2 gap-2">
+                        <div class="w-full bg-white/5 rounded-t-sm h-1/4 relative group">
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-label-md text-label-md bg-surface p-1 rounded text-outline text-xs">00:00</div>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-t-sm h-2/4 relative group">
+                             <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-label-md text-label-md bg-surface p-1 rounded text-outline text-xs">05:00</div>
+                        </div>
+                        <div class="w-full bg-error/40 rounded-t-sm h-3/4 border-t border-error/50 relative group">
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-label-md text-label-md bg-surface p-1 rounded text-error text-xs">10:00</div>
+                        </div>
+                        <div class="w-full bg-error/80 rounded-t-sm h-full border-t border-error relative group">
+                             <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-label-md text-label-md bg-surface p-1 rounded text-error text-xs">12:30</div>
+                        </div>
+                        <div class="w-full bg-error/60 rounded-t-sm h-[85%] border-t border-error/70 relative group">
+                             <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-label-md text-label-md bg-surface p-1 rounded text-error text-xs">14:00</div>
+                        </div>
+                    </div>
+                    <!-- Faux Trend Line -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <path d="M 5,85 L 25,60 L 45,35 L 70,5 L 95,20" fill="none" stroke="#00daf4" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+                        <circle cx="70" cy="5" r="3" fill="#ffb4ab"></circle>
+                    </svg>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant text-center mt-2">Spike at 12:30 correlates with specific phrase detection.</p>
+            </div>
+
+            <!-- Detected Risks List -->
+            <div class="glass-surface-1 rounded-xl p-6 flex flex-col">
+                 <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                    <h3 class="font-title-lg text-title-lg text-on-surface">Detected Threat Markers</h3>
+                    <span class="font-label-md text-label-md bg-white/10 px-2 py-1 rounded-full text-on-surface">3 Markers</span>
+                </div>
+                <div class="flex flex-col gap-3 overflow-y-auto max-h-[250px] pr-2">
+                    
+                    <div class="flex items-center gap-4 bg-white/[0.05] p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-error/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">record_voice_over</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Deepfake Audio Detected</h4>
+                            <p class="font-body-md text-body-md text-outline">Spectral analysis indicates synthetic voice generation.</p>
+                        </div>
+                        <span class="font-label-md text-label-md text-error">98% Match</span>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-white/[0.02] p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">vpn_key</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Credential Harvesting Intent</h4>
+                            <p class="font-body-md text-body-md text-outline">NLP identified phrases requesting sensitive PINs.</p>
+                        </div>
+                        <span class="font-label-md text-label-md text-secondary">85% Match</span>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-white/[0.05] p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-tertiary/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">router</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Suspicious Routing</h4>
+                            <p class="font-body-md text-body-md text-outline">Call originated from known high-risk ASN.</p>
+                        </div>
+                        <span class="font-label-md text-label-md text-tertiary">72% Match</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="glass-surface-1 rounded-xl p-6">
+            <h3 class="font-title-lg text-title-lg text-on-surface mb-4">Recommended Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-error/10 border border-error/20 rounded-lg p-4 flex flex-col gap-2">
+                    <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">block</span>
+                    <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Terminate Call</h4>
+                    <p class="font-body-md text-body-md text-outline">Immediately sever the connection to prevent data loss.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col gap-2">
+                    <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">lock_reset</span>
+                    <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Force Password Reset</h4>
+                    <p class="font-body-md text-body-md text-outline">Initiate mandatory reset for target user account.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col gap-2">
+                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">flag</span>
+                    <h4 class="font-body-lg text-body-lg text-on-surface font-medium">Flag Number</h4>
+                    <p class="font-body-md text-body-md text-outline">Add originating number to global blocklist.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex flex-wrap items-center justify-end gap-4 mt-4 pb-12 md:pb-4">
+            <button class="px-6 py-3 rounded-full font-label-md text-label-md text-on-surface bg-white/5 border border-white/20 backdrop-blur-md hover:bg-white/10 transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">save</span>
+                Save Report
+            </button>
+            </div></main><nav class="fixed bottom-0 left-0 w-full z-50 bg-white/5 backdrop-blur-md border-t border-white/10 flex justify-around items-center px-4 py-2">
+  <button class="flex flex-col items-center gap-1 p-2 text-outline hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="text-[10px] font-label-md">Dashboard</span>
+  </button>
+  <button class="flex flex-col items-center gap-1 p-2 text-outline hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined">gpp_maybe</span>
+    <span class="text-[10px] font-label-md">Threats</span>
+  </button>
+  <button class="flex flex-col items-center gap-1 px-4 py-1 bg-primary-container/20 text-primary rounded-full">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radar</span>
+    <span class="text-[10px] font-label-md">Scan</span>
+  </button>
+  <button class="flex flex-col items-center gap-1 p-2 text-outline hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="text-[10px] font-label-md">Settings</span>
+  </button>
+</nav></body></html>
