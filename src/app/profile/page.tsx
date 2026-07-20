@@ -44,6 +44,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useAppStore } from '@/lib/store';
 import { startSimulatedPhoneCall } from '@/lib/services/intelligence';
+import { BottomNavigation } from '@/components/BottomNavigation';
 
 // Interfaces for structured preferences
 interface NotificationPrefs {
@@ -122,7 +123,7 @@ interface TrustedContact {
 export default function SecuritySettingsCenter() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { user, logout } = useAppStore();
+  const { user, logout, preferences, setPreference } = useAppStore();
 
   // Expanded sections state
   const [expandedSection, setExpandedSection] = useState<string | null>('account');
@@ -311,23 +312,16 @@ export default function SecuritySettingsCenter() {
   };
 
   const handleToggleTheme = () => {
-    if (!profile) return;
-    const currentTheme = profile.theme || 'light';
+    const currentTheme = preferences?.theme || profile?.theme || 'light';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
-    // Apply theme dynamically to DOM
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+    // Set in Zustand store (handles DOM classes, localStorage, user_preferences table)
+    setPreference('theme', nextTheme);
+    
+    // Also sync user_profiles table theme column for legacy support
+    if (profile) {
+      updateProfileMutation.mutate({ theme: nextTheme });
     }
-    
-    localStorage.setItem('theme_preference', nextTheme);
-    
-    // Persist to Supabase
-    updateProfileMutation.mutate({ theme: nextTheme });
   };
 
   const handleSaveAccountInfo = () => {
@@ -1200,16 +1194,16 @@ export default function SecuritySettingsCenter() {
               <div className="space-y-3.5 text-xs">
                 
                 {/* Theme Switcher */}
-                <div className="flex justify-between items-center bg-white/[0.02] border border-white/5 p-3 rounded-xl">
+                <div className="flex justify-between items-center bg-input border border-border/30 p-3 rounded-xl">
                   <div>
-                    <span className="block font-semibold text-white">Application Theme</span>
-                    <span className="text-[10px] text-on-surface-variant block mt-0.5">Toggle between Light and Dark interface layout.</span>
+                    <span className="block font-semibold text-text-primary">Application Theme</span>
+                    <span className="text-[10px] text-text-secondary block mt-0.5">Toggle between Light and Dark interface layout.</span>
                   </div>
                   <button
                     onClick={handleToggleTheme}
-                    className="flex items-center gap-2 bg-primary/10 border border-primary/20 hover:border-primary/40 px-3.5 py-1.8 rounded-xl text-primary font-bold text-[10px] uppercase transition-all shadow-md shadow-primary/5 active:scale-95"
+                    className="flex items-center gap-2 bg-primary/10 border border-primary/20 hover:border-primary/40 px-3.5 py-2 rounded-xl text-primary font-bold text-[10px] uppercase transition-all shadow-md shadow-primary/10 active:scale-95"
                   >
-                    {profile?.theme === 'dark' ? (
+                    {(preferences?.theme || profile?.theme) === 'dark' ? (
                       <>
                         <Sun className="w-3.5 h-3.5" />
                         <span>Light Mode</span>
@@ -1478,49 +1472,7 @@ export default function SecuritySettingsCenter() {
       </main>
 
       {/* Sticky Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-4 py-2.5 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 shadow-2xl">
-        <button
-          onClick={() => router.push('/dashboard')}
-          className="flex flex-col items-center justify-center text-outline hover:text-on-surface"
-        >
-          <Grid className="w-5 h-5" />
-          <span className="text-[9px] font-semibold mt-1 uppercase tracking-wider">Dashboard</span>
-        </button>
-
-        <button
-          onClick={() => router.push('/protection')}
-          className="flex flex-col items-center justify-center text-outline hover:text-on-surface"
-        >
-          <Shield className="w-5 h-5" />
-          <span className="text-[9px] font-semibold mt-1 uppercase tracking-wider">Threats</span>
-        </button>
-
-        <button
-          onClick={() => {
-            startSimulatedPhoneCall();
-            router.push('/monitoring');
-          }}
-          className="flex flex-col items-center justify-center bg-primary/10 text-primary border border-primary/30 rounded-full w-12 h-12 -translate-y-2 shadow-lg shadow-primary/10 active:scale-90 transition-transform animate-[pulse_3s_infinite]"
-        >
-          <Volume2 className="w-5 h-5" />
-        </button>
-
-        <button
-          onClick={() => router.push('/assistant')}
-          className="flex flex-col items-center justify-center text-outline hover:text-on-surface"
-        >
-          <Bot className="w-5 h-5" />
-          <span className="text-[9px] font-semibold mt-1 uppercase tracking-wider">Assistant</span>
-        </button>
-
-        <button
-          onClick={() => router.push('/profile')}
-          className="flex flex-col items-center justify-center text-primary"
-        >
-          <Settings className="w-5 h-5" />
-          <span className="text-[9px] font-semibold mt-1 uppercase tracking-wider">Settings</span>
-        </button>
-      </nav>
+      <BottomNavigation activeTab="settings" />
     </div>
   );
 }

@@ -22,6 +22,12 @@ class MockSupabaseClient {
       { id: 'd0cb6bbd-467b-449e-ba67-0c7f8a7e0a29', email: 'citizen@sentinel.ai', display_name: 'Sai Ram', phone_number: '+91 98765 43210', role: 'Citizen' },
       { id: 'a16cbbf0-10ef-4172-8822-261908bf5bf0', email: 'operator@sentinel.ai', display_name: 'Command Agent Alpha', phone_number: '+91 99999 88888', role: 'Administrator' }
     ],
+    user_profiles: [
+      { id: '1', user_id: 'd0cb6bbd-467b-449e-ba67-0c7f8a7e0a29', full_name: 'Sai Ram', email: 'citizen@sentinel.ai', phone: '+91 98765 43210', role: 'Citizen', theme: 'light', protection_score: 92 }
+    ],
+    user_preferences: [
+      { id: '1', user_id: 'd0cb6bbd-467b-449e-ba67-0c7f8a7e0a29', theme: 'light', language: 'en', date_format: 'YYYY-MM-DD', time_format: '24h', dashboard_layout: 'grid', animations_enabled: true, accessibility_preferences: {} }
+    ],
     trusted_contacts: [
       { id: '728a0112-be00-4b00-a548-2895f32a76f2', profile_id: 'd0cb6bbd-467b-449e-ba67-0c7f8a7e0a29', contact_name: 'Sunita Ram', contact_phone: '+91 98765 55555', verified: true }
     ],

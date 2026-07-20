@@ -34,6 +34,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppStore } from '@/lib/store';
 import { authenticatedFetch } from '@/lib/supabase';
 import { startSimulatedPhoneCall } from '@/lib/services/intelligence';
+import { BottomNavigation } from '@/components/BottomNavigation';
 
 // Cycling banner messages
 const bannerMessages = [
@@ -219,35 +220,35 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-[#e0e3e5] flex flex-col pb-28 relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-text-primary flex flex-col pb-28 relative overflow-x-hidden">
       
       {/* Background Radial Glows & Grid Particle Layers */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
-        <div className="absolute top-[8%] left-[-15%] w-[420px] h-[420px] rounded-full bg-[#00D9FF]/10 blur-[130px] pulse-ring"></div>
-        <div className="absolute bottom-[25%] right-[-15%] w-[380px] h-[380px] rounded-full bg-[#00D9FF]/5 blur-[120px]"></div>
+        <div className="absolute top-[8%] left-[-15%] w-[420px] h-[420px] rounded-full bg-primary/10 blur-[130px] pulse-ring"></div>
+        <div className="absolute bottom-[25%] right-[-15%] w-[380px] h-[380px] rounded-full bg-primary/5 blur-[120px]"></div>
       </div>
 
       {/* Top Header */}
-      <header className="sticky top-0 left-0 w-full z-45 bg-[#161B22]/80 backdrop-blur-xl border-b border-[#30363d]/40 px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 left-0 w-full z-45 bg-surface/85 backdrop-blur-xl border-b border-border/40 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="text-[#00D9FF] flex items-center justify-center p-1.5 rounded-xl bg-[#00D9FF]/5 border border-[#00D9FF]/20 icon-glow">
-            <Shield className="w-5 h-5 fill-[#00D9FF]/10" />
+          <div className="text-primary flex items-center justify-center p-1.5 rounded-xl bg-primary/5 border border-primary/20 icon-glow">
+            <Shield className="w-5 h-5 fill-primary/10" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold tracking-tight text-white text-xs leading-none">SENTINEL AI</span>
-            <span className="text-[7.5px] font-extrabold text-[#00D9FF] uppercase tracking-widest mt-1">
+            <span className="font-bold tracking-tight text-text-primary text-xs leading-none">SENTINEL AI</span>
+            <span className="text-[7.5px] font-extrabold text-primary uppercase tracking-widest mt-1">
               Federal Protection Suite
             </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/profile" className="p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 text-[#8b949e] hover:text-white transition-all relative active:scale-95">
+          <Link href="/profile" className="p-2 rounded-xl hover:bg-input border border-transparent hover:border-border/30 text-text-secondary hover:text-text-primary transition-all relative active:scale-95">
             <Bell className="w-4.5 h-4.5" />
             {(unreadNotificationsCount > 0 || alerts.filter(a => a.status === 'unresolved').length > 0) && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF4D67] border border-[#0D1117] animate-pulse"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-danger border border-background animate-pulse"></span>
             )}
           </Link>
-          <div className="h-8 w-8 rounded-xl bg-[#00D9FF]/10 border border-[#00D9FF]/20 flex items-center justify-center text-[#00D9FF] font-extrabold text-xs tracking-tight shadow-md">
+          <div className="h-8 w-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-extrabold text-xs tracking-tight shadow-md">
             {user?.avatar || 'SR'}
           </div>
         </div>
@@ -264,19 +265,19 @@ export default function DashboardPage() {
         {/* 1. MEMORABLE HERO CARD */}
         <motion.section
           variants={itemVariants}
-          className={`glass-card rounded-[24px] p-6 border relative overflow-hidden flex flex-col justify-between gap-5 shadow-[0_16px_36px_rgba(0,0,0,0.5)] transition-all duration-300 ${
-            isCritical ? 'border-[#FF4D67]/45 glow-danger pulse-danger-card' : 'border-[#30363d]/50'
+          className={`glass-card rounded-[24px] p-6 border relative overflow-hidden flex flex-col justify-between gap-5 shadow-[0_16px_36px_rgba(0,0,0,0.05)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.4)] transition-all duration-300 ${
+            isCritical ? 'border-danger/45 glow-danger pulse-danger-card' : 'border-border/30'
           }`}
         >
           {/* Subtle blueprint grid overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_2px_2px,rgba(0,217,255,1)_1.5px,transparent_0)] bg-[size:16px_16px]"></div>
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_2px_2px,var(--primary)_1.5px,transparent_0)] bg-[size:16px_16px]"></div>
           {/* Scanline light sweep */}
-          <div className="absolute inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#00D9FF]/20 to-transparent scan-line-anim pointer-events-none"></div>
+          <div className="absolute inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/20 to-transparent scan-line-anim pointer-events-none"></div>
 
           <div className="flex justify-between items-start z-10">
             <div className="space-y-1">
-              <span className="text-[8.5px] font-bold text-[#8b949e] uppercase tracking-wider block">Security Core Status</span>
-              <h2 className="text-lg font-black text-white tracking-tight leading-tight">
+              <span className="text-[8.5px] font-bold text-text-secondary uppercase tracking-wider block">Security Core Status</span>
+              <h2 className="text-lg font-black text-text-primary tracking-tight leading-tight">
                 {isCritical ? 'CRITICAL INCIDENT' : 'SYSTEM FULLY SECURED'}
               </h2>
             </div>
@@ -284,28 +285,28 @@ export default function DashboardPage() {
             {/* Pulsing Status Chip */}
             <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
               isCritical 
-                ? 'bg-[#FF4D67]/10 border border-[#FF4D67]/30 text-[#FF4D67] shadow-[0_0_10px_rgba(255,77,103,0.1)]' 
-                : 'bg-[#00E676]/10 border border-[#00E676]/30 text-[#00E676] shadow-[0_0_10px_rgba(0,230,118,0.1)]'
+                ? 'bg-danger/10 border border-danger/30 text-danger shadow-[0_0_10px_rgba(255,77,103,0.1)]' 
+                : 'bg-success/10 border border-success/30 text-success shadow-[0_0_10px_rgba(0,230,118,0.1)]'
             }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${isCritical ? 'bg-[#FF4D67] animate-ping' : 'bg-[#00E676] animate-pulse'}`}></span>
+              <span className={`w-1.5 h-1.5 rounded-full ${isCritical ? 'bg-danger animate-ping' : 'bg-success animate-pulse'}`}></span>
               <span>{isCritical ? 'Critical' : 'Protected'}</span>
             </span>
           </div>
 
           {/* Radial Meter and Stats split */}
-          <div className="flex items-center gap-6 py-2 border-y border-[#30363d]/40 z-10">
+          <div className="flex items-center gap-6 py-2 border-y border-border/20 z-10">
             
             {/* Circular Shield Gauge */}
             <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
               <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" fill="transparent" r="42" stroke="rgba(255,255,255,0.04)" strokeWidth="6" />
+                <circle cx="50" cy="50" fill="transparent" r="42" stroke="var(--divider)" strokeWidth="6" />
                 <circle
                   className="transition-all duration-1000 ease-out"
                   cx="50"
                   cy="50"
                   fill="transparent"
                   r="42"
-                  stroke={isCritical ? '#FF4D67' : '#00D9FF'}
+                  stroke={isCritical ? 'var(--danger)' : 'var(--primary)'}
                   strokeDasharray={`${2 * Math.PI * 42}`}
                   strokeDashoffset={`${2 * Math.PI * 42 * (1 - animatedScore / 100)}`}
                   strokeWidth="6"
@@ -313,57 +314,57 @@ export default function DashboardPage() {
                 />
               </svg>
               <div className="flex flex-col items-center">
-                <span className="text-xl font-black text-white leading-none">{animatedScore}%</span>
-                <span className="text-[7px] text-[#8b949e] font-extrabold uppercase tracking-widest mt-1">G-Index</span>
+                <span className="text-xl font-black text-text-primary leading-none">{animatedScore}%</span>
+                <span className="text-[7px] text-text-secondary font-extrabold uppercase tracking-widest mt-1">G-Index</span>
               </div>
             </div>
 
             {/* Statistics grid */}
             <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-3">
               <div className="space-y-0.5">
-                <span className="text-[8px] font-extrabold text-[#8b949e] uppercase tracking-widest block">Scams Prevented</span>
-                <span className="text-sm font-black text-white tracking-tight">{animatedPrevented}</span>
+                <span className="text-[8px] font-extrabold text-text-secondary uppercase tracking-widest block">Scams Prevented</span>
+                <span className="text-sm font-black text-text-primary tracking-tight">{animatedPrevented}</span>
               </div>
               <div className="space-y-0.5">
-                <span className="text-[8px] font-extrabold text-[#8b949e] uppercase tracking-widest block">Calls Today</span>
-                <span className="text-sm font-black text-white tracking-tight">{animatedCalls}</span>
+                <span className="text-[8px] font-extrabold text-text-secondary uppercase tracking-widest block">Calls Today</span>
+                <span className="text-sm font-black text-text-primary tracking-tight">{animatedCalls}</span>
               </div>
               <div className="space-y-0.5">
-                <span className="text-[8px] font-extrabold text-[#8b949e] uppercase tracking-widest block">AI Confidence</span>
-                <span className="text-sm font-black text-[#00E676] tracking-tight">98% Match</span>
+                <span className="text-[8px] font-extrabold text-text-secondary uppercase tracking-widest block">AI Confidence</span>
+                <span className="text-sm font-black text-success tracking-tight">98% Match</span>
               </div>
               <div className="space-y-0.5">
-                <span className="text-[8px] font-extrabold text-[#8b949e] uppercase tracking-widest block">System Health</span>
-                <span className="text-sm font-black text-[#00D9FF] tracking-tight">Nominal</span>
+                <span className="text-[8px] font-extrabold text-text-secondary uppercase tracking-widest block">System Health</span>
+                <span className="text-sm font-black text-primary tracking-tight">Nominal</span>
               </div>
             </div>
 
           </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 z-10">
-            <div className="flex items-center gap-2 text-[10px] text-[#8b949e] font-medium">
-              <Activity className="w-3.5 h-3.5 text-[#00D9FF] animate-pulse" />
+            <div className="flex items-center gap-2 text-[10px] text-text-secondary font-medium">
+              <Activity className="w-3.5 h-3.5 text-primary animate-pulse" />
               <span>Background AI heuristics active</span>
             </div>
 
             {/* Deep Scan CTA button */}
             {scanning ? (
               <div className="w-36 space-y-1.5">
-                <div className="flex justify-between items-center text-[9px] font-bold text-[#00D9FF] uppercase tracking-widest">
+                <div className="flex justify-between items-center text-[9px] font-bold text-primary uppercase tracking-widest">
                   <span>Scanning...</span>
                   <span>{scanProgress}%</span>
                 </div>
-                <div className="w-full bg-[#161B22] h-1 rounded-full overflow-hidden border border-[#30363d]">
-                  <div className="h-full bg-[#00D9FF] transition-all duration-100" style={{ width: `${scanProgress}%` }}></div>
+                <div className="w-full bg-input h-1 rounded-full overflow-hidden border border-border/30">
+                  <div className="h-full bg-primary transition-all duration-100" style={{ width: `${scanProgress}%` }}></div>
                 </div>
               </div>
             ) : (
               <button
                 onClick={handleRunFullScan}
-                className="px-4 py-2 rounded-xl border border-[#00D9FF]/40 bg-[#00D9FF]/5 hover:bg-[#00D9FF]/10 text-[#00D9FF] font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(0,217,255,0.05)] hover:shadow-[0_0_20px_rgba(0,217,255,0.2)] hover:border-[#00D9FF]/80 flex items-center gap-1.5 group"
+                className="px-4 py-2 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(0,102,204,0.03)] hover:shadow-[0_0_20px_rgba(0,102,204,0.15)] hover:border-primary flex items-center gap-1.5 group"
               >
                 <span>Deep Scan</span>
-                <ArrowRight className="w-3 h-3 text-[#00D9FF] group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-3 h-3 text-primary group-hover:translate-x-0.5 transition-transform" />
               </button>
             )}
           </div>
@@ -372,13 +373,13 @@ export default function DashboardPage() {
         {/* 2. AI STATUS BANNER WITH LIVE FEED */}
         <motion.div
           variants={itemVariants}
-          className="w-full bg-[#161B22]/60 border border-[#30363d]/40 rounded-xl px-4 py-2.5 flex items-center justify-between shadow-md relative overflow-hidden"
+          className="w-full bg-card border border-border/30 rounded-xl px-4 py-2.5 flex items-center justify-between shadow-md relative overflow-hidden"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 rounded-lg bg-[#00D9FF]/10 border border-[#00D9FF]/20 flex items-center justify-center">
-              <Bot className="w-3.5 h-3.5 text-[#00D9FF] animate-pulse" />
+            <div className="w-5 h-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <Bot className="w-3.5 h-3.5 text-primary animate-pulse" />
             </div>
-            <span className="text-[9.5px] text-[#8b949e] font-extrabold uppercase tracking-widest">SENTINEL FEED:</span>
+            <span className="text-[9.5px] text-text-secondary font-extrabold uppercase tracking-widest">SENTINEL FEED:</span>
             <div className="h-4 relative overflow-hidden w-48">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -387,7 +388,7 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="text-[10px] text-white font-bold block absolute truncate w-full"
+                  className="text-[10px] text-text-primary font-bold block absolute truncate w-full"
                 >
                   {bannerMessages[bannerIndex]}
                 </motion.span>
@@ -395,57 +396,57 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00E676] animate-ping"></span>
-            <span className="text-[8px] text-[#8b949e] font-bold uppercase tracking-wider">Sync Now</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-success animate-ping"></span>
+            <span className="text-[8px] text-text-secondary font-bold uppercase tracking-wider">Sync Now</span>
           </div>
         </motion.div>
 
         {/* 3. CALL MONITORING (Visual Flagship Centerpiece) */}
         <motion.section variants={itemVariants} className="space-y-3">
-          <span className="text-[9.5px] font-extrabold text-[#8b949e] uppercase tracking-widest block px-1">
+          <span className="text-[9.5px] font-extrabold text-text-secondary uppercase tracking-widest block px-1">
             Active Telephony Core
           </span>
           <motion.button
             whileHover={{ scale: 1.02, y: -3 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleStartSimulatedCall}
-            className="w-full text-left p-5 rounded-[24px] bg-[#161B22]/70 border border-[#00D9FF]/30 hover:border-[#00D9FF]/60 hover:shadow-[0_0_24px_rgba(0,217,255,0.1)] transition-all group relative overflow-hidden flex flex-col justify-between"
+            className="w-full text-left p-5 rounded-[24px] bg-card border border-primary/30 hover:border-primary hover:shadow-[0_0_24px_rgba(0,102,204,0.06)] dark:hover:shadow-[0_0_24px_rgba(0,217,255,0.1)] transition-all group relative overflow-hidden flex flex-col justify-between"
           >
             {/* Animated SVG Audio Waveform background */}
             <div className="absolute right-4 bottom-2 opacity-15 pointer-events-none w-32 h-16 flex items-end gap-1.5">
-              <div className="w-1 h-8 bg-[#00D9FF] rounded-full wave-bar" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-1 h-14 bg-[#00D9FF] rounded-full wave-bar" style={{ animationDelay: '0.3s' }}></div>
-              <div className="w-1 h-6 bg-[#00D9FF] rounded-full wave-bar" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-1 h-16 bg-[#00D9FF] rounded-full wave-bar" style={{ animationDelay: '0.5s' }}></div>
-              <div className="w-1 h-10 bg-[#00D9FF] rounded-full wave-bar" style={{ animationDelay: '0.4s' }}></div>
+              <div className="w-1 h-8 bg-primary rounded-full wave-bar" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-1 h-14 bg-primary rounded-full wave-bar" style={{ animationDelay: '0.3s' }}></div>
+              <div className="w-1 h-6 bg-primary rounded-full wave-bar" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-1 h-16 bg-primary rounded-full wave-bar" style={{ animationDelay: '0.5s' }}></div>
+              <div className="w-1 h-10 bg-primary rounded-full wave-bar" style={{ animationDelay: '0.4s' }}></div>
             </div>
 
             <div className="flex justify-between items-center w-full z-10">
               {/* Icon Container with glowing glass styling */}
-              <div className="w-12 h-12 rounded-full bg-[#00D9FF]/10 border border-[#00D9FF]/20 flex items-center justify-center text-[#00D9FF] shadow-[0_0_12px_rgba(0,217,255,0.15)] group-hover:scale-105 transition-transform">
-                <Volume2 className="w-5.5 h-5.5 text-[#00D9FF]" />
+              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-[0_0_12px_rgba(0,102,204,0.08)] dark:shadow-[0_0_12px_rgba(0,217,255,0.15)] group-hover:scale-105 transition-transform">
+                <Volume2 className="w-5.5 h-5.5 text-primary" />
               </div>
 
               {/* Status & Threat Chips */}
               <div className="flex gap-2">
-                <span className="text-[8px] font-extrabold uppercase bg-[#FF4D67]/10 text-[#FF4D67] border border-[#FF4D67]/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <span className="w-1 h-1 rounded-full bg-[#FF4D67] animate-ping"></span>
+                <span className="text-[8px] font-extrabold uppercase bg-danger/10 text-danger border border-danger/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-danger animate-ping"></span>
                   <span>LIVE</span>
                 </span>
-                <span className="text-[8px] font-extrabold uppercase bg-white/5 text-[#8b949e] border border-white/10 px-2 py-0.5 rounded-full">
+                <span className="text-[8px] font-extrabold uppercase bg-input text-text-secondary border border-border/30 px-2 py-0.5 rounded-full">
                   Low Risk
                 </span>
               </div>
             </div>
 
             <div className="space-y-1 mt-4 z-10">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider group-hover:text-[#00D9FF] transition-colors">
+              <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider group-hover:text-primary transition-colors">
                 Live Phishing Inspector
               </h4>
-              <p className="text-[11px] text-[#8b949e] leading-relaxed max-w-[280px]">
+              <p className="text-[11px] text-text-secondary leading-relaxed max-w-[280px]">
                 Active voice monitoring scans telephony streams for digital clone signatures.
               </p>
-              <span className="text-[8.5px] text-[#00D9FF] font-extrabold uppercase tracking-widest block pt-0.5">
+              <span className="text-[8.5px] text-primary font-extrabold uppercase tracking-widest block pt-0.5">
                 Intercept Audio Stream →
               </span>
             </div>
@@ -460,23 +461,23 @@ export default function DashboardPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="cyber-card p-4 h-36 flex flex-col justify-between relative group overflow-hidden border border-indigo-500/10"
+              className="cyber-card p-4 h-36 flex flex-col justify-between relative group overflow-hidden border border-indigo-500/20"
             >
               <div className="absolute right-0 bottom-0 opacity-5 w-12 h-12 bg-indigo-500 rounded-tl-full pointer-events-none"></div>
               
               <div className="flex justify-between items-start w-full">
-                <div className="w-9 h-9 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <div className="w-9 h-9 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 dark:text-indigo-400">
                   <Bot className="w-4.5 h-4.5" />
                 </div>
-                <span className="text-[8px] font-bold uppercase bg-indigo-500/10 text-indigo-300 px-1.5 py-0.5 rounded">
+                <span className="text-[8px] font-bold uppercase bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 px-1.5 py-0.5 rounded">
                   ONLINE
                 </span>
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-[11px] font-bold text-white group-hover:text-indigo-300 transition-colors uppercase">Convo Scanner</h4>
-                <p className="text-[9px] text-[#8b949e] leading-snug line-clamp-2">SMS intent and message patterns.</p>
-                <span className="text-[8px] text-indigo-400 font-bold uppercase block">Open Scanner →</span>
+                <h4 className="text-[11px] font-bold text-text-primary group-hover:text-indigo-500 dark:group-hover:text-indigo-300 transition-colors uppercase">Convo Scanner</h4>
+                <p className="text-[9px] text-text-secondary leading-snug line-clamp-2">SMS intent and message patterns.</p>
+                <span className="text-[8px] text-indigo-500 dark:text-indigo-400 font-bold uppercase block">Open Scanner →</span>
               </div>
             </motion.div>
           </Link>
@@ -486,23 +487,23 @@ export default function DashboardPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="cyber-card p-4 h-36 flex flex-col justify-between relative group overflow-hidden border border-[#00E676]/10"
+              className="cyber-card p-4 h-36 flex flex-col justify-between relative group overflow-hidden border border-success/20"
             >
-              <div className="absolute right-0 bottom-0 opacity-5 w-12 h-12 bg-[#00E676] rounded-tl-full pointer-events-none"></div>
+              <div className="absolute right-0 bottom-0 opacity-5 w-12 h-12 bg-success rounded-tl-full pointer-events-none"></div>
 
               <div className="flex justify-between items-start w-full">
-                <div className="w-9 h-9 rounded-full bg-[#00E676]/10 border border-[#00E676]/20 flex items-center justify-center text-[#00E676]">
+                <div className="w-9 h-9 rounded-full bg-success/10 border border-success/20 flex items-center justify-center text-success">
                   <ShieldCheck className="w-4.5 h-4.5" />
                 </div>
-                <span className="text-[8px] font-bold uppercase bg-[#00E676]/10 text-[#00E676] px-1.5 py-0.5 rounded">
+                <span className="text-[8px] font-bold uppercase bg-success/10 text-success px-1.5 py-0.5 rounded">
                   READY
                 </span>
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-[11px] font-bold text-white group-hover:text-[#00E676] transition-colors uppercase">Protection Center</h4>
-                <p className="text-[9px] text-[#8b949e] leading-snug line-clamp-2">Inspect document and QR slips.</p>
-                <span className="text-[8px] text-[#00E676] font-bold uppercase block">Inspect →</span>
+                <h4 className="text-[11px] font-bold text-text-primary group-hover:text-success transition-colors uppercase">Protection Center</h4>
+                <p className="text-[9px] text-text-secondary leading-snug line-clamp-2">Inspect document and QR slips.</p>
+                <span className="text-[8px] text-success font-bold uppercase block">Inspect →</span>
               </div>
             </motion.div>
           </Link>
@@ -511,52 +512,52 @@ export default function DashboardPage() {
 
         {/* 5. RECENT ACTIVITY TIMELINE (Security Operations Center Feed) */}
         <motion.section variants={itemVariants} className="space-y-3.5">
-          <span className="text-[9.5px] font-extrabold text-[#8b949e] uppercase tracking-widest block px-1">
+          <span className="text-[9.5px] font-extrabold text-text-secondary uppercase tracking-widest block px-1">
             Recent Telemetry Activity (SOC Feed)
           </span>
 
-          <div className="glass-card rounded-[24px] p-5 border border-[#30363d]/40 shadow-lg space-y-4">
+          <div className="glass-card rounded-[24px] p-5 border border-border/30 shadow-lg space-y-4">
             
             {/* Timeline wrapper */}
-            <div className="relative pl-5 border-l border-[#30363d]/50 flex flex-col gap-4">
+            <div className="relative pl-5 border-l border-border/30 flex flex-col gap-4">
               {historyData?.history && historyData.history.length > 0 ? (
                 (historyData.history as any[]).slice(0, 3).map((item: any) => (
                   <div key={item.id} className="relative">
-                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-[#00D9FF] shadow-[0_0_8px_rgba(0,217,255,0.4)]"></div>
-                    <div className="flex justify-between items-center text-[9px] font-bold text-[#8b949e]">
+                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,102,204,0.3)]"></div>
+                    <div className="flex justify-between items-center text-[9px] font-bold text-text-secondary">
                       <span>{item.analyzer_type.toUpperCase()} Scan - {item.classification}</span>
                       <span>{new Date(item.processed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    <p className="text-[10px] text-white mt-0.5">{item.raw_payload?.summary || 'Standard scanner inspect completed.'}</p>
+                    <p className="text-[10px] text-text-primary mt-0.5">{item.raw_payload?.summary || 'Standard scanner inspect completed.'}</p>
                   </div>
                 ))
               ) : (
                 <>
                   <div className="relative">
-                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-[#00D9FF] shadow-[0_0_8px_rgba(0,217,255,0.4)]"></div>
-                    <div className="flex justify-between items-center text-[9px] font-bold text-[#8b949e]">
+                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,102,204,0.3)]"></div>
+                    <div className="flex justify-between items-center text-[9px] font-bold text-text-secondary">
                       <span>Voice Monitoring Started</span>
                       <span>11:45 AM</span>
                     </div>
-                    <p className="text-[10px] text-white mt-0.5">Telephony scanner bound to SMS audio receiver index.</p>
+                    <p className="text-[10px] text-text-primary mt-0.5">Telephony scanner bound to SMS audio receiver index.</p>
                   </div>
 
                   <div className="relative">
-                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-[#00E676] shadow-[0_0_8px_rgba(0,230,118,0.4)]"></div>
-                    <div className="flex justify-between items-center text-[9px] font-bold text-[#8b949e]">
+                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-success shadow-[0_0_8px_rgba(0,230,118,0.3)]"></div>
+                    <div className="flex justify-between items-center text-[9px] font-bold text-text-secondary">
                       <span>Screenshot Verified</span>
                       <span>11:46 AM</span>
                     </div>
-                    <p className="text-[10px] text-white mt-0.5">No alterations detected on the uploaded HDFC transaction slip.</p>
+                    <p className="text-[10px] text-text-primary mt-0.5">No alterations detected on the uploaded HDFC transaction slip.</p>
                   </div>
 
                   <div className="relative">
-                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-[#00E676] shadow-[0_0_8px_rgba(0,230,118,0.4)]"></div>
-                    <div className="flex justify-between items-center text-[9px] font-bold text-[#8b949e]">
+                    <div className="absolute -left-[24.5px] top-1 w-2 h-2 rounded-full bg-success shadow-[0_0_8px_rgba(0,230,118,0.3)]"></div>
+                    <div className="flex justify-between items-center text-[9px] font-bold text-text-secondary">
                       <span>Scam Probability: Low</span>
                       <span>11:47 AM</span>
                     </div>
-                    <p className="text-[10px] text-white mt-0.5">Continuous silent audit score recalibrated to 98% secure.</p>
+                    <p className="text-[10px] text-text-primary mt-0.5">Continuous silent audit score recalibrated to 98% secure.</p>
                   </div>
                 </>
               )}
@@ -565,14 +566,14 @@ export default function DashboardPage() {
         </motion.section>
 
         {/* 6. REFINED SYSTEM PERMISSION LAYERS */}
-        <motion.section variants={itemVariants} className="glass-card rounded-[24px] p-5 border border-[#30363d]/50 space-y-4">
-          <div className="flex justify-between items-center pb-2 border-b border-[#30363d]/30">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Fingerprint className="w-4 h-4 text-[#00D9FF]" />
+        <motion.section variants={itemVariants} className="glass-card rounded-[24px] p-5 border border-border/30 space-y-4">
+          <div className="flex justify-between items-center pb-2 border-b border-border/20">
+            <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider flex items-center gap-2">
+              <Fingerprint className="w-4 h-4 text-primary" />
               <span>Guard Shield Layers</span>
             </h3>
-            <span className="text-[9px] font-bold text-[#00D9FF] uppercase flex items-center gap-1">
-              <span className="w-1 h-1 bg-[#00E676] rounded-full animate-ping"></span>
+            <span className="text-[9px] font-bold text-primary uppercase flex items-center gap-1">
+              <span className="w-1 h-1 bg-success rounded-full animate-ping"></span>
               <span>Active</span>
             </span>
           </div>
@@ -582,16 +583,16 @@ export default function DashboardPage() {
             {/* Protection Layer 1 */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-white block">Continuous Silent Audit</span>
-                <div className="flex items-center gap-1.5 text-[9px] text-[#8b949e]">
-                  <span className="text-[#00E676] font-bold uppercase">🟢 Operational</span>
+                <span className="text-xs font-bold text-text-primary block">Continuous Silent Audit</span>
+                <div className="flex items-center gap-1.5 text-[9px] text-text-secondary">
+                  <span className="text-success font-bold uppercase">🟢 Operational</span>
                   <span>•</span>
                   <span>Verified Just now</span>
                 </div>
               </div>
               <button
                 onClick={() => toggleProtection('backgroundAI')}
-                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.backgroundAI ? 'bg-[#00D9FF] shadow-[0_0_10px_rgba(0,217,255,0.35)]' : 'bg-[#161B22] border border-[#30363d]'}`}
+                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.backgroundAI ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.backgroundAI ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
@@ -600,16 +601,16 @@ export default function DashboardPage() {
             {/* Protection Layer 2 */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-white block">Telemetry Voice Intercept</span>
-                <div className="flex items-center gap-1.5 text-[9px] text-[#8b949e]">
-                  <span className="text-[#00E676] font-bold uppercase">🟢 Operational</span>
+                <span className="text-xs font-bold text-text-primary block">Telemetry Voice Intercept</span>
+                <div className="flex items-center gap-1.5 text-[9px] text-text-secondary">
+                  <span className="text-success font-bold uppercase">🟢 Operational</span>
                   <span>•</span>
                   <span>Verified 2m ago</span>
                 </div>
               </div>
               <button
                 onClick={() => toggleProtection('liveCallMonitor')}
-                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.liveCallMonitor ? 'bg-[#00D9FF] shadow-[0_0_10px_rgba(0,217,255,0.35)]' : 'bg-[#161B22] border border-[#30363d]'}`}
+                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.liveCallMonitor ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.liveCallMonitor ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
@@ -618,16 +619,16 @@ export default function DashboardPage() {
             {/* Protection Layer 3 */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-white block">SMS URL Redirect Blocker</span>
-                <div className="flex items-center gap-1.5 text-[9px] text-[#8b949e]">
-                  <span className="text-[#00E676] font-bold uppercase">🟢 Operational</span>
+                <span className="text-xs font-bold text-text-primary block">SMS URL Redirect Blocker</span>
+                <div className="flex items-center gap-1.5 text-[9px] text-text-secondary">
+                  <span className="text-success font-bold uppercase">🟢 Operational</span>
                   <span>•</span>
                   <span>Verified 10m ago</span>
                 </div>
               </div>
               <button
                 onClick={() => toggleProtection('urlBlocker')}
-                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.urlBlocker ? 'bg-[#00D9FF] shadow-[0_0_10px_rgba(0,217,255,0.35)]' : 'bg-[#161B22] border border-[#30363d]'}`}
+                className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.urlBlocker ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.urlBlocker ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
@@ -638,53 +639,8 @@ export default function DashboardPage() {
       </motion.main>
 
       {/* STICKY BOTTOM NAVIGATION BAR */}
-      <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-4 py-2.5 bg-[#161B22]/90 backdrop-blur-xl border-t border-[#30363d]/50 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
-        
-        {/* Dashboard */}
-        <button
-          onClick={() => router.push('/dashboard')}
-          className="flex flex-col items-center justify-center text-[#00D9FF] relative"
-        >
-          <div className="absolute top-[-6px] w-6 h-1 bg-[#00D9FF] rounded-full filter blur-[2px] opacity-70"></div>
-          <Grid className="w-5 h-5 icon-glow" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Dashboard</span>
-        </button>
+      <BottomNavigation activeTab="dashboard" />
 
-        {/* Threats */}
-        <button
-          onClick={() => router.push('/protection')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Shield className="w-5 h-5 hover:scale-105 transition-transform" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Threats</span>
-        </button>
-
-        {/* Floating Center Mic Button */}
-        <button
-          onClick={handleStartSimulatedCall}
-          className="flex items-center justify-center bg-[#161B22]/90 text-[#00D9FF] border border-[#00D9FF]/40 rounded-full w-14 h-14 -translate-y-3.5 shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_25px_rgba(0,217,255,0.55)] active:scale-90 transition-all hover:border-[#00D9FF] relative z-45 group backdrop-blur-md"
-        >
-          <div className="absolute inset-0 bg-[#00D9FF]/5 rounded-full blur-[8px] animate-pulse"></div>
-          <Volume2 className="w-6 h-6 group-hover:scale-105 transition-transform" />
-        </button>
-
-        {/* Assistant */}
-        <button
-          onClick={() => router.push('/assistant')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Bot className="w-5 h-5 hover:scale-105 transition-transform" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Assistant</span>
-        </button>
-
-        {/* Settings */}
-        <button
-          onClick={() => router.push('/profile')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Settings className="w-5 h-5 hover:scale-105 transition-transform" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Settings</span>
-        </button>
       {/* Dynamic Slide-in Threat Alert Toasts */}
       <div className="fixed bottom-24 right-4 left-4 md:left-auto md:max-w-xs z-50 flex flex-col gap-3">
         <AnimatePresence>
@@ -694,17 +650,17 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-              className="bg-red-950/90 border border-red-500/40 rounded-2xl p-4 shadow-[0_8px_32px_rgba(239,68,68,0.25)] backdrop-blur-md flex items-start gap-3 text-left relative overflow-hidden"
+              className="bg-danger/95 border border-danger/40 rounded-2xl p-4 shadow-[0_8px_32px_rgba(239,68,68,0.25)] backdrop-blur-md flex items-start gap-3 text-left relative overflow-hidden"
             >
-              <div className="absolute inset-x-0 top-0 h-0.5 bg-red-500 animate-[loading_6s_linear_forwards]"></div>
-              <ShieldAlert className="w-5 h-5 text-red-400 shrink-0 mt-0.5 animate-pulse" />
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-danger animate-[loading_6s_linear_forwards]"></div>
+              <ShieldAlert className="w-5 h-5 text-danger shrink-0 mt-0.5 animate-pulse" />
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">{t.title}</h4>
-                <p className="text-[10px] text-red-200/90 leading-relaxed">{t.message}</p>
+                <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider">{t.title}</h4>
+                <p className="text-[10px] text-danger/90 leading-relaxed">{t.message}</p>
               </div>
               <button
                 onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
-                className="absolute top-3 right-3 text-red-400 hover:text-white"
+                className="absolute top-3 right-3 text-danger hover:text-text-primary"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -712,8 +668,6 @@ export default function DashboardPage() {
           ))}
         </AnimatePresence>
       </div>
-
-      </nav>
     </div>
   );
 }

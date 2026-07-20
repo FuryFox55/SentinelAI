@@ -80,13 +80,13 @@ export default function RegisterPage() {
         {/* Form Box */}
         <div className="glass-panel ambient-shadow rounded-2xl p-6 md:p-8">
           {errorMsg && (
-            <div className="mb-4 text-center py-2 px-3 bg-red-950/40 border border-red-500/20 text-red-400 text-xs rounded-lg">
+            <div className="mb-4 text-center py-2 px-3 bg-danger/10 border border-danger/20 text-danger text-xs rounded-lg">
               {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div className="mb-4 text-center py-2 px-3 bg-green-950/40 border border-green-500/20 text-green-400 text-xs rounded-lg">
+            <div className="mb-4 text-center py-2 px-3 bg-success/10 border border-success/20 text-success text-xs rounded-lg">
               {successMsg}
             </div>
           )}
@@ -94,18 +94,18 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Full Name */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="fullName" className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <label htmlFor="fullName" className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Full Name
               </label>
-              <div className="relative border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-                <User className="absolute left-0 top-3 w-5 h-5 text-outline transition-colors" />
+              <div className="relative border-b border-border/30 focus-within:border-primary transition-colors">
+                <User className="absolute left-0 top-3 w-5 h-5 text-text-muted transition-colors" />
                 <input
                   type="text"
                   id="fullName"
                   placeholder="Jane Doe"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                   disabled={loading}
                   required
                 />
@@ -114,18 +114,18 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="email" className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <label htmlFor="email" className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Email Address
               </label>
-              <div className="relative border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-                <Mail className="absolute left-0 top-3 w-5 h-5 text-outline transition-colors" />
+              <div className="relative border-b border-border/30 focus-within:border-primary transition-colors">
+                <Mail className="absolute left-0 top-3 w-5 h-5 text-text-muted transition-colors" />
                 <input
                   type="email"
                   id="email"
                   placeholder="jane@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                   disabled={loading}
                   required
                 />
@@ -134,18 +134,18 @@ export default function RegisterPage() {
 
             {/* Mobile Number */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="mobile" className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <label htmlFor="mobile" className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Mobile Number
               </label>
-              <div className="relative border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-                <Phone className="absolute left-0 top-3 w-5 h-5 text-outline transition-colors" />
+              <div className="relative border-b border-border/30 focus-within:border-primary transition-colors">
+                <Phone className="absolute left-0 top-3 w-5 h-5 text-text-muted transition-colors" />
                 <input
                   type="tel"
                   id="mobile"
                   placeholder="+91 98765 43210"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                   disabled={loading}
                   required
                 />
@@ -154,25 +154,25 @@ export default function RegisterPage() {
 
             {/* Password */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="password" className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <label htmlFor="password" className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Password
               </label>
-              <div className="relative border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-                <Lock className="absolute left-0 top-3 w-5 h-5 text-outline transition-colors" />
+              <div className="relative border-b border-border/30 focus-within:border-primary transition-colors">
+                <Lock className="absolute left-0 top-3 w-5 h-5 text-text-muted transition-colors" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-8 pr-10 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                  className="w-full pl-8 pr-10 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                   disabled={loading}
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-3 text-outline hover:text-on-surface transition-colors"
+                  className="absolute right-0 top-3 text-text-muted hover:text-text-primary transition-colors"
                   disabled={loading}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -182,18 +182,18 @@ export default function RegisterPage() {
 
             {/* Confirm Password */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="confirmPassword" className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <label htmlFor="confirmPassword" className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Confirm Password
               </label>
-              <div className="relative border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-                <Lock className="absolute left-0 top-3 w-5 h-5 text-outline transition-colors" />
+              <div className="relative border-b border-border/30 focus-within:border-primary transition-colors">
+                <Lock className="absolute left-0 top-3 w-5 h-5 text-text-muted transition-colors" />
                 <input
                   type="password"
                   id="confirmPassword"
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                  className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                   disabled={loading}
                   required
                 />
@@ -204,7 +204,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 mt-4 rounded-xl font-semibold text-xs uppercase tracking-wider text-white electric-flow hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-cyan-500/25 disabled:opacity-50"
+              className="w-full py-3.5 mt-4 rounded-xl font-semibold text-xs uppercase tracking-wider text-white electric-flow hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-50"
             >
               <span>{loading ? 'Creating Account...' : 'Create Account'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -213,9 +213,9 @@ export default function RegisterPage() {
         </div>
 
         {/* Footer Link */}
-        <div className="text-center mt-6 text-sm text-on-surface-variant">
+        <div className="text-center mt-6 text-sm text-text-secondary">
           <span>Already have an account? </span>
-          <Link href="/login" className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">
+          <Link href="/login" className="text-primary hover:text-primary-hover font-semibold transition-colors">
             Login here
           </Link>
         </div>

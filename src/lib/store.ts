@@ -67,6 +67,16 @@ export interface Incident {
   sharedWith: string[];
 }
 
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+  language: string;
+  date_format: string;
+  time_format: string;
+  dashboard_layout: string;
+  animations_enabled: boolean;
+  accessibility_preferences: Record<string, any>;
+}
+
 interface AppState {
   // Authentication
   isAuthenticated: boolean;
@@ -80,6 +90,12 @@ interface AppState {
   login: (id: string, email: string, name: string, phone: string) => void;
   logout: () => void;
   updateUsername: (name: string) => Promise<void>;
+
+  // User Preferences
+  preferences: UserPreferences | null;
+  loadPreferences: (userId: string) => Promise<void>;
+  setPreference: <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => Promise<void>;
+  setPreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
 
   // Security Status & Config
   protectionScore: number;
@@ -145,21 +161,170 @@ export const useAppStore = create<AppState>()(
       // Authentication State (Default is logged out)
       isAuthenticated: false,
       user: null,
+      preferences: null,
 
-      login: (id, email, name, phone) => set({
-        isAuthenticated: true,
-        user: {
-          id,
-          email,
-          name,
-          phone,
-          avatar: name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'SR'
-        }
-      }),
+      login: (id, email, name, phone) => {
+        set({
+          isAuthenticated: true,
+          user: {
+            id,
+            email,
+            name,
+            phone,
+            avatar: name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'SR'
+          }
+        });
+        get().loadPreferences(id);
+      },
 
       logout: () => {
         supabase.auth.signOut().catch(() => {});
-        set({ isAuthenticated: false, user: null });
+        set({ isAuthenticated: false, user: null, preferences: null });
+      },
+
+      loadPreferences: async (userId) => {
+        try {
+          const { data, error } = await supabase
+            .from('user_preferences')
+            .select('*')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (error) throw error;
+
+          if (data) {
+            const theme = data.theme || 'light';
+            set({ preferences: {
+              theme: theme,
+              language: data.language || 'en',
+              date_format: data.date_format || 'YYYY-MM-DD',
+              time_format: data.time_format || '24h',
+              dashboard_layout: data.dashboard_layout || 'grid',
+              animations_enabled: data.animations_enabled !== false,
+              accessibility_preferences: data.accessibility_preferences || {}
+            }});
+            
+            localStorage.setItem('theme_preference', theme);
+            if (theme === 'dark') {
+              document.documentElement.classList.add('dark');
+              document.documentElement.classList.remove('light');
+            } else {
+              document.documentElement.classList.add('light');
+              document.documentElement.classList.remove('dark');
+            }
+          } else {
+            // Create defaults
+            const defaultPrefs = {
+              user_id: userId,
+              theme: 'light',
+              language: 'en',
+              date_format: 'YYYY-MM-DD',
+              time_format: '24h',
+              dashboard_layout: 'grid',
+              animations_enabled: true,
+              accessibility_preferences: {}
+            };
+            const { data: inserted } = await supabase
+              .from('user_preferences')
+              .insert(defaultPrefs)
+              .select()
+              .single();
+
+            if (inserted) {
+              set({ preferences: {
+                theme: inserted.theme,
+                language: inserted.language,
+                date_format: inserted.date_format,
+                time_format: inserted.time_format,
+                dashboard_layout: inserted.dashboard_layout,
+                animations_enabled: inserted.animations_enabled,
+                accessibility_preferences: inserted.accessibility_preferences
+              }});
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to load user preferences:', e);
+          const localTheme = (localStorage.getItem('theme_preference') as 'light' | 'dark') || 'light';
+          set({
+            preferences: {
+              theme: localTheme,
+              language: 'en',
+              date_format: 'YYYY-MM-DD',
+              time_format: '24h',
+              dashboard_layout: 'grid',
+              animations_enabled: true,
+              accessibility_preferences: {}
+            }
+          });
+        }
+      },
+
+      setPreference: async (key, value) => {
+        const currentPrefs = get().preferences;
+        if (!currentPrefs) return;
+
+        const updatedPrefs = {
+          ...currentPrefs,
+          [key]: value
+        };
+        set({ preferences: updatedPrefs });
+
+        if (key === 'theme') {
+          localStorage.setItem('theme_preference', value as string);
+          if (value === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+          }
+        }
+
+        const user = get().user;
+        if (user && typeof window !== 'undefined' && navigator.onLine) {
+          try {
+            await supabase
+              .from('user_preferences')
+              .update({ [key]: value, updated_at: new Date().toISOString() })
+              .eq('user_id', user.id);
+          } catch (e) {
+            console.warn(`Failed to update preference ${key} in database:`, e);
+          }
+        }
+      },
+
+      setPreferences: async (prefs) => {
+        const currentPrefs = get().preferences;
+        if (!currentPrefs) return;
+
+        const updatedPrefs = {
+          ...currentPrefs,
+          ...prefs
+        };
+        set({ preferences: updatedPrefs });
+
+        if (prefs.theme) {
+          localStorage.setItem('theme_preference', prefs.theme);
+          if (prefs.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+          }
+        }
+
+        const user = get().user;
+        if (user && typeof window !== 'undefined' && navigator.onLine) {
+          try {
+            await supabase
+              .from('user_preferences')
+              .update({ ...prefs, updated_at: new Date().toISOString() })
+              .eq('user_id', user.id);
+          } catch (e) {
+            console.warn('Failed to update preferences in database:', e);
+          }
+        }
       },
 
       updateUsername: async (name) => {
@@ -631,6 +796,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         isAuthenticated: state.isAuthenticated,
         user: state.user,
+        preferences: state.preferences,
         activeProtections: state.activeProtections,
         alerts: state.alerts,
         scanLogs: state.scanLogs,

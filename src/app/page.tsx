@@ -23,25 +23,25 @@ export default function WelcomePage() {
       </div>
 
       {/* Typography & Actions */}
-      <div className="text-center max-w-2xl glass-card rounded-2xl p-8 md:p-12 shadow-2xl relative z-20 border-t border-white/10 w-full">
+      <div className="text-center max-w-2xl glass-card rounded-2xl p-8 md:p-12 shadow-2xl relative z-20 border-t border-border/20 w-full">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           Sentinel AI Defense
         </h1>
-        <p className="text-base md:text-lg text-on-surface-variant mb-10 mx-auto max-w-md">
+        <p className="text-base md:text-lg text-text-secondary mb-10 mx-auto max-w-md">
           Continuous AI-powered fraud protection running invisibly in the background, securing your digital life.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-4 sm:px-0">
           <Link
             href="/register"
-            className="w-full sm:w-auto px-8 py-4 rounded-full electric-flow text-white font-semibold shadow-[0_4px_20px_rgba(27,114,232,0.4)] hover:shadow-[0_4px_25px_rgba(1,221,247,0.6)] hover:scale-105 transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-full electric-flow text-white font-semibold shadow-[0_4px_20px_rgba(0,102,204,0.2)] hover:shadow-[0_4px_25px_rgba(0,217,255,0.35)] hover:scale-105 transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2"
           >
             <span>Get Started</span>
             <ArrowRight className="w-5 h-5" />
           </Link>
           <Link
             href="/login"
-            className="w-full sm:w-auto px-8 py-4 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:text-white transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2 text-on-surface"
+            className="w-full sm:w-auto px-8 py-4 rounded-full border border-border/30 bg-input/50 hover:bg-input hover:text-text-primary transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2 text-text-primary"
           >
             <LogIn className="w-5 h-5" />
             <span>Login</span>
@@ -51,7 +51,7 @@ export default function WelcomePage() {
         {/* System Status Tracker */}
         <div className="mt-8 flex items-center justify-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
             System Online &amp; Secure
           </span>
         </div>

@@ -123,53 +123,53 @@ export default function LoginPage() {
         {/* Login Box */}
         <div className="glass-card w-full rounded-2xl p-8 md:p-10 flex flex-col gap-6 shadow-2xl">
           <div className="text-center">
-            <h2 className="text-xl font-bold text-on-surface mb-2">Secure Access</h2>
-            <p className="text-xs text-on-surface-variant">Authenticate to access operations center.</p>
+            <h2 className="text-xl font-bold text-text-primary mb-2">Secure Access</h2>
+            <p className="text-xs text-text-secondary">Authenticate to access operations center.</p>
           </div>
 
           {errorMsg && (
-            <div className="text-center py-2 px-3 bg-red-950/40 border border-red-500/20 text-red-400 text-xs rounded-lg">
+            <div className="text-center py-2 px-3 bg-danger/10 border border-danger/20 text-danger text-xs rounded-lg">
               {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div className="text-center py-2 px-3 bg-cyan-950/40 border border-cyan-500/20 text-cyan-300 text-xs rounded-lg">
+            <div className="text-center py-2 px-3 bg-primary/10 border border-primary/20 text-primary text-xs rounded-lg">
               {successMsg}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-2">
             {/* Email Field */}
-            <div className="relative group border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-              <Mail className="absolute left-0 top-3 w-5 h-5 text-outline group-focus-within:text-cyan-400 transition-colors" />
+            <div className="relative group border-b border-border/30 focus-within:border-primary transition-colors">
+              <Mail className="absolute left-0 top-3 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors" />
               <input
                 type="email"
                 placeholder="Email Address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                className="w-full pl-8 pr-4 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                 disabled={loading}
                 required
               />
             </div>
 
             {/* Password Field */}
-            <div className="relative group border-b border-white/10 focus-within:border-cyan-400 transition-colors">
-              <Lock className="absolute left-0 top-3 w-5 h-5 text-outline group-focus-within:text-cyan-400 transition-colors" />
+            <div className="relative group border-b border-border/30 focus-within:border-primary transition-colors">
+              <Lock className="absolute left-0 top-3 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-8 pr-10 py-3 bg-transparent text-sm text-on-surface placeholder-outline focus:outline-none"
+                className="w-full pl-8 pr-10 py-3 bg-transparent text-sm text-text-primary placeholder:text-text-disabled focus:outline-none"
                 disabled={loading}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-3 text-outline hover:text-on-surface transition-colors"
+                className="absolute right-0 top-3 text-text-muted hover:text-text-primary transition-colors"
                 disabled={loading}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -179,11 +179,11 @@ export default function LoginPage() {
             {/* Remember Me, Create Account & Forgot Password */}
             <div className="flex flex-col gap-2 mt-1">
               <div className="flex items-center justify-between text-xs">
-                <label className="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-on-surface transition-colors">
-                  <input type="checkbox" className="rounded border-white/10 bg-white/5 text-primary focus:ring-0 focus:ring-offset-0" />
+                <label className="flex items-center gap-2 cursor-pointer text-text-secondary hover:text-text-primary transition-colors">
+                  <input type="checkbox" className="rounded border-border/30 bg-input text-primary focus:ring-0 focus:ring-offset-0" />
                   <span>Remember me</span>
                 </label>
-                <Link href="/register" className="text-cyan-400 hover:text-cyan-300 transition-colors font-medium">
+                <Link href="/register" className="text-primary hover:text-primary-hover transition-colors font-medium">
                   Create Account
                 </Link>
               </div>
@@ -191,7 +191,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={handleForgotPassword}
-                  className="text-outline hover:text-cyan-400 transition-colors font-medium cursor-pointer"
+                  className="text-text-muted hover:text-primary transition-colors font-medium cursor-pointer"
                 >
                   Forgot Password?
                 </button>
@@ -202,7 +202,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 mt-4 rounded-xl font-semibold text-xs uppercase tracking-wider text-white electric-flow hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-cyan-500/25 disabled:opacity-50"
+              className="w-full py-3.5 mt-4 rounded-xl font-semibold text-xs uppercase tracking-wider text-white electric-flow hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-50"
             >
               <span>{loading ? 'Authenticating...' : 'Login'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -210,11 +210,11 @@ export default function LoginPage() {
           </form>
 
           <div className="relative flex items-center py-2 text-xs">
-            <div className="flex-grow border-t border-white/10"></div>
-            <span className="flex-shrink-0 mx-4 text-outline font-semibold uppercase tracking-wider text-[10px]">
+            <div className="flex-grow border-t border-border/20"></div>
+            <span className="flex-shrink-0 mx-4 text-text-muted font-semibold uppercase tracking-wider text-[10px]">
               Or connect via
             </span>
-            <div className="flex-grow border-t border-white/10"></div>
+            <div className="flex-grow border-t border-border/20"></div>
           </div>
 
           {/* Social SSO Login */}
@@ -222,7 +222,7 @@ export default function LoginPage() {
             type="button"
             onClick={triggerGoogleSSO}
             disabled={loading}
-            className="w-full py-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 font-semibold text-xs uppercase tracking-wider text-on-surface flex justify-center items-center gap-3 transition-colors disabled:opacity-50"
+            className="w-full py-3.5 rounded-xl border border-border/30 bg-input/40 hover:bg-input/70 font-semibold text-xs uppercase tracking-wider text-text-primary flex justify-center items-center gap-3 transition-colors disabled:opacity-50"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -251,9 +251,9 @@ export default function LoginPage() {
               onClick={triggerBiometric}
               disabled={loading}
               type="button"
-              className="w-14 h-14 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-400/50 transition-all flex items-center justify-center group active:scale-95 disabled:opacity-50"
+              className="w-14 h-14 rounded-full bg-input/40 border border-border/30 hover:bg-input hover:border-primary/50 transition-all flex items-center justify-center group active:scale-95 disabled:opacity-50"
             >
-              <Fingerprint className="w-7 h-7 text-outline group-hover:text-cyan-400 transition-colors" />
+              <Fingerprint className="w-7 h-7 text-text-muted group-hover:text-primary transition-colors" />
             </button>
           </div>
         </div>

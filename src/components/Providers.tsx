@@ -67,16 +67,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       const store = useAppStore.getState();
       if (session?.user) {
         const profile = await fetchProfile(session.user.id);
-        const userTheme = profile?.theme || 'light';
-        localStorage.setItem('theme_preference', userTheme);
-        if (userTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        }
-
         store.login(
           session.user.id,
           session.user.email || '',
@@ -93,16 +83,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       const store = useAppStore.getState();
       if (session?.user) {
         const profile = await fetchProfile(session.user.id);
-        const userTheme = profile?.theme || 'light';
-        localStorage.setItem('theme_preference', userTheme);
-        if (userTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        }
-
         store.login(
           session.user.id,
           session.user.email || '',

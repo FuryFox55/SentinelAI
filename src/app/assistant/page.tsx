@@ -25,6 +25,7 @@ import {
 import { useAppStore } from '@/lib/store';
 import { authenticatedFetch } from '@/lib/supabase';
 import { startSimulatedPhoneCall } from '@/lib/services/intelligence';
+import { BottomNavigation } from '@/components/BottomNavigation';
 
 interface ChatMessage {
   id: string;
@@ -573,13 +574,13 @@ export default function AssistantPage() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-3.5 rounded-xl bg-[#161B22] border border-white/5 text-outline hover:text-white hover:border-cyan-500/20 transition-all active:scale-95 cursor-pointer"
+              className="p-3.5 rounded-xl bg-input border border-border/30 text-text-muted hover:text-text-primary hover:border-primary/20 transition-all active:scale-95 cursor-pointer"
             >
               <Paperclip className="w-4 h-4" />
             </button>
 
             {/* Input field */}
-            <div className="flex-grow glass-card rounded-xl border border-white/10 px-3 py-1.5 text-xs flex items-center focus-within:border-cyan-400 transition-colors bg-[#161B22]/40">
+            <div className="flex-grow glass-card rounded-xl border border-border/30 px-3 py-1.5 text-xs flex items-center focus-within:border-primary transition-colors bg-input/40">
               <textarea
                 ref={textareaRef}
                 value={inputText}
@@ -587,12 +588,12 @@ export default function AssistantPage() {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend(inputText);
+                     e.preventDefault();
+                     handleSend(inputText);
                   }
                 }}
                 placeholder="Query Scam Shield Copilot..."
-                className="w-full bg-transparent border-none py-2 text-xs text-on-surface placeholder-outline focus:outline-none resize-none min-h-[24px] max-h-[120px] leading-relaxed"
+                className="w-full bg-transparent border-none py-2 text-xs text-text-primary placeholder:text-text-disabled focus:outline-none resize-none min-h-[24px] max-h-[120px] leading-relaxed"
               />
             </div>
             
@@ -600,7 +601,7 @@ export default function AssistantPage() {
             <button
               type="submit"
               disabled={!inputText.trim() && attachedFiles.length === 0}
-              className="p-3.5 rounded-xl bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400 transition-colors active-press flex items-center justify-center shadow-lg shadow-cyan-500/15 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              className="p-3.5 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover transition-colors active-press flex items-center justify-center shadow-lg shadow-primary/20 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -610,58 +611,7 @@ export default function AssistantPage() {
       </main>
 
       {/* Sticky Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 w-full z-45 flex justify-around items-center px-4 py-2.5 bg-[#161B22]/90 backdrop-blur-xl border-t border-[#30363d]/50 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
-        
-        {/* Dashboard */}
-        <button
-          onClick={() => router.push('/dashboard')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Grid className="w-5 h-5" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Dashboard</span>
-        </button>
-
-        {/* Threats */}
-        <button
-          onClick={() => router.push('/protection')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Shield className="w-5 h-5" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Threats</span>
-        </button>
-
-        {/* Center Simulated call */}
-        <button
-          onClick={() => {
-            // Trigger simulated phone call
-            startSimulatedPhoneCall();
-            router.push('/monitoring');
-          }}
-          className="flex items-center justify-center bg-[#161B22]/90 text-[#00D9FF] border border-[#00D9FF]/40 rounded-full w-14 h-14 -translate-y-3.5 shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_25px_rgba(0,217,255,0.55)] active:scale-90 transition-all hover:border-[#00D9FF] relative z-45 group backdrop-blur-md"
-        >
-          <div className="absolute inset-0 bg-[#00D9FF]/5 rounded-full blur-[8px] animate-pulse"></div>
-          <Volume2 className="w-6 h-6 group-hover:scale-105 transition-transform" />
-        </button>
-
-        {/* Assistant */}
-        <button
-          onClick={() => router.push('/assistant')}
-          className="flex flex-col items-center justify-center text-[#00D9FF] relative"
-        >
-          <div className="absolute top-[-6px] w-6 h-1 bg-[#00D9FF] rounded-full filter blur-[2px] opacity-70"></div>
-          <Bot className="w-5 h-5 icon-glow" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Assistant</span>
-        </button>
-
-        {/* Settings */}
-        <button
-          onClick={() => router.push('/profile')}
-          className="flex flex-col items-center justify-center text-[#8b949e] hover:text-[#00D9FF] transition-colors"
-        >
-          <Settings className="w-5 h-5" />
-          <span className="text-[8.5px] font-extrabold mt-1.5 uppercase tracking-wider">Settings</span>
-        </button>
-      </nav>
+      <BottomNavigation activeTab="assistant" />
     </div>
   );
 }
