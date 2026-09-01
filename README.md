@@ -21,6 +21,13 @@ SentinelAI bridges two critical operational workflows:
 
 ---
 
+## ⚡ At a Glance (15-Second Summary)
+
+* **Framework Stack**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS v4.
+* **Core Engineering**: Multi-modal feature extraction, pure deterministic risk scoring algorithm (`scoring.ts`), Supabase RLS security, and Grok (xAI) LLM integration.
+* **Primary Workflow**: `Detect` → `Analyze` → `Score` → `Explain` → `Investigate` → `Respond`.
+* **Repository Status**: `v1.0.0` (Production prototype with 100% passing build, lint, and unit tests).
+
 ## 🚀 Quick Recruiter Evaluation (3-Minute Demo)
 
 1. **Launch App**: Open `http://localhost:3000` to inspect the technical SaaS homepage.
@@ -160,8 +167,10 @@ npm run build
 * ❓ [Technical Interview Guide](docs/interview-guide.md)
 * 📈 [Scalability Analysis](docs/scalability.md)
 * 📊 [Production Readiness Gap Analysis](docs/production-readiness.md)
-* ⏱️ [3-Minute Recruiter Demo Walkthrough](docs/demo.md)
-* 🔐 [Security Policy](SECURITY.md) | 🤝 [Contributing](CONTRIBUTING.md) | 📜 [MIT License](LICENSE)
+* ⏱️ [4.5-Minute Evaluator Demo Script](docs/demo-script.md)
+* 💼 [Portfolio & Resume Specifications](docs/portfolio-description.md) | 💼 [Master Portfolio Guide](docs/portfolio.md)
+* 🛠️ [Presenter Troubleshooting Guide](docs/demo-troubleshooting.md)
+* 📜 [Changelog](CHANGELOG.md) | 🔐 [Security Policy](SECURITY.md) | 🤝 [Contributing](CONTRIBUTING.md) | 📜 [MIT License](LICENSE)
 
 ---
 
