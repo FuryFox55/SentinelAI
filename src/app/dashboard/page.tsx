@@ -241,7 +241,7 @@ export default function DashboardPage() {
           <div className="flex flex-col">
             <span className="font-bold tracking-tight text-text-primary text-xs leading-none">SENTINEL AI</span>
             <span className="text-[7.5px] font-extrabold text-primary uppercase tracking-widest mt-1">
-              Federal Protection Suite
+              Fraud Detection Platform
             </span>
           </div>
         </div>
