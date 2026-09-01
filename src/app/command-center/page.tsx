@@ -114,26 +114,28 @@ export default function CommandCenterPage() {
       {/* Top Header */}
       <header className="fixed top-0 left-0 right-0 h-16 bg-surface border-b border-border/30 flex items-center justify-between px-4 sm:px-6 z-40">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center text-accent icon-glow shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">
             <Radio className="w-5 h-5 animate-pulse" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xs sm:text-sm font-bold tracking-tight text-text-primary uppercase truncate">Sentinel AI Command Center</h1>
-            <span className="text-[8px] sm:text-[9px] text-accent font-bold tracking-widest uppercase truncate block">
-              National Security Operation Panel • Prototype Simulation
+            <h1 className="text-xs sm:text-sm font-extrabold tracking-tight text-text-primary uppercase truncate">
+              SENTINELAI — Security Operations Center
+            </h1>
+            <span className="text-[9px] text-accent font-bold tracking-wider uppercase truncate block">
+              AI-Assisted Security Operations Platform
             </span>
           </div>
         </div>
- 
+
         {/* Integration Syncing states */}
-        <div className="hidden lg:flex items-center gap-4 text-[10px] font-bold text-outline">
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-success"></div>
-            <span>National Cyber Cell (1930): Connected</span>
+        <div className="hidden lg:flex items-center gap-4 text-[10px] font-bold text-text-secondary">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-secondary border border-border/40">
+            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+            <span>SYSTEM STATUS: <strong className="text-text-primary font-bold">Operational</strong></span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-success"></div>
-            <span>Reserve Bank VPA Index: Connected</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-secondary border border-border/40">
+            <div className="w-2 h-2 rounded-full bg-success" />
+            <span>INTEGRATIONS: <strong className="text-text-primary font-bold">4 Connected</strong></span>
           </div>
         </div>
       </header>
@@ -177,13 +179,13 @@ export default function CommandCenterPage() {
         {/* Left Nav Sidebar (Desktop) */}
         <aside className="w-64 bg-surface border-r border-border/20 hidden md:flex flex-col p-4 justify-between shrink-0">
           <div className="space-y-6">
-            <span className="text-[10px] font-bold text-outline uppercase tracking-widest px-2 block">
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-2 block">
               OPERATIONS NAVIGATION
             </span>
             <nav className="flex flex-col gap-1.5">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'overview' ? 'bg-accent/10 text-accent border-l-2 border-accent' : 'text-outline hover:bg-surface-secondary/30 hover:text-text-primary'}`}
+                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'overview' ? 'bg-primary/10 text-primary border-l-2 border-primary font-bold' : 'text-text-secondary hover:bg-surface-secondary/50 hover:text-text-primary'}`}
               >
                 <Activity className="w-4 h-4" />
                 <span>Overview Analytics</span>
@@ -191,14 +193,14 @@ export default function CommandCenterPage() {
 
               <button
                 onClick={() => setActiveTab('queue')}
-                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-between ${activeTab === 'queue' ? 'bg-accent/10 text-accent border-l-2 border-accent' : 'text-outline hover:bg-surface-secondary/30 hover:text-text-primary'}`}
+                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-all flex items-center justify-between ${activeTab === 'queue' ? 'bg-primary/10 text-primary border-l-2 border-primary font-bold' : 'text-text-secondary hover:bg-surface-secondary/50 hover:text-text-primary'}`}
               >
                 <div className="flex items-center gap-2.5">
                   <ShieldAlert className="w-4 h-4" />
                   <span>Incident Queue</span>
                 </div>
                 {incidents.filter(i => i.status !== 'Resolved').length > 0 && (
-                  <span className="bg-danger/10 border border-danger/30 text-danger text-[9px] px-2 py-0.5 rounded-full">
+                  <span className="bg-danger/10 border border-danger/30 text-danger text-[9px] font-bold px-2 py-0.5 rounded-full">
                     {incidents.filter(i => i.status !== 'Resolved').length}
                   </span>
                 )}
@@ -206,25 +208,25 @@ export default function CommandCenterPage() {
 
               <button
                 onClick={() => setActiveTab('feed')}
-                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'feed' ? 'bg-accent/10 text-accent border-l-2 border-accent' : 'text-outline hover:bg-surface-secondary/30 hover:text-text-primary'}`}
+                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'feed' ? 'bg-primary/10 text-primary border-l-2 border-primary font-bold' : 'text-text-secondary hover:bg-surface-secondary/50 hover:text-text-primary'}`}
               >
                 <Database className="w-4 h-4" />
-                <span>Global Threat Feed</span>
+                <span>Threat Intelligence Feed</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('integrations')}
-                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'integrations' ? 'bg-accent/10 text-accent border-l-2 border-accent' : 'text-outline hover:bg-surface-secondary/30 hover:text-text-primary'}`}
+                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-all flex items-center gap-2.5 ${activeTab === 'integrations' ? 'bg-primary/10 text-primary border-l-2 border-primary font-bold' : 'text-text-secondary hover:bg-surface-secondary/50 hover:text-text-primary'}`}
               >
                 <Share2 className="w-4 h-4" />
-                <span>Govt Integrations</span>
+                <span>Connected Integrations</span>
               </button>
             </nav>
           </div>
 
-          <div className="bg-surface-secondary/15 p-3.5 rounded-xl border border-border/10 space-y-1 text-center">
-            <span className="text-[8px] font-bold text-outline block uppercase tracking-wider">Operator System ID</span>
-            <span className="text-[10px] font-mono text-accent block font-semibold">CC-IN-882410-SH</span>
+          <div className="bg-surface-secondary p-3.5 rounded-xl border border-border/40 space-y-1 text-center">
+            <span className="text-[9px] font-bold text-text-muted block uppercase tracking-wider">System Node ID</span>
+            <span className="text-[10px] font-mono text-primary block font-extrabold">SOC-IN-882410</span>
           </div>
         </aside>
 
@@ -237,42 +239,46 @@ export default function CommandCenterPage() {
               
               {/* Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass-card rounded-2xl p-5 border border-border/10 flex justify-between items-center">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 flex justify-between items-center shadow-small">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-outline uppercase tracking-wider block">Active Detections</span>
-                    <span className="text-2xl font-black text-text-primary">{Math.max(incidents.filter(i => i.status !== 'Resolved').length, ccStats.totalCases - ccStats.resolvedCases)} Active</span>
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Active Incidents</span>
+                    <span className="text-2xl font-extrabold text-text-primary">{Math.max(incidents.filter(i => i.status !== 'Resolved').length, ccStats.totalCases - ccStats.resolvedCases)} Active</span>
+                    <span className="text-[10px] text-danger font-semibold block">+1 detected today</span>
                   </div>
-                  <div className="p-3 bg-danger/10 rounded-xl border border-danger/20 text-danger">
+                  <div className="p-3 bg-danger/10 rounded-xl border border-danger/20 text-danger shrink-0">
                     <ShieldAlert className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="glass-card rounded-2xl p-5 border border-border/10 flex justify-between items-center">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 flex justify-between items-center shadow-small">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-outline uppercase tracking-wider block">Prevented Loss Est</span>
-                    <span className="text-2xl font-black text-accent">₹8.4 Cr</span>
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Estimated Loss Prevented</span>
+                    <span className="text-2xl font-extrabold text-primary">₹8.4 Cr</span>
+                    <span className="text-[10px] text-success font-semibold block">+12.4% vs last week</span>
                   </div>
-                  <div className="p-3 bg-accent/10 rounded-xl border border-accent/20 text-accent">
+                  <div className="p-3 bg-primary/10 rounded-xl border border-primary/20 text-primary shrink-0">
                     <TrendingUp className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="glass-card rounded-2xl p-5 border border-border/10 flex justify-between items-center">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 flex justify-between items-center shadow-small">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-outline uppercase tracking-wider block">Connected Agencies</span>
-                    <span className="text-2xl font-black text-text-primary">4 Connected</span>
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Connected Integrations</span>
+                    <span className="text-2xl font-extrabold text-text-primary">4 Connected</span>
+                    <span className="text-[10px] text-text-secondary font-semibold block">All nodes nominal</span>
                   </div>
-                  <div className="p-3 bg-accent/10 rounded-xl border border-accent/25 text-accent">
+                  <div className="p-3 bg-primary/10 rounded-xl border border-primary/20 text-primary shrink-0">
                     <Users className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="glass-card rounded-2xl p-5 border border-border/10 flex justify-between items-center">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 flex justify-between items-center shadow-small">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-outline uppercase tracking-wider block">Scam Match Ratio</span>
-                    <span className="text-2xl font-black text-success">{ccStats.efficiencyRate}%</span>
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Scam Match Rate</span>
+                    <span className="text-2xl font-extrabold text-success">{ccStats.efficiencyRate}%</span>
+                    <span className="text-[10px] text-success font-semibold block">High precision match</span>
                   </div>
-                  <div className="p-3 bg-success/10 rounded-xl border border-success/20 text-success">
+                  <div className="p-3 bg-success/10 rounded-xl border border-success/20 text-success shrink-0">
                     <CheckCircle className="w-6 h-6" />
                   </div>
                 </div>
@@ -282,10 +288,10 @@ export default function CommandCenterPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* Area Chart */}
-                <div className="glass-card rounded-2xl p-5 border border-border/10 space-y-4">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 space-y-4 shadow-small">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider">National Scam Trends (Weekly)</h3>
-                    <span className="text-[9px] text-outline uppercase tracking-wider font-semibold">Incident Volume</span>
+                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider">Weekly Scam Activity</h3>
+                    <span className="text-[10px] text-text-muted uppercase tracking-wider font-semibold">7-Day Trend</span>
                   </div>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -312,20 +318,23 @@ export default function CommandCenterPage() {
                 </div>
 
                 {/* Bar Chart */}
-                <div className="glass-card rounded-2xl p-5 border border-border/10 space-y-4">
+                <div className="glass-card rounded-2xl p-5 border border-border/20 space-y-4 shadow-small">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider">Scam Mitigation Types</h3>
-                    <span className="text-[9px] text-outline uppercase tracking-wider font-semibold">Auto vs Manual</span>
+                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider">Mitigation Methods</h3>
+                    <span className="text-[10px] text-text-muted uppercase tracking-wider font-semibold">Distribution</span>
                   </div>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={threatTrendData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey="day" stroke="#8c909f" fontSize={10} />
-                        <YAxis stroke="#8c909f" fontSize={10} />
-                        <Tooltip contentStyle={{ backgroundColor: '#1d2022', borderColor: '#424754' }} />
-                        <Bar dataKey="Smishing" fill="#818cf8" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="Vishing" fill="#ffb4ab" radius={[4, 4, 0, 0]} />
+                        <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+                        <XAxis dataKey="day" stroke="var(--text-muted)" fontSize={10} tickLine={false} />
+                        <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)', borderRadius: '12px', fontSize: '11px', color: 'var(--text-primary)' }}
+                          itemStyle={{ color: 'var(--text-primary)' }}
+                        />
+                        <Bar dataKey="Smishing" fill="var(--primary)" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="Vishing" fill="var(--accent)" radius={[4, 4, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -333,15 +342,15 @@ export default function CommandCenterPage() {
 
               </div>
 
-              {/* Background intelligent pipeline summary */}
-              <div className="glass-card rounded-2xl p-5 border border-border/10 bg-gradient-to-r from-accent/5 to-transparent flex items-start gap-4">
-                <div className="p-2 bg-accent/10 rounded-lg text-accent">
-                  <Clock className="w-5 h-5 animate-spin" />
+              {/* Background Telemetry Info panel */}
+              <div className="glass-card rounded-2xl p-5 border border-border/20 flex items-start gap-4 bg-primary/5">
+                <div className="p-3 bg-primary/10 rounded-xl text-primary shrink-0">
+                  <Radio className="w-5 h-5 animate-pulse" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-text-primary uppercase">Background Telemetry Pipeline Active</h4>
-                  <p className="text-[10px] text-on-surface-variant leading-relaxed">
-                    Citizen applications auto-record high-risk social engineering markers. Secure evidence bundles are encrypted on-device, then matching metadata hashes are populated to this Command Center queue for tracking.
+                  <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider">Background Telemetry — Active</h4>
+                  <p className="text-xs text-text-secondary leading-relaxed">
+                    Telemetry ingestion is operating normally. Security events are encrypted on-device and queued for automated risk scoring and analysis.
                   </p>
                 </div>
               </div>

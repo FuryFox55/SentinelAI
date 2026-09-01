@@ -29,10 +29,10 @@
   --button-secondary: #E9ECEF;
   --button-danger: #D9384F;
   --button-disabled: #CED4DA;
-  --text-primary: #1A1F26;
-  --text-secondary: #495057;
-  --text-muted: #6C757D;
-  --text-disabled: #ADB5BD;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-disabled: #94A3B8;
   --icon-primary: #495057;
   --icon-secondary: #8B949E;
   --badge-success: #E6F7ED;
@@ -238,8 +238,8 @@ body {
 }
 
 .glass-card:hover {
-  border-color: var(--glass-hover-border, rgba(0, 102, 204, 0.25));
-  box-shadow: var(--glass-shadow-hover, 0 8px 32px 0 rgba(0, 102, 204, 0.05));
+  border-color: var(--glass-hover-border, rgba(0, 102, 204, 0.236));
+  box-shadow: var(--glass-shadow-hover, 0 8px 32px 0 rgba(1, 89, 178, 0.05));
 }
 
 .glass-panel {

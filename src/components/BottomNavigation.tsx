@@ -37,14 +37,14 @@ export function BottomNavigation({ activeTab }: ApplicationShellProps) {
             className={`flex flex-col items-center justify-center py-1 px-1.5 rounded-xl transition-all relative flex-1 max-w-[80px] min-w-0 ${
               isActive
                 ? 'text-primary font-bold'
-                : 'text-text-muted hover:text-text-primary'
+                : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             {isActive && (
               <div className="absolute -top-2 w-6 h-0.5 bg-primary rounded-full" />
             )}
             <Icon className="w-5 h-5 transition-transform duration-200 shrink-0" />
-            <span className="text-[10px] uppercase tracking-wider truncate w-full text-center mt-1">
+            <span className="text-[10px] font-medium tracking-wider truncate w-full text-center mt-1">
               {item.label}
             </span>
           </button>
@@ -55,10 +55,10 @@ export function BottomNavigation({ activeTab }: ApplicationShellProps) {
       <button
         onClick={handleStartSimulatedCall}
         title="Trigger Live Telephony Signal Intercept"
-        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 text-xs font-bold transition-all ml-2"
+        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-danger/10 border border-danger/30 text-danger hover:bg-danger/20 text-xs font-bold transition-all ml-2 shadow-small"
       >
-        <Radio className="w-3.5 h-3.5 animate-pulse text-primary" />
-        <span>Live Intercept</span>
+        <span className="w-2 h-2 rounded-full bg-danger animate-pulse" />
+        <span>LIVE INTERCEPT</span>
       </button>
     </nav>
   );

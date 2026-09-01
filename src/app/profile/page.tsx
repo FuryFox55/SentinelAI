@@ -553,9 +553,11 @@ export default function SecuritySettingsCenter() {
           <div className="relative z-10 flex-grow min-w-0">
             <h2 className="text-base font-black text-text-primary truncate">{profile?.full_name || 'Sentinel Shield User'}</h2>
             <p className="text-[10px] text-on-surface-variant font-mono mt-0.5">{profile?.email || user?.email}</p>
-            <div className="mt-2 inline-flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
-              <Shield className="w-3 h-3 text-primary" />
-              <span className="text-[8px] font-black text-primary uppercase tracking-widest">Score: {profile?.protection_score || 92}%</span>
+            <div className="mt-2 inline-flex items-center gap-1.5 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+              <Shield className="w-3.5 h-3.5 text-primary" />
+              <span className="text-[9px] font-extrabold text-primary uppercase tracking-wider">
+                SECURITY POSTURE: {profile?.protection_score || 92}%
+              </span>
             </div>
           </div>
         </section>
@@ -578,9 +580,9 @@ export default function SecuritySettingsCenter() {
           {expandedSection === 'account' && (
             <div className="px-3.5 sm:px-5 pb-3.5 sm:pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               {isProfileLoading ? (
-                <div className="animate-pulse space-y-2">
-                  <div className="h-4 bg-surface-secondary/50 rounded w-3/4"></div>
-                  <div className="h-4 bg-surface-secondary/50 rounded w-1/2"></div>
+                <div className="space-y-2 py-4">
+                  <div className="h-4 bg-surface-secondary rounded animate-pulse w-1/2" />
+                  <div className="h-4 bg-surface-secondary rounded animate-pulse w-3/4" />
                 </div>
               ) : isEditingAccount ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -594,9 +596,9 @@ export default function SecuritySettingsCenter() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Phone Number</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Phone</label>
                     <input
-                      type="tel"
+                      type="text"
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
                       className="w-full bg-surface-container border border-outline/10 rounded-xl px-3.5 py-2.5 text-xs text-on-surface focus:outline-none focus:border-primary"
@@ -659,7 +661,7 @@ export default function SecuritySettingsCenter() {
                   <div className="grid grid-cols-2 gap-4 text-xs">
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Joined Date</span>
-                      <span className="font-semibold text-text-primary">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}</span>
+                      <span className="font-semibold text-text-primary">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'Not available'}</span>
                     </div>
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Account Role</span>
