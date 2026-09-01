@@ -32,6 +32,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useAppStore, Incident } from '@/lib/store';
 import { authenticatedFetch } from '@/lib/supabase';
+import { BottomNavigation } from '@/components/BottomNavigation';
 
 // Mock analytics data
 const threatTrendData = [
@@ -703,6 +704,7 @@ payload = 00 24 fc b9 a1 cd 09 d2 10 44 a8 93 1b 72 e8 01 dd f7`}
         </main>
       </div>
 
+      <BottomNavigation activeTab="incidents" />
     </div>
   );
 }

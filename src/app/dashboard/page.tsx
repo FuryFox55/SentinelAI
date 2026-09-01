@@ -35,6 +35,10 @@ import { useAppStore } from '@/lib/store';
 import { authenticatedFetch } from '@/lib/supabase';
 import { startSimulatedPhoneCall } from '@/lib/services/intelligence';
 import { BottomNavigation } from '@/components/BottomNavigation';
+import { Badge } from '@/components/ui/Badge';
+import { StatCard } from '@/components/ui/StatCard';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 // Cycling banner messages
 const bannerMessages = [

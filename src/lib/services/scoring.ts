@@ -93,10 +93,11 @@ export function evaluateFraudConfidence(inputs: FraudInputs): FraudConfidenceRes
   }
 
   const processingTimeMs = Date.now() - startTime;
+  const deterministicAiConfidence = Math.min(85 + (finalScore % 11), 98);
 
   return {
     fraudConfidenceIndex: finalScore,
-    aiConfidence: Math.min(Math.round(85 + Math.random() * 12), 100),
+    aiConfidence: deterministicAiConfidence,
     threatLevel,
     riskCategory,
     evidence,
