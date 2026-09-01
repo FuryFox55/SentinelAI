@@ -137,15 +137,19 @@ npm run build
 
 ---
 
-## 📄 Documentation Suite
+## 📄 Engineering Documentation Suite
 
 * 🏗️ [System Architecture Specification](docs/architecture.md)
+* 🔄 [Telemetry Data-Flow Architecture](docs/data-flow.md)
+* 🧮 [Fraud Confidence Risk Scoring Algorithm](docs/risk-scoring.md)
 * 🗄️ [Database & RLS Specifications](docs/database.md)
+* 🛡️ [Security Threat Model](docs/threat-model.md)
+* 🛠️ [Architecture & Engineering Decisions](docs/engineering-decisions.md)
+* ❓ [Technical Interview Guide](docs/interview-guide.md)
+* 📈 [Scalability Analysis](docs/scalability.md)
+* 📊 [Production Readiness Gap Analysis](docs/production-readiness.md)
 * ⏱️ [3-Minute Recruiter Demo Walkthrough](docs/demo.md)
-* 🔐 [Security & Disclosure Policy](SECURITY.md)
-* 💻 [Development Workflow Guide](docs/development.md)
-* 🤝 [Contributing Guidelines](CONTRIBUTING.md)
-* 📜 [MIT License](LICENSE)
+* 🔐 [Security Policy](SECURITY.md) | 🤝 [Contributing](CONTRIBUTING.md) | 📜 [MIT License](LICENSE)
 
 ---
 
