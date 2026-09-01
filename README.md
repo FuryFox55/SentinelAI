@@ -170,6 +170,7 @@ npm run build
 * ⏱️ [4.5-Minute Evaluator Demo Script](docs/demo-script.md)
 * 💼 [Portfolio & Resume Specifications](docs/portfolio-description.md) | 💼 [Master Portfolio Guide](docs/portfolio.md)
 * 🛠️ [Presenter Troubleshooting Guide](docs/demo-troubleshooting.md)
+* 🏷️ [Release Candidate Notes (v1.0.0-RC1)](docs/release-notes.md)
 * 📜 [Changelog](CHANGELOG.md) | 🔐 [Security Policy](SECURITY.md) | 🤝 [Contributing](CONTRIBUTING.md) | 📜 [MIT License](LICENSE)
 
 ---
