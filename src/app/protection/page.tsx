@@ -204,8 +204,8 @@ export default function ProtectionCenterPage() {
         {/* Header & Search */}
         <div className="space-y-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-text-primary uppercase">Protection Center</h1>
-            <p className="text-xs text-text-secondary">Active defense nodes and manual diagnostic scanners.</p>
+            <h1 className="text-2xl font-black tracking-tight text-text-primary uppercase">ANALYZE A THREAT</h1>
+            <p className="text-xs text-text-secondary">Multi-modal threat inspection workspace. Analyze suspicious messages, URLs, QR codes, voice recordings, and documents.</p>
           </div>
 
           {/* Search bar */}

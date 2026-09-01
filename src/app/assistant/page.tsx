@@ -37,12 +37,12 @@ interface ChatMessage {
 }
 
 const suggestedPrompts = [
-  "Is this message a scam?",
-  "I received a Digital Arrest call.",
-  "Analyze this suspicious SMS.",
-  "How do QR scams work?",
-  "Explain UPI fraud.",
-  "Someone is asking for an OTP."
+  "Explain this incident.",
+  "Why was this event classified as high risk?",
+  "Summarize the evidence.",
+  "What indicators should I investigate next?",
+  "Compare these two incidents.",
+  "Provide a threat assessment."
 ];
 
 // Helper to format basic markdown bullets and bold formatting offline
