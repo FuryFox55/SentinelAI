@@ -30,6 +30,18 @@ SentinelAI bridges two critical operational workflows:
 
 ---
 
+## 🎯 Why SentinelAI? (Engineering Rationale)
+
+Connecting raw LLM APIs directly to security interfaces creates two fundamental engineering challenges:
+1. **Stochastic & Unpredictable Outputs**: LLMs can return inconsistent risk scores or unstructured text.
+2. **Security & Prompt Injection Risks**: Threat payloads processed by LLMs may attempt to override system prompts.
+
+**SentinelAI solves this by decoupling raw LLM reasoning from deterministic application logic**:
+* **Deterministic Risk Scoring**: Threat payloads pass through a pure TypeScript algorithm (`evaluateFraudConfidence`) calculating a predictable 0–100 index before hit by LLM nodes.
+* **Isolated Data Boundaries**: Payloads are treated strictly as untrusted data parameters, ensuring prompt injection attempts cannot hijack security policies.
+
+---
+
 ## 🔄 End-to-End Threat Pipeline
 
 ```text
