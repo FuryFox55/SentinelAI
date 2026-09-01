@@ -13,24 +13,46 @@
 
 ## 📌 Executive Summary
 
-**SentinelAI** is an **AI-Assisted Fraud Detection & Security Operations Platform** designed to detect, analyze, score, and respond to modern digital fraud, phishing, vishing (voice cloning), malicious QR codes, and document forgery.
+**SentinelAI** is an **AI-Assisted Fraud Detection & Security Operations Platform** designed to detect, analyze, score, and respond to digital fraud, phishing, vishing (voice cloning), malicious QR code VPAs, and document forgery.
 
 SentinelAI bridges two critical operational workflows:
-1. **Citizen & User Protection**: Multi-modal threat scanner for instant message, URL, QR, voice, and file inspection with explainable risk scores (0–100).
+1. **Citizen & User Protection**: Multi-modal threat scanner for instant message, URL, QR, voice, and document file inspection with explainable risk scores (0–100).
 2. **Security Operations Center (SOC)**: High-density incident triage console for security analysts with evidence correlation, threat activity timelines, and emergency dispatching.
 
 ---
 
-## ✨ Key Features & Capabilities
+## 🚀 Quick Recruiter Evaluation (3-Minute Demo)
 
-| Feature Module | Capabilities & Functionality |
+1. **Launch App**: Open `http://localhost:3000` to inspect the technical SaaS homepage.
+2. **Threat Inspection**: Navigate to **`/protection`**, select **URL Phishing Scan** or **SMS Analysis**, and submit a sample threat payload.
+3. **SOC Command Center**: Open **`/command-center`** to triage incident tickets (`INC-0248`) and view risk distribution metrics.
+4. **Security Copilot**: Open **`/assistant`** and click *"Why was INC-0248 classified as critical?"* for contextual AI breakdown.
+
+---
+
+## 🔄 End-to-End Threat Pipeline
+
+```text
+    DETECT              ANALYZE             SCORE             EXPLAIN           RESPOND
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│ Multi-Modal │ ──> │ OCR, Voice  │ ──> │ Weighted    │ ──> │ Evidence    │ ──> │ SOC Ticket  │
+│ Signals     │     │ & Heuristic │     │ Fraud Index │     │ Breakdown   │     │ Triage &    │
+│ Ingestion   │     │ Extraction  │     │ (0-100)     │     │ Metrics     │     │ Dispatch    │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+```
+
+---
+
+## 📊 Core Capabilities Matrix
+
+| Capability Module | Functionality & Engineering Implementation |
 | :--- | :--- |
-| **🔍 Multi-Modal Threat Inspection** | Scans **Messages & SMS**, **Phishing URLs**, **QR Code VPAs**, **Voice Audio Streams**, and **Document OCR Text**. |
+| **🔍 Multi-Modal Threat Inspection** | Scans **Messages & SMS**, **Phishing URLs**, **QR Code VPAs**, **Voice Audio**, and **Document OCR**. |
 | **⚖️ Fraud Confidence Engine** | Weighted risk scoring algorithm (0–100) aggregating structural heuristics, acoustic clone probability, and threat indicators. |
-| **🖥️ Security Operations Center (SOC)** | High-density operations dashboard featuring live incident queues, risk distribution charts, and system node health indicators. |
-| **🤖 Sentinel AI Copilot** | Security-focused conversational assistant providing evidence summaries, threat explanations, and analyst investigation prompts. |
-| **🚨 Emergency Contact Dispatch** | One-tap emergency escalation that notifies trusted contacts and logs high-priority incident records. |
-| **🛡️ Resilient Offline Fallback** | Transparent Supabase proxy client auto-switching to an in-memory mock store when remote databases are offline or unconfigured. |
+| **🖥️ Security Operations Center (SOC)** | Operations console featuring live incident queues, severity triage, and system health status. |
+| **🤖 Sentinel AI Copilot** | Security-focused conversational assistant providing evidence summaries and analyst investigation prompts. |
+| **🚨 Emergency Escalation Dispatch** | One-tap emergency escalation notifying trusted contacts and logging high-priority incident records. |
+| **🛡️ Resilient Offline Fallback** | Transparent Supabase proxy client auto-switching to an in-memory mock store when database credentials are offline. |
 
 ---
 
@@ -71,44 +93,29 @@ SentinelAI bridges two critical operational workflows:
 
 ---
 
-## 🛠️ Technology Stack
+## ⚙️ Technology Stack
 
-* **Frontend**: Next.js 16 (App Router, Turbopack) & React 19
-* **Language**: TypeScript (Strict Mode)
-* **Styling**: Tailwind CSS v4 with custom design tokens (`@theme inline`)
-* **State Management**: Zustand with persistent storage
-* **Charts & Visuals**: Recharts, Lucide Icons, Framer Motion
-* **Database & Auth**: Supabase (PostgreSQL, Auth, RLS Policies, Realtime)
-* **AI Engine**: Grok (xAI) API & Sentinel Multi-Modal Extractor Pipeline
+| Layer | Technology |
+| :--- | :--- |
+| **Framework & Runtime** | Next.js 16 (App Router, Turbopack) & React 19 |
+| **Language** | TypeScript (Strict Mode) |
+| **Styling** | Tailwind CSS v4 with custom design tokens (`@theme inline`) |
+| **State Management** | Zustand with persistent storage |
+| **Database & Auth** | Supabase (PostgreSQL, Auth, RLS Policies, Realtime) |
+| **AI & LLM Pipeline** | Grok (xAI) API & Sentinel Multi-Modal Extractor Pipeline |
 
 ---
 
-## 🚀 Quickstart Guide
+## 🌟 Project Status Matrix
 
-### Prerequisites
-* **Node.js**: v18.17.0 or higher
-* **npm**: v9.0.0 or higher
-
-### 1. Clone & Install
-```bash
-git clone https://github.com/FuryFox55/SentinelAI.git
-cd SentinelAI
-npm install
-```
-
-### 2. Configure Environment Variables
-Create a `.env.local` file:
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-GROK_API_KEY=your-grok-api-key
-```
-
-### 3. Run Development Server
-```bash
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+| Module | Status | Notes |
+| :--- | :--- | :--- |
+| **Authentication & User Profile** | `Implemented` | Supabase Auth + RLS policies + Local state sync |
+| **Multi-Modal Threat Scanner** | `Implemented` | Text, URL, QR, Voice, and Document extraction |
+| **Fraud Confidence Engine** | `Implemented` | Pure deterministic scoring function with 100% test coverage |
+| **SOC Incident Command Center** | `Implemented` | Incident queue, risk distribution, and severity triage |
+| **Sentinel AI Copilot** | `Implemented` | Grok xAI API with security analyst prompt templates |
+| **Telemetry Ingestion Feeds** | `Simulated / Demo` | Interactive telephony and threat feed simulators |
 
 ---
 
@@ -130,12 +137,14 @@ npm run build
 
 ---
 
-## 📄 Documentation & Resources
+## 📄 Documentation Suite
 
-* 🏗️ [System Architecture](docs/architecture.md)
-* 🔐 [Security & RLS Specifications](SECURITY.md)
-* 💻 [Development Workflow](docs/development.md)
-* 🤝 [Contributing Guide](CONTRIBUTING.md)
+* 🏗️ [System Architecture Specification](docs/architecture.md)
+* 🗄️ [Database & RLS Specifications](docs/database.md)
+* ⏱️ [3-Minute Recruiter Demo Walkthrough](docs/demo.md)
+* 🔐 [Security & Disclosure Policy](SECURITY.md)
+* 💻 [Development Workflow Guide](docs/development.md)
+* 🤝 [Contributing Guidelines](CONTRIBUTING.md)
 * 📜 [MIT License](LICENSE)
 
 ---
