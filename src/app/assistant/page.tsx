@@ -80,10 +80,14 @@ function renderTextWithBold(text: string) {
   const parts = text.split(/(\*\*.*?\*\*)/g);
   return parts.map((part, idx) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={idx} className="font-extrabold text-white">{part.slice(2, -2)}</strong>;
+      return <strong key={idx} className="font-extrabold text-text-primary">{part.slice(2, -2)}</strong>;
     }
     return part;
   });
+}
+
+function generateMessageId() {
+  return `msg-${Math.random().toString(36).substring(2, 9)}`;
 }
 
 export default function AssistantPage() {
@@ -106,20 +110,6 @@ export default function AssistantPage() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Load chat history from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('sentinel_chat_history');
-    if (saved) {
-      try {
-        setMessages(JSON.parse(saved));
-      } catch (e) {
-        initializeWelcomeMessage();
-      }
-    } else {
-      initializeWelcomeMessage();
-    }
-  }, []);
-
   // Save chat history to localStorage
   const saveChatHistory = (newMsgs: ChatMessage[]) => {
     setMessages(newMsgs);
@@ -135,6 +125,20 @@ export default function AssistantPage() {
     };
     saveChatHistory([welcome]);
   };
+
+  // Load chat history from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('sentinel_chat_history');
+    if (saved) {
+      try {
+        setMessages(JSON.parse(saved));
+      } catch (e) {
+        initializeWelcomeMessage();
+      }
+    } else {
+      initializeWelcomeMessage();
+    }
+  }, []);
 
   // Scroll to bottom
   useEffect(() => {
@@ -156,7 +160,7 @@ export default function AssistantPage() {
     if (!messageContent && !hasFiles) return;
 
     const userMsg: ChatMessage = {
-      id: `msg-${Date.now()}`,
+      id: generateMessageId(),
       sender: 'user',
       text: messageContent || "Analyze attached cybersecurity evidence logs:",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -205,7 +209,7 @@ export default function AssistantPage() {
       }
       
       const assistantMsg: ChatMessage = {
-        id: `msg-${Date.now() + 1}`,
+        id: generateMessageId(),
         sender: 'assistant',
         text: responseData.message,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -217,7 +221,7 @@ export default function AssistantPage() {
       clearInterval(stageInterval);
       setErrorMessage(err.message || 'Chatbot connection error.');
       const errorMsg: ChatMessage = {
-        id: `msg-${Date.now() + 1}`,
+        id: generateMessageId(),
         sender: 'assistant',
         text: "🚨 Connectivity Mismatch: Unable to securely stream response from the central Scam Prevention Analyzer node. Please ensure central services are nominal.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -278,22 +282,22 @@ export default function AssistantPage() {
   const latestScan = scanLogs[0];
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-[#e0e3e5] flex flex-col pb-24 relative overflow-hidden pt-16">
+    <div className="min-h-screen w-full bg-background text-text-primary flex flex-col pb-24 relative overflow-hidden pt-16">
       
       {/* Background Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-15">
-        <div className="absolute top-[20%] left-[-10%] w-[320px] h-[320px] rounded-full bg-cyan-500/10 blur-[100px]"></div>
+        <div className="absolute top-[20%] left-[-10%] w-[320px] h-[320px] rounded-full bg-accent/10 blur-[100px]"></div>
       </div>
-
+ 
       {/* Top Header */}
-      <header className="fixed top-0 left-0 w-full z-45 bg-[#161B22]/80 backdrop-blur-xl border-b border-[#30363d]/40 px-6 py-4 flex items-center justify-between">
+      <header className="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-border/30 px-3 sm:px-6 md:px-8 py-3.5 sm:py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="text-cyan-400 flex items-center justify-center p-1.5 rounded-xl bg-cyan-500/5 border border-cyan-500/20 icon-glow">
+          <div className="text-accent flex items-center justify-center p-1.5 rounded-xl bg-accent/5 border border-accent/20 icon-glow">
             <Bot className="w-5 h-5" />
           </div>
           <div>
-            <span className="font-bold tracking-tight text-white text-xs leading-none block">SECURITY COPILOT</span>
-            <span className="text-[7px] text-cyan-300 font-extrabold uppercase tracking-widest block mt-0.5">Sentinel AI Orchestrator</span>
+            <span className="font-bold tracking-tight text-text-primary text-xs leading-none block">SECURITY COPILOT</span>
+            <span className="text-[7px] text-accent font-extrabold uppercase tracking-widest block mt-0.5">Sentinel AI Orchestrator</span>
           </div>
         </div>
         <div className="flex items-center gap-3.5">
@@ -303,12 +307,12 @@ export default function AssistantPage() {
               type="checkbox"
               checked={liveProtectionMode}
               onChange={(e) => setLiveProtectionMode(e.target.checked)}
-              className="rounded border-white/10 bg-white/5 text-primary focus:ring-0 w-3.5 h-3.5"
+              className="rounded border-border/10 bg-surface-secondary/30 text-primary focus:ring-0 w-3.5 h-3.5"
             />
           </label>
           <button
             onClick={handleClearHistory}
-            className="p-2 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-xl transition-all flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider border border-transparent hover:border-red-500/20"
+            className="p-2 hover:bg-danger/10 text-danger hover:text-danger/90 rounded-xl transition-all flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider border border-transparent hover:border-danger/20"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Clear Logs</span>
@@ -318,64 +322,63 @@ export default function AssistantPage() {
 
       {/* Toast Alert popup */}
       {toastMsg && (
-        <div className="fixed top-18 right-4 left-4 z-50 p-4 bg-cyan-950/90 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs flex items-center justify-between shadow-2xl backdrop-blur-md animate-[slideDown_0.2s_ease-out_forwards]">
+        <div className="fixed top-18 right-4 left-4 z-50 p-4 bg-accent/10 border border-accent/30 text-accent rounded-xl text-xs flex items-center justify-between shadow-2xl backdrop-blur-md animate-[slideDown_0.2s_ease-out_forwards]">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-cyan-400 shrink-0" />
+            <Shield className="w-4 h-4 text-accent shrink-0" />
             <span>{toastMsg}</span>
           </div>
-          <button onClick={() => setToastMsg(null)} className="text-outline hover:text-white">
+          <button onClick={() => setToastMsg(null)} className="text-outline hover:text-text-primary">
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
       {/* Main Chat Canvas */}
-      <main className="flex-1 max-w-md mx-auto w-full px-4 pt-4 flex flex-col relative z-10 overflow-hidden">
+      <main className="flex-1 max-w-3xl mx-auto w-full px-3 sm:px-6 md:px-8 pt-4 sm:pt-6 flex flex-col relative z-10 overflow-hidden">
         
         {/* Dynamic Context Banner */}
         {latestScan && (
-          <div className="mb-3 p-3 bg-cyan-950/20 border border-cyan-500/20 rounded-xl text-xs flex justify-between items-center gap-3">
+          <div className="mb-3 p-3 bg-accent/5 border border-accent/20 rounded-xl text-xs flex justify-between items-center gap-3">
             <div className="min-w-0">
-              <span className="text-[7.5px] font-bold text-cyan-300 uppercase block tracking-wider leading-none">Diagnostic Context Loaded</span>
-              <span className="font-bold text-white block mt-1 truncate">{latestScan.module} - {latestScan.threatLevel} ({latestScan.score}%)</span>
+              <span className="text-[7.5px] font-bold text-accent uppercase block tracking-wider leading-none">Diagnostic Context Loaded</span>
+              <span className="font-bold text-text-primary block mt-1 truncate">{latestScan.module} - {latestScan.threatLevel} ({latestScan.score}%)</span>
             </div>
             <button
               onClick={() => {
                 setInputText(`Help me analyze my recent ${latestScan.module} threat score of ${latestScan.score}%. It flagged: "${latestScan.explanation}"`);
               }}
-              className="px-3 py-1.5 bg-cyan-500 text-slate-950 rounded-lg text-[9px] font-bold uppercase hover:bg-cyan-400 shrink-0 shadow-lg shadow-cyan-500/10 active:scale-95 transition-all"
+              className="px-3 py-1.5 bg-accent text-background rounded-lg text-[9px] font-bold uppercase hover:opacity-90 shrink-0 shadow-lg shadow-accent/10 active:scale-95 transition-all"
             >
               Analyze
             </button>
           </div>
         )}
 
-        {/* Message Container */}
         <div className="flex-grow overflow-y-auto space-y-4 pr-1 min-h-[350px] hide-scrollbar pb-6 flex flex-col">
           {messages.length <= 1 && (
             <div className="py-6 flex flex-col gap-6 text-center animate-[fadeIn_0.3s_ease-out] my-auto">
-              <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center mx-auto shadow-lg icon-glow">
-                <Bot className="w-9 h-9 text-cyan-400 animate-pulse" />
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/25 flex items-center justify-center mx-auto shadow-lg icon-glow">
+                <Bot className="w-9 h-9 text-accent animate-pulse" />
               </div>
               <div className="space-y-2">
-                <h1 className="text-base font-black text-white uppercase tracking-tight">Scam Shield Intelligence</h1>
+                <h1 className="text-base font-black text-text-primary uppercase tracking-tight">Scam Shield Intelligence</h1>
                 <p className="text-[11px] text-on-surface-variant max-w-[280px] mx-auto leading-relaxed">
                   Query the Grok-powered model regarding UPI collect request anomalies, digital arrests, fake bank slips, or verification checklists.
                 </p>
               </div>
-
+ 
               {/* Suggestions Grid */}
               <div className="space-y-3 mt-4 text-left">
                 <span className="text-[9.5px] font-bold text-outline uppercase tracking-widest block px-1">Suggested Safety Queries</span>
                 <div className="grid grid-cols-1 gap-2.5">
                   {suggestedPrompts.map((prompt, idx) => (
                     <button
-                      key={idx}
-                      onClick={() => handleSend(prompt)}
-                      className="cyber-card w-full text-left p-3.5 rounded-xl border border-white/5 text-[11px] text-[#e0e3e5] hover:border-cyan-500/30 transition-all active:scale-[0.99] flex justify-between items-center gap-2 bg-[#161B22]/40"
+                       key={idx}
+                       onClick={() => handleSend(prompt)}
+                       className="cyber-card w-full text-left p-3.5 rounded-xl border border-border/10 text-[11px] text-text-primary hover:border-accent/30 transition-all active:scale-[0.99] flex justify-between items-center gap-2 bg-surface-secondary/40"
                     >
                       <span className="truncate">{prompt}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <ArrowRight className="w-3.5 h-3.5 text-accent shrink-0" />
                     </button>
                   ))}
                 </div>
@@ -387,38 +390,38 @@ export default function AssistantPage() {
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex gap-3 max-w-[85%] animate-[fadeIn_0.25s_ease-out_forwards] ${msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
+              className={`flex gap-2.5 sm:gap-3 max-w-[90%] sm:max-w-[85%] animate-[fadeIn_0.25s_ease-out_forwards] ${msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
             >
               {/* Avatar circle */}
-              <div className={`w-8 h-8 rounded-xl shrink-0 flex items-center justify-center border font-bold text-[10px] shadow-sm ${msg.sender === 'user' ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20' : 'bg-surface-container border-white/10 text-white'}`}>
-                {msg.sender === 'user' ? (user?.avatar || 'SR') : <Bot className="w-4.5 h-4.5 text-cyan-400" />}
+              <div className={`w-8 h-8 rounded-xl shrink-0 flex items-center justify-center border font-bold text-[10px] shadow-sm ${msg.sender === 'user' ? 'bg-accent/10 text-accent border-accent/20' : 'bg-surface-secondary border-border/10 text-text-primary'}`}>
+                {msg.sender === 'user' ? (user?.avatar || 'SR') : <Bot className="w-4.5 h-4.5 text-accent" />}
               </div>
               
-              <div className="space-y-1.5 max-w-full">
+              <div className="space-y-1.5 max-w-full min-w-0 flex-1">
                 {/* Bubble card */}
-                <div className={`rounded-2xl p-3.5 text-xs leading-relaxed border shadow-md relative group ${msg.sender === 'user' ? 'bg-cyan-500/10 text-white border-cyan-500/20 rounded-tr-none' : 'glass-card text-on-surface-variant border-white/5 rounded-tl-none'}`}>
+                <div className={`rounded-2xl p-3.5 text-xs leading-relaxed border shadow-md relative group break-words overflow-hidden ${msg.sender === 'user' ? 'bg-accent/10 text-text-primary border-accent/20 rounded-tr-none' : 'glass-card text-on-surface-variant border-border/10 rounded-tl-none'}`}>
                   
                   {/* Uploaded image inside chat bubble */}
                   {msg.image && (
-                    <div className="mb-2.5 rounded-lg overflow-hidden border border-white/10 max-w-[180px]">
+                    <div className="mb-2.5 rounded-lg overflow-hidden border border-border/10 max-w-[180px]">
                       <img src={msg.image} alt="Uploaded attachment" className="w-full h-auto object-cover max-h-[140px]" />
                     </div>
                   )}
 
                   {/* Body text formatting */}
-                  <div>{formatMessageText(msg.text)}</div>
+                  <div className="break-words overflow-hidden">{formatMessageText(msg.text)}</div>
 
                   {/* Bubble Quick Actions */}
                   {msg.sender === 'assistant' && (
-                    <div className="flex gap-2 justify-end mt-2 pt-2 border-t border-white/5 opacity-40 hover:opacity-100 transition-opacity">
+                    <div className="flex gap-2 justify-end mt-2 pt-2 border-t border-border/10 opacity-40 hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => handleCopyText(msg.text, msg.id)}
-                        className="text-[9px] font-bold text-[#8b949e] hover:text-white flex items-center gap-1 transition-colors"
+                        className="text-[9px] font-bold text-text-muted hover:text-text-primary flex items-center gap-1 transition-colors"
                       >
                         {copiedId === msg.id ? (
                           <>
-                            <Check className="w-3 h-3 text-emerald-400" />
-                            <span className="text-emerald-400">Copied</span>
+                            <Check className="w-3 h-3 text-success" />
+                            <span className="text-success">Copied</span>
                           </>
                         ) : (
                           <>
@@ -441,13 +444,13 @@ export default function AssistantPage() {
           {/* Typing Indicator / Stepper */}
           {typing && (
             <div className="flex gap-3 max-w-[90%] mr-auto items-start">
-              <div className="w-8 h-8 rounded-xl bg-surface-container border border-white/10 flex items-center justify-center shrink-0">
-                <Bot className="w-4.5 h-4.5 text-cyan-400 animate-pulse" />
+              <div className="w-8 h-8 rounded-xl bg-surface-secondary border border-border/10 flex items-center justify-center shrink-0">
+                <Bot className="w-4.5 h-4.5 text-accent animate-pulse" />
               </div>
-              <div className="glass-card rounded-2xl rounded-tl-none p-4 border border-white/5 space-y-2.5 shadow-md flex-grow">
+              <div className="glass-card rounded-2xl rounded-tl-none p-4 border border-border/10 space-y-2.5 shadow-md flex-grow">
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-                  <span className="text-[10px] font-bold text-white uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span>
+                  <span className="text-[10px] font-bold text-text-primary uppercase tracking-wider">
                     {processingStage === 1 ? "Receiving Input..." :
                      processingStage === 2 ? "Extracting Document Content..." :
                      processingStage === 3 ? "Checking Threat Registry..." :
@@ -455,9 +458,9 @@ export default function AssistantPage() {
                      "Generating Explainable AI..."}
                   </span>
                 </div>
-                <div className="w-full bg-white/5 h-[3px] rounded-full overflow-hidden">
+                <div className="w-full bg-surface-secondary/30 h-[3px] rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-cyan-400 transition-all duration-500" 
+                    className="h-full bg-accent transition-all duration-500" 
                     style={{ width: `${processingStage * 20}%` }}
                   ></div>
                 </div>
@@ -467,14 +470,14 @@ export default function AssistantPage() {
 
           {/* Error Boundary Banner inside chat window */}
           {errorMessage && (
-            <div className="p-3 bg-red-950/20 border border-red-500/20 rounded-xl text-[11px] text-red-400 flex items-center gap-2 mx-4 animate-pulse">
-              <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+            <div className="p-3 bg-danger/10 border border-danger/20 rounded-xl text-[11px] text-danger flex items-center gap-2 mx-4 animate-pulse">
+              <AlertTriangle className="w-4 h-4 shrink-0 text-danger" />
               <div className="flex-grow">
                 <span>Central node connection timed out.</span>
               </div>
               <button
                 onClick={handleRegenerate}
-                className="px-2 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-300 font-bold uppercase text-[9px] rounded border border-red-500/30 transition-all flex items-center gap-1"
+                className="px-2 py-1 bg-danger/10 hover:bg-danger/20 text-danger font-bold uppercase text-[9px] rounded border border-danger/30 transition-all flex items-center gap-1"
               >
                 <RotateCcw className="w-2.5 h-2.5" />
                 <span>Retry</span>
@@ -484,25 +487,25 @@ export default function AssistantPage() {
 
           <div ref={bottomRef} />
         </div>
-
+        
         {/* Input Dock */}
-        <div className="pt-3 border-t border-white/5 space-y-3 bg-[#0D1117] relative z-20">
+        <div className="pt-3 border-t border-border/10 space-y-3 bg-background relative z-20">
           
           {/* Emergency Alert Banner */}
           {emergencyAlert && emergencyAlert.active && (
-            <div className="p-4 bg-red-950/40 border border-red-500/35 rounded-xl space-y-3.5 animate-pulse shadow-2xl">
+            <div className="p-4 bg-danger/10 border border-danger/30 rounded-xl space-y-3.5 animate-pulse shadow-2xl">
               <div className="flex items-center gap-2.5">
-                <AlertTriangle className="w-5 h-5 text-red-500 animate-bounce shrink-0" />
+                <AlertTriangle className="w-5 h-5 text-danger animate-bounce shrink-0" />
                 <div>
-                  <span className="text-[9px] font-bold text-red-400 uppercase tracking-widest block">CRITICAL THREAT TRIGGERED</span>
-                  <span className="font-extrabold text-xs text-white">Emergency Mode Activated ({emergencyAlert.score}% Risk)</span>
+                  <span className="text-[9px] font-bold text-danger uppercase tracking-widest block">CRITICAL THREAT TRIGGERED</span>
+                  <span className="font-extrabold text-xs text-text-primary">Emergency Mode Activated ({emergencyAlert.score}% Risk)</span>
                 </div>
               </div>
               
-              <p className="text-[10px] text-red-200/80 leading-relaxed">
+              <p className="text-[10px] text-danger/80 leading-relaxed">
                 Sentinel AI has detected immediate fraud vectors (Government Impersonation / OTP coercion). Do not transfer funds or share credentials.
               </p>
-
+ 
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   type="button"
@@ -510,7 +513,7 @@ export default function AssistantPage() {
                     setEmergencyAlert(null);
                     showSuccessToast('Blocked sender logs saved.');
                   }}
-                  className="py-2.5 bg-red-500 text-white hover:bg-red-400 rounded-lg text-[9px] font-bold uppercase tracking-wider text-center cursor-pointer"
+                  className="py-2.5 bg-danger text-text-primary hover:opacity-90 rounded-lg text-[9px] font-bold uppercase tracking-wider text-center cursor-pointer"
                 >
                   Block Sender
                 </button>
@@ -519,7 +522,7 @@ export default function AssistantPage() {
                   onClick={() => {
                     router.push('/emergency');
                   }}
-                  className="py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg text-[9px] font-bold uppercase tracking-wider text-center border border-white/10 cursor-pointer"
+                  className="py-2.5 bg-surface-secondary/30 hover:bg-surface-secondary/50 text-text-primary rounded-lg text-[9px] font-bold uppercase tracking-wider text-center border border-border/10 cursor-pointer"
                 >
                   File Complaint
                 </button>
@@ -528,7 +531,7 @@ export default function AssistantPage() {
                   onClick={() => {
                     showSuccessToast('Alerted trusted contacts.');
                   }}
-                  className="py-2.5 bg-cyan-500 text-slate-950 hover:bg-cyan-400 rounded-lg text-[9px] font-bold uppercase tracking-wider text-center col-span-2 shadow-lg shadow-cyan-500/10 cursor-pointer"
+                  className="py-2.5 bg-accent text-background hover:opacity-90 rounded-lg text-[9px] font-bold uppercase tracking-wider text-center col-span-2 shadow-lg shadow-accent/10 cursor-pointer"
                 >
                   Alert Trusted Contacts
                 </button>
@@ -538,14 +541,14 @@ export default function AssistantPage() {
 
           {/* Selected File Attachment Preview Box */}
           {attachedFiles.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 p-2 bg-white/5 border border-white/10 rounded-xl max-h-[80px] overflow-y-auto">
+            <div className="flex flex-wrap gap-1.5 p-2 bg-surface-secondary/30 border border-border/10 rounded-xl max-h-[80px] overflow-y-auto">
               {attachedFiles.map((file, idx) => (
-                <div key={idx} className="flex items-center gap-1.5 px-2 py-1 bg-cyan-950/20 border border-cyan-500/20 text-cyan-300 rounded-lg text-[9px] font-mono">
+                <div key={idx} className="flex items-center gap-1.5 px-2 py-1 bg-accent/10 border border-accent/20 text-accent rounded-lg text-[9px] font-mono">
                   <span className="truncate max-w-[120px]">{file.name}</span>
                   <button
                     type="button"
                     onClick={() => setAttachedFiles(prev => prev.filter((_, i) => i !== idx))}
-                    className="text-[#8b949e] hover:text-white cursor-pointer"
+                    className="text-text-muted hover:text-text-primary cursor-pointer"
                   >
                     <X className="w-3 h-3" />
                   </button>

@@ -92,19 +92,19 @@ export default function CallMonitoringPage() {
     let highlighted = text;
     keywords.forEach((regex) => {
       highlighted = highlighted.replace(regex, (match) => {
-        return `<span class="text-red-400 font-extrabold bg-red-500/10 px-1 py-0.5 rounded border border-red-500/20">${match}</span>`;
+        return `<span class="text-danger font-extrabold bg-danger/10 px-1 py-0.5 rounded border border-danger/20">${match}</span>`;
       });
     });
     return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
   };
 
   return (
-    <div className="min-h-screen bg-background text-text-primary flex flex-col relative pb-16 pt-20 overflow-x-hidden">
+    <div className="min-h-screen w-full bg-background text-text-primary flex flex-col relative pb-16 pt-20 overflow-x-hidden">
       
       {/* Top Banner Alert (Critical State) */}
       {isDanger && (
-        <div className="w-full bg-red-950/90 text-red-200 border-b border-red-500/35 py-3 px-4 flex items-center justify-center gap-2 sticky top-0 z-50 animate-pulse">
-          <ShieldAlert className="w-4 h-4 text-red-400" />
+        <div className="w-full bg-danger/90 text-text-primary border-b border-danger/35 py-3 px-4 flex items-center justify-center gap-2 sticky top-0 z-50 animate-pulse">
+          <ShieldAlert className="w-4 h-4 text-danger" />
           <span className="text-[9px] font-black uppercase tracking-widest text-center">
             CRITICAL SCAM SIGNATURE DETECTED. DISCONNECT CHANNEL IMMEDIATELY.
           </span>
@@ -132,23 +132,23 @@ export default function CallMonitoringPage() {
           <div className="lg:col-span-8 flex flex-col gap-6">
             
             {/* Live Session Display Panel */}
-            <div className={`glass-card rounded-[24px] p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden border ${isDanger ? 'border-danger/20 shadow-[0_0_30px_rgba(255,77,103,0.1)]' : 'border-border/30 shadow-2xl'}`}>
+            <div className={`glass-card rounded-[24px] p-5 sm:p-6 md:p-8 flex flex-col gap-4 sm:gap-6 relative overflow-hidden border ${isDanger ? 'border-danger/20 shadow-[0_0_30px_rgba(255,77,103,0.1)]' : 'border-border/30 shadow-2xl'}`}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/5 rounded-full blur-[80px] pointer-events-none"></div>
 
               {/* Call identity bar */}
-              <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-input border border-border/30 flex items-center justify-center shrink-0 shadow-md">
-                    <User className="w-8 h-8 text-primary" />
+              <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-input border border-border/30 flex items-center justify-center shrink-0 shadow-md">
+                    <User className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                   </div>
-                  <div className="flex flex-col">
-                    <h3 className="text-lg font-bold text-text-primary leading-tight">{callContactName}</h3>
-                    <span className="text-xs text-text-secondary mt-0.5">{callNumber}</span>
+                  <div className="flex flex-col min-w-0">
+                    <h3 className="text-base sm:text-lg font-bold text-text-primary leading-tight truncate">{callContactName}</h3>
+                    <span className="text-xs text-text-secondary mt-0.5 truncate">{callNumber}</span>
                   </div>
                 </div>
 
                 <div className="flex flex-col md:items-end">
-                  <span className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter tabular-nums">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-black text-text-primary tracking-tighter tabular-nums">
                     {formatDuration(callDuration)}
                   </span>
                   <div className="flex items-center gap-2 mt-1">
@@ -325,9 +325,9 @@ export default function CallMonitoringPage() {
               
               <button
                 onClick={handleDisconnect}
-                className="w-full py-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg active-press flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-xl bg-button-danger hover:opacity-90 text-on-danger font-bold text-xs uppercase tracking-wider transition-all shadow-lg active-press flex items-center justify-center gap-2"
               >
-                <PhoneOff className="w-4 h-4 text-white" />
+                <PhoneOff className="w-4 h-4 text-on-danger" />
                 <span>Disconnect Call</span>
               </button>
 

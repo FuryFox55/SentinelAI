@@ -19,6 +19,7 @@ export async function processTelemetryEvent(event: TelemetryEvent) {
   const { data: eventData, error: eventError } = await supabase
     .from('threat_events')
     .insert({
+      user_id: realUserId,
       event_type: event.eventType,
       details: event.details
     })

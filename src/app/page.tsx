@@ -6,7 +6,7 @@ import { ArrowRight, LogIn } from 'lucide-react';
 
 export default function WelcomePage() {
   return (
-    <main className="flex-grow flex flex-col items-center justify-center p-4 relative z-10 w-full max-w-[1440px] mx-auto min-h-screen">
+    <main className="flex-grow flex flex-col items-center justify-center px-3 sm:px-6 md:px-8 py-4 sm:py-8 md:py-12 relative z-10 w-full max-w-[1440px] mx-auto min-h-screen">
       {/* Background radial effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 flex items-center justify-center opacity-30">
         <div className="w-[800px] h-[800px] rounded-full bg-primary/10 blur-[120px] mix-blend-screen animate-pulse duration-[6000ms]"></div>
@@ -14,7 +14,7 @@ export default function WelcomePage() {
 
       {/* Hero Shield Graphic */}
       <div className="mb-8 relative w-full max-w-[360px] aspect-square flex items-center justify-center">
-        <div className="absolute inset-0 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute inset-0 bg-accent/10 rounded-full blur-3xl animate-pulse"></div>
         <img
           className="w-full h-full object-contain relative z-20 drop-shadow-[0_0_40px_rgba(1,221,247,0.35)] animate-[float_6s_ease-in-out_infinite]"
           alt="Glowing 3D AI security shield"
@@ -23,18 +23,18 @@ export default function WelcomePage() {
       </div>
 
       {/* Typography & Actions */}
-      <div className="text-center max-w-2xl glass-card rounded-2xl p-8 md:p-12 shadow-2xl relative z-20 border-t border-border/20 w-full">
+      <div className="text-center max-w-2xl glass-card rounded-2xl p-4 sm:p-8 md:p-12 shadow-2xl relative z-20 border-t border-border/20 w-full">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           Sentinel AI Defense
         </h1>
-        <p className="text-base md:text-lg text-text-secondary mb-10 mx-auto max-w-md">
+        <p className="text-base md:text-lg text-text-secondary mb-10 mx-auto w-full max-w-md leading-relaxed">
           Continuous AI-powered fraud protection running invisibly in the background, securing your digital life.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-4 sm:px-0">
           <Link
             href="/register"
-            className="w-full sm:w-auto px-8 py-4 rounded-full electric-flow text-white font-semibold shadow-[0_4px_20px_rgba(0,102,204,0.2)] hover:shadow-[0_4px_25px_rgba(0,217,255,0.35)] hover:scale-105 transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-full electric-flow text-on-primary font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-out active:scale-95 flex items-center justify-center gap-2"
           >
             <span>Get Started</span>
             <ArrowRight className="w-5 h-5" />
@@ -50,7 +50,7 @@ export default function WelcomePage() {
 
         {/* System Status Tracker */}
         <div className="mt-8 flex items-center justify-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-success animate-pulse"></div>
           <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
             System Online &amp; Secure
           </span>

@@ -345,7 +345,7 @@ export const useAppStore = create<AppState>()(
         }
 
         if (typeof window !== 'undefined' && navigator.onLine) {
-          // Update user_profiles table (new schema)
+          // Update user_profiles table (production schema)
           try {
             await supabase
               .from('user_profiles')
@@ -353,16 +353,6 @@ export const useAppStore = create<AppState>()(
               .eq('user_id', user.id);
           } catch (e) {
             console.warn('Failed to update user_profiles in database:', e);
-          }
-
-          // Fallback to profiles table (old schema)
-          try {
-            await supabase
-              .from('profiles')
-              .update({ display_name: name })
-              .eq('id', user.id);
-          } catch (e) {
-            console.warn('Failed to update profiles in database:', e);
           }
         }
       },

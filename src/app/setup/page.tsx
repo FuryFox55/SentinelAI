@@ -33,7 +33,7 @@ export default function SetupPage() {
   };
 
   return (
-    <main className="min-h-screen pt-24 pb-32 px-4 relative bg-background">
+    <main className="min-h-screen w-full pt-24 pb-32 px-4 relative bg-background">
       {/* Background orbs */}
       <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary-container rounded-full blur-[150px] opacity-10"></div>
@@ -41,7 +41,7 @@ export default function SetupPage() {
       </div>
 
       {/* Top Header */}
-      <header className="fixed top-0 left-0 w-full z-50 flex items-center px-6 h-16 bg-surface/85 backdrop-blur-md border-b border-border/30 shadow-sm">
+      <header className="fixed top-0 left-0 w-full z-50 flex items-center px-4 sm:px-6 h-16 bg-surface/85 backdrop-blur-md border-b border-border/30 shadow-sm">
         <div className="flex items-center gap-2 max-w-[1440px] mx-auto w-full">
           <Shield className="w-6 h-6 text-primary" />
           <span className="font-bold tracking-tight text-primary">SENTINEL AI</span>
@@ -52,7 +52,7 @@ export default function SetupPage() {
         {/* Intro */}
         <div className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
           <Shield className="w-16 h-16 text-primary mx-auto mb-2 animate-pulse" />
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             System Integration
           </h1>
           <p className="text-sm md:text-base text-text-secondary leading-relaxed">
@@ -63,16 +63,16 @@ export default function SetupPage() {
         {/* Bento permissions list */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto w-full">
           {/* Phone & SMS */}
-          <div className="glass-panel rounded-2xl p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
-            <div className="flex justify-between items-start mb-6">
-              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20">
+          <div className="glass-panel rounded-2xl p-4 sm:p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
+            <div className="flex justify-between items-start gap-2 mb-4 sm:mb-6">
+              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20 shrink-0">
                 <Smartphone className="w-6 h-6 text-primary" />
               </div>
               <button
                 onClick={() => handleToggle('phone')}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${granted.phone ? 'bg-primary' : 'bg-border'}`}
+                className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${granted.phone ? 'bg-primary' : 'bg-border'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${granted.phone ? 'translate-x-6' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${granted.phone ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
             </div>
             <div>
@@ -84,16 +84,16 @@ export default function SetupPage() {
           </div>
 
           {/* Notifications */}
-          <div className="glass-panel rounded-2xl p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
-            <div className="flex justify-between items-start mb-6">
-              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20">
+          <div className="glass-panel rounded-2xl p-4 sm:p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
+            <div className="flex justify-between items-start gap-2 mb-4 sm:mb-6">
+              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20 shrink-0">
                 <Bell className="w-6 h-6 text-primary" />
               </div>
               <button
                 onClick={() => handleToggle('notifications')}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${granted.notifications ? 'bg-primary' : 'bg-border'}`}
+                className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${granted.notifications ? 'bg-primary' : 'bg-border'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${granted.notifications ? 'translate-x-6' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${granted.notifications ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
             </div>
             <div>
@@ -105,14 +105,14 @@ export default function SetupPage() {
           </div>
 
           {/* Accessibility Service */}
-          <div className="glass-panel rounded-2xl p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
-            <div className="flex justify-between items-start mb-6">
-              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20">
+          <div className="glass-panel rounded-2xl p-4 sm:p-6 hover:-translate-y-1 transition-all flex flex-col justify-between h-full border border-border/30">
+            <div className="flex justify-between items-start gap-2 mb-4 sm:mb-6">
+              <div className="bg-primary/10 p-3 rounded-xl border border-primary/20 shrink-0">
                 <Eye className="w-6 h-6 text-primary" />
               </div>
               <button
                 onClick={() => handleToggle('accessibility')}
-                className={`text-xs font-semibold px-4 py-2 rounded-full border border-border/30 transition-all ${granted.accessibility ? 'bg-success/20 text-success border-success/30' : 'hover:bg-input text-text-primary bg-input/40'}`}
+                className={`text-xs font-semibold px-3 sm:px-4 py-2 rounded-full border border-border/30 transition-all shrink-0 ${granted.accessibility ? 'bg-success/20 text-success border-success/30' : 'hover:bg-input text-text-primary bg-input/40'}`}
               >
                 {granted.accessibility ? 'Access Granted' : 'Grant Access'}
               </button>
@@ -135,7 +135,7 @@ export default function SetupPage() {
                 onClick={() => handleToggle('microphone')}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${granted.microphone ? 'bg-primary' : 'bg-border'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${granted.microphone ? 'translate-x-6' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${granted.microphone ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
             </div>
             <div>
@@ -151,9 +151,9 @@ export default function SetupPage() {
         <div className="flex flex-col items-center mt-8 gap-4 max-w-md mx-auto w-full">
           <button
             onClick={handleEnableAll}
-            className="w-full py-4 rounded-xl shadow-lg electric-flow text-white font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity active:scale-95 shadow-primary/20"
+            className="w-full py-4 rounded-xl shadow-lg electric-flow text-on-primary font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity active:scale-95 shadow-primary/20"
           >
-            <Shield className="w-5 h-5 text-white" />
+            <Shield className="w-5 h-5 text-on-primary" />
             <span>Enable All Protections</span>
           </button>
           <button

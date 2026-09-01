@@ -129,6 +129,27 @@ export default function SecuritySettingsCenter() {
   const [expandedSection, setExpandedSection] = useState<string | null>('account');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  // Show Toast helper
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  // Listen to search params for password recovery link
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('recovery') === 'true') {
+        setExpandedSection('security');
+        showToast('Password recovery mode active. Please choose a new secure password.', 'success');
+        setTimeout(() => {
+          const el = document.getElementById('security-section');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+      }
+    }
+  }, []);
+
   // Edit states
   const [editName, setEditName] = useState('');
   const [editPhone, setEditPhone] = useState('');
@@ -152,12 +173,6 @@ export default function SecuritySettingsCenter() {
   const [contactPreferredMethod, setContactPreferredMethod] = useState<'sms' | 'email' | 'push'>('sms');
   const [editingContactId, setEditingContactId] = useState<string | null>(null);
 
-  // Show Toast helper
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
-
   // React Query: Fetch user profile
   const { data: profile, isLoading: isProfileLoading, refetch: refetchProfile } = useQuery<UserProfile | null>({
     queryKey: ['user_profile', user?.id],
@@ -170,8 +185,8 @@ export default function SecuritySettingsCenter() {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching profile:', error.message);
-        throw error;
+        console.warn('Profile fetch notice:', error.message);
+        return null;
       }
       return data;
     },
@@ -190,8 +205,8 @@ export default function SecuritySettingsCenter() {
         .order('priority', { ascending: true });
 
       if (error) {
-        console.error('Error fetching contacts:', error.message);
-        throw error;
+        console.warn('Contacts fetch notice:', error.message);
+        return [];
       }
       return data || [];
     },
@@ -490,14 +505,14 @@ export default function SecuritySettingsCenter() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-surface flex flex-col pb-24 relative pt-20">
+    <div className="min-h-screen w-full bg-background text-on-surface flex flex-col pb-24 relative pt-20">
       
       {/* Toast Notification */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-xl border shadow-xl transition-all duration-300 animate-[fadeIn_0.2s_ease-out] ${
           toast.type === 'success'
-            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-            : 'bg-red-500/10 border-red-500/20 text-red-400'
+            ? 'bg-emerald-500/10 border-emerald-500/20 text-success'
+            : 'bg-danger/10 border-danger/20 text-danger'
         }`}>
           <Shield className="w-5 h-5" />
           <span className="text-xs font-bold">{toast.message}</span>
@@ -505,7 +520,7 @@ export default function SecuritySettingsCenter() {
       )}
 
       {/* Top App Bar */}
-      <header className="fixed top-0 w-full z-40 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/15 flex items-center justify-between px-4 h-16">
+      <header className="fixed top-0 w-full z-40 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/15 flex items-center justify-between px-3 sm:px-6 md:px-8 h-16">
         <button
           onClick={() => router.push('/dashboard')}
           className="text-on-surface hover:bg-surface-container p-2 rounded-full flex items-center justify-center transition-colors"
@@ -515,7 +530,7 @@ export default function SecuritySettingsCenter() {
         <h1 className="font-extrabold text-base uppercase tracking-wider text-gradient">Security Settings</h1>
         <button
           onClick={handleLogout}
-          className="text-red-400 hover:bg-red-500/10 p-2 rounded-full flex items-center justify-center transition-colors"
+          className="text-danger hover:bg-danger/10 p-2 rounded-full flex items-center justify-center transition-colors"
           title="Logout"
         >
           <LogOut className="w-5 h-5" />
@@ -523,10 +538,10 @@ export default function SecuritySettingsCenter() {
       </header>
 
       {/* Main Container */}
-      <main className="flex-grow max-w-md mx-auto w-full px-4 flex flex-col gap-4 relative z-10">
+      <main className="flex-grow max-w-3xl mx-auto w-full px-3 sm:px-6 md:px-8 py-4 sm:py-6 flex flex-col gap-4 relative z-10">
         
         {/* Profile score card */}
-        <section className="glass-card rounded-2xl p-5 flex items-center gap-4 relative overflow-hidden">
+        <section className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 flex items-center gap-4 relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/5 rounded-full blur-[40px] z-0 pointer-events-none"></div>
           
           <div className="relative z-10 w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
@@ -536,7 +551,7 @@ export default function SecuritySettingsCenter() {
           </div>
 
           <div className="relative z-10 flex-grow min-w-0">
-            <h2 className="text-base font-black text-white truncate">{profile?.full_name || 'Sentinel Shield User'}</h2>
+            <h2 className="text-base font-black text-text-primary truncate">{profile?.full_name || 'Sentinel Shield User'}</h2>
             <p className="text-[10px] text-on-surface-variant font-mono mt-0.5">{profile?.email || user?.email}</p>
             <div className="mt-2 inline-flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
               <Shield className="w-3 h-3 text-primary" />
@@ -548,10 +563,10 @@ export default function SecuritySettingsCenter() {
         {/* 11 Settings Sections (Accordions) */}
 
         {/* Section 1: Account Information */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('account')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-3.5 sm:p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <User className="w-4 h-4 text-primary" />
@@ -561,14 +576,14 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'account' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-3.5 sm:px-5 pb-3.5 sm:pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               {isProfileLoading ? (
                 <div className="animate-pulse space-y-2">
-                  <div className="h-4 bg-white/10 rounded w-3/4"></div>
-                  <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                  <div className="h-4 bg-surface-secondary/50 rounded w-3/4"></div>
+                  <div className="h-4 bg-surface-secondary/50 rounded w-1/2"></div>
                 </div>
               ) : isEditingAccount ? (
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Full Name</label>
                     <input
@@ -587,7 +602,7 @@ export default function SecuritySettingsCenter() {
                       className="w-full bg-surface-container border border-outline/10 rounded-xl px-3.5 py-2.5 text-xs text-on-surface focus:outline-none focus:border-primary"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3 md:col-span-2">
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Country</label>
                       <input
@@ -610,7 +625,7 @@ export default function SecuritySettingsCenter() {
                       </select>
                     </div>
                   </div>
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex gap-2 pt-2 md:col-span-2">
                     <button
                       onClick={handleSaveAccountInfo}
                       className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs uppercase transition-colors"
@@ -619,7 +634,7 @@ export default function SecuritySettingsCenter() {
                     </button>
                     <button
                       onClick={() => setIsEditingAccount(false)}
-                      className="flex-1 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase transition-colors"
+                      className="flex-1 py-2.5 rounded-xl bg-surface-secondary/50 hover:bg-surface-secondary/60 text-text-primary font-bold text-xs uppercase transition-colors"
                     >
                       Cancel
                     </button>
@@ -627,14 +642,14 @@ export default function SecuritySettingsCenter() {
                 </div>
               ) : (
                 <div className="space-y-3.5">
-                  <div className="flex justify-between items-center bg-white/[0.02] p-3 rounded-xl border border-white/5">
-                    <div>
+                  <div className="flex justify-between items-center gap-3 bg-surface-secondary/15 p-3 rounded-xl border border-border/10">
+                    <div className="min-w-0 flex-1">
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">User ID</span>
-                      <span className="text-xs font-mono text-white truncate max-w-[200px] block">{profile?.user_id || user?.id}</span>
+                      <span className="text-xs font-mono text-text-primary truncate block w-full">{profile?.user_id || user?.id}</span>
                     </div>
                     <button
                       onClick={() => copyToClipboard(profile?.user_id || user?.id || '')}
-                      className="p-2 hover:bg-white/5 rounded-lg text-primary"
+                      className="p-2 hover:bg-surface-secondary/30 rounded-lg text-primary shrink-0"
                       title="Copy User ID"
                     >
                       <Copy className="w-4 h-4" />
@@ -644,7 +659,7 @@ export default function SecuritySettingsCenter() {
                   <div className="grid grid-cols-2 gap-4 text-xs">
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Joined Date</span>
-                      <span className="font-semibold text-white">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}</span>
+                      <span className="font-semibold text-text-primary">{profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}</span>
                     </div>
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Account Role</span>
@@ -652,17 +667,17 @@ export default function SecuritySettingsCenter() {
                     </div>
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Country</span>
-                      <span className="font-semibold text-white">{profile?.country || 'India'}</span>
+                      <span className="font-semibold text-text-primary">{profile?.country || 'India'}</span>
                     </div>
                     <div>
                       <span className="block text-[9px] font-bold text-on-surface-variant uppercase tracking-wider">Language</span>
-                      <span className="font-semibold text-white">{profile?.language?.toUpperCase() || 'EN'}</span>
+                      <span className="font-semibold text-text-primary">{profile?.language?.toUpperCase() || 'EN'}</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => setIsEditingAccount(true)}
-                    className="w-full mt-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                    className="w-full mt-2 py-2.5 rounded-xl bg-surface-secondary/30 hover:bg-surface-secondary/50 border border-border/10 text-text-primary font-bold text-xs uppercase tracking-wider transition-colors"
                   >
                     Edit Details
                   </button>
@@ -673,10 +688,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 2: Security & Privacy */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section id="security-section" className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('security')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Lock className="w-4 h-4 text-primary" />
@@ -686,11 +701,11 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'security' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               
               {/* Change password form */}
-              <form onSubmit={handlePasswordChange} className="space-y-2.5">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Change Password</h4>
+              <form onSubmit={handlePasswordChange} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant md:col-span-2">Change Password</h4>
                 <input
                   type="password"
                   placeholder="New Password"
@@ -707,12 +722,14 @@ export default function SecuritySettingsCenter() {
                   className="w-full bg-surface-container border border-outline/10 rounded-xl px-3.5 py-2.5 text-xs text-on-surface focus:outline-none focus:border-primary"
                   required
                 />
-                <button
-                  type="submit"
-                  className="w-full py-2 bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs uppercase rounded-xl transition-colors"
-                >
-                  Update Password
-                </button>
+                <div className="md:col-span-2">
+                  <button
+                    type="submit"
+                    className="w-full py-2 bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs uppercase rounded-xl transition-colors"
+                  >
+                    Update Password
+                  </button>
+                </div>
               </form>
 
               <hr className="border-white/5" />
@@ -720,20 +737,20 @@ export default function SecuritySettingsCenter() {
               {/* Connected components */}
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold text-white">Two-Factor Authentication</span>
-                  <span className="text-[9px] font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
+                  <span className="font-semibold text-text-primary">Two-Factor Authentication</span>
+                  <span className="text-[9px] font-bold bg-surface-secondary/30 border border-border/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold text-white">Connected Devices</span>
-                  <span className="text-[9px] font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
+                  <span className="font-semibold text-text-primary">Connected Devices</span>
+                  <span className="text-[9px] font-bold bg-surface-secondary/30 border border-border/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
                 </div>
 
                 <div className="space-y-1">
                   <span className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Recent Activity</span>
-                  <div className="bg-white/[0.01] border border-white/5 rounded-xl p-2.5 space-y-1">
+                  <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-2.5 space-y-1">
                     <div className="flex justify-between text-[10px] font-mono">
-                      <span className="text-white">Chrome / Windows (Mumbai, IN)</span>
+                      <span className="text-text-primary">Chrome / Windows (Mumbai, IN)</span>
                       <span className="text-primary font-bold">Current</span>
                     </div>
                     <div className="text-[9px] text-on-surface-variant">Last active: Just now</div>
@@ -744,14 +761,14 @@ export default function SecuritySettingsCenter() {
                   <button
                     type="button"
                     onClick={() => handleExportData('personal_data')}
-                    className="flex-1 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 py-2 bg-surface-secondary/30 hover:bg-surface-secondary/50 border border-border/10 rounded-xl text-text-primary text-[10px] font-bold uppercase tracking-wider transition-colors"
                   >
                     Export Data
                   </button>
                   <button
                     type="button"
                     onClick={() => showToast('Account deletion request registered. Our support team will reach out shortly.', 'error')}
-                    className="flex-1 py-2 bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 rounded-xl text-red-400 text-[10px] font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 py-2 bg-danger/10 hover:bg-red-500/15 border border-danger/20 rounded-xl text-danger text-[10px] font-bold uppercase tracking-wider transition-colors"
                   >
                     Delete Account
                   </button>
@@ -763,10 +780,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 3: Trusted Contacts */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('contacts')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Users className="w-4 h-4 text-primary" />
@@ -776,23 +793,23 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'contacts' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               
               {/* Contacts list */}
               {isContactsLoading ? (
                 <div className="animate-pulse space-y-2">
-                  <div className="h-10 bg-white/5 rounded-xl"></div>
-                  <div className="h-10 bg-white/5 rounded-xl"></div>
+                  <div className="h-10 bg-surface-secondary/30 rounded-xl"></div>
+                  <div className="h-10 bg-surface-secondary/30 rounded-xl"></div>
                 </div>
               ) : (contacts?.length || 0) === 0 ? (
                 <p className="text-xs text-on-surface-variant text-center py-4">No trusted contacts added yet.</p>
               ) : (
                 <div className="space-y-3">
                   {contacts?.map((contact) => (
-                    <div key={contact.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-3 flex justify-between items-center gap-2">
+                    <div key={contact.id} className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3 flex justify-between items-center gap-2">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-black text-white truncate block">{contact.contact_name}</span>
+                          <span className="text-xs font-black text-text-primary truncate block">{contact.contact_name}</span>
                           {contact.is_primary && (
                             <span className="text-[7px] font-black bg-primary/20 text-primary border border-primary/30 px-1.5 py-0.2 rounded-full uppercase tracking-wider">Primary</span>
                           )}
@@ -804,14 +821,14 @@ export default function SecuritySettingsCenter() {
                       <div className="flex gap-1 shrink-0">
                         <button
                           onClick={() => handleEditContact(contact)}
-                          className="p-1.5 hover:bg-white/5 rounded-lg text-primary"
+                          className="p-1.5 hover:bg-surface-secondary/30 rounded-lg text-primary"
                           title="Edit"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => deleteContactMutation.mutate(contact.id)}
-                          className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-400"
+                          className="p-1.5 hover:bg-danger/10 rounded-lg text-danger"
                           title="Delete"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -824,11 +841,11 @@ export default function SecuritySettingsCenter() {
 
               {/* Form / Add Button */}
               {showContactForm ? (
-                <form onSubmit={handleSaveContact} className="bg-white/[0.02] border border-white/10 rounded-xl p-3.5 space-y-3">
-                  <h4 className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                <form onSubmit={handleSaveContact} className="bg-surface-secondary/15 border border-border/10 rounded-xl p-3.5 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h4 className="text-[10px] font-bold uppercase tracking-wider text-primary md:col-span-2">
                     {editingContactId ? 'Edit Contact Details' : 'Add New Trusted Contact'}
                   </h4>
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-[9px] font-bold uppercase text-on-surface-variant mb-1">Contact Name</label>
                     <input
                       type="text"
@@ -839,7 +856,7 @@ export default function SecuritySettingsCenter() {
                       required
                     />
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 md:col-span-2">
                     <div>
                       <label className="block text-[9px] font-bold uppercase text-on-surface-variant mb-1">Code</label>
                       <input
@@ -862,7 +879,7 @@ export default function SecuritySettingsCenter() {
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2 md:col-span-2">
                     <div>
                       <label className="block text-[9px] font-bold uppercase text-on-surface-variant mb-1">Relationship</label>
                       <select
@@ -889,7 +906,7 @@ export default function SecuritySettingsCenter() {
                       </select>
                     </div>
                   </div>
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-[9px] font-bold uppercase text-on-surface-variant mb-1">Email (Optional)</label>
                     <input
                       type="email"
@@ -899,7 +916,7 @@ export default function SecuritySettingsCenter() {
                       className="w-full bg-surface-container border border-outline/10 rounded-lg px-2.5 py-2 text-xs text-on-surface focus:outline-none focus:border-primary"
                     />
                   </div>
-                  <div className="flex items-center gap-2 py-1">
+                  <div className="flex items-center gap-2 py-1 md:col-span-2">
                     <input
                       type="checkbox"
                       id="contactIsPrimary"
@@ -907,19 +924,19 @@ export default function SecuritySettingsCenter() {
                       onChange={(e) => setContactIsPrimary(e.target.checked)}
                       className="rounded border-outline text-primary focus:ring-primary w-4 h-4 bg-surface-container"
                     />
-                    <label htmlFor="contactIsPrimary" className="text-xs text-white select-none">Set as Primary Emergency Contact</label>
+                    <label htmlFor="contactIsPrimary" className="text-xs text-text-primary select-none">Set as Primary Emergency Contact</label>
                   </div>
-                  <div className="flex gap-2 pt-1">
+                  <div className="flex gap-2 pt-1 md:col-span-2">
                     <button
                       type="submit"
-                      className="flex-1 py-2 rounded-xl bg-primary hover:bg-primary/90 text-slate-950 font-bold text-xs uppercase"
+                      className="flex-1 py-2 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs uppercase"
                     >
                       {editingContactId ? 'Save' : 'Add Contact'}
                     </button>
                     <button
                       type="button"
                       onClick={resetContactForm}
-                      className="flex-1 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase"
+                      className="flex-1 py-2 rounded-xl bg-surface-secondary/50 hover:bg-surface-secondary/60 text-text-primary font-bold text-xs uppercase"
                     >
                       Cancel
                     </button>
@@ -928,7 +945,7 @@ export default function SecuritySettingsCenter() {
               ) : (
                 <button
                   onClick={() => setShowContactForm(true)}
-                  className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full py-2.5 rounded-xl bg-surface-secondary/30 hover:bg-surface-secondary/50 border border-border/10 text-text-primary font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Plus className="w-4 h-4 text-primary" />
                   <span>Add Trusted Contact</span>
@@ -940,10 +957,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 4: Emergency Settings */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('emergency')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Smartphone className="w-4 h-4 text-primary" />
@@ -953,50 +970,50 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'emergency' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               <div className="space-y-3.5 text-xs">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Emergency Mode Active</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Emergency Mode Active</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Activate device lockdown and SOS broadcasts.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.emergencyMode}
                     onChange={() => handleTogglePreference('emergencyMode', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Automatic SOS Trigger</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Automatic SOS Trigger</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Autosends emergency warnings on critical vishing threat.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.automaticSOS}
                     onChange={() => handleTogglePreference('automaticSOS', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Share Live Location</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Share Live Location</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Stream GPS coordinates to responders during alert.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.shareLiveLocation}
                     onChange={() => handleTogglePreference('shareLiveLocation', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-white">SOS Trigger Delay</span>
+                    <span className="font-semibold text-text-primary">SOS Trigger Delay</span>
                     <span className="text-[10px] text-primary font-mono font-bold">{generalPreferences.emergencyAlertDelay || 5}s</span>
                   </div>
                   <input
@@ -1005,33 +1022,33 @@ export default function SecuritySettingsCenter() {
                     max="30"
                     value={generalPreferences.emergencyAlertDelay || 5}
                     onChange={(e) => handleSelectPreference('emergencyAlertDelay', parseInt(e.target.value))}
-                    className="w-full accent-primary bg-white/10 h-1.5 rounded-lg appearance-none"
+                    className="w-full accent-primary bg-surface-secondary/50 h-1.5 rounded-lg appearance-none"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Trusted Contact Priority</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Trusted Contact Priority</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Alert responders in priority order instead of parallel.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.trustedContactPriority}
                     onChange={() => handleTogglePreference('trustedContactPriority', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Emergency Notifications</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Emergency Notifications</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Enable loud push alert tones for security breaches.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.emergencyNotifications}
                     onChange={() => handleTogglePreference('emergencyNotifications', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
               </div>
@@ -1040,10 +1057,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 5: Notifications */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('notifications')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Bell className="w-4 h-4 text-primary" />
@@ -1053,7 +1070,7 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'notifications' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               <div className="space-y-3.5 text-xs">
                 {Object.entries({
                   threatAlerts: 'Live Threat Intercept Signals',
@@ -1065,16 +1082,16 @@ export default function SecuritySettingsCenter() {
                   marketingEmails: 'Cybersecurity Newsletters',
                   systemMaintenance: 'Cloud Service Node Status Alerts'
                 }).map(([key, desc]) => (
-                  <div key={key} className="flex justify-between items-center">
-                    <div>
-                      <span className="block font-semibold text-white capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                  <div key={key} className="flex justify-between items-center gap-3">
+                    <div className="min-w-0 flex-1">
+                      <span className="block font-semibold text-text-primary capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
                       <span className="text-[10px] text-on-surface-variant block mt-0.5">{desc}</span>
                     </div>
                     <input
                       type="checkbox"
                       checked={(notificationPreferences as any)[key] || false}
                       onChange={() => handleTogglePreference(key, 'notifications')}
-                      className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                      className="checkbox-switch"
                     />
                   </div>
                 ))}
@@ -1084,10 +1101,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 6: AI Preferences */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('ai')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Bot className="w-4 h-4 text-primary" />
@@ -1097,10 +1114,10 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'ai' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               <div className="space-y-3.5 text-xs">
                 <div>
-                  <label className="block font-semibold text-white mb-1">AI Response Detail Level</label>
+                  <label className="block font-semibold text-text-primary mb-1">AI Response Detail Level</label>
                   <select
                     value={generalPreferences.aiResponseLength || 'detailed'}
                     onChange={(e) => handleSelectPreference('aiResponseLength', e.target.value)}
@@ -1113,7 +1130,7 @@ export default function SecuritySettingsCenter() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-white mb-1">Explainable AI Level</label>
+                  <label className="block font-semibold text-text-primary mb-1">Explainable AI Level</label>
                   <select
                     value={generalPreferences.explainableAILevel || 'high'}
                     onChange={(e) => handleSelectPreference('explainableAILevel', e.target.value)}
@@ -1125,51 +1142,51 @@ export default function SecuritySettingsCenter() {
                   </select>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Auto Save AI Reports</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Auto Save AI Reports</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Automatically save telemetry analysis to profile.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.autoSaveReports}
                     onChange={() => handleTogglePreference('autoSaveReports', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Remember Chat Context</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Remember Chat Context</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Let Grok remember details across conversations.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.rememberChatContext}
                     onChange={() => handleTogglePreference('rememberChatContext', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">AI Personalization</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">AI Personalization</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Tailor AI response vocabulary to your role.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.aiPersonalization}
                     onChange={() => handleTogglePreference('aiPersonalization', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
                 <div className="flex justify-between items-center">
                   <div>
-                    <span className="block font-semibold text-white">Voice Responses</span>
+                    <span className="block font-semibold text-text-primary">Voice Responses</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Synthesize vocal output for threat flags.</span>
                   </div>
-                  <span className="text-[9px] font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
+                  <span className="text-[9px] font-bold bg-surface-secondary/30 border border-border/10 px-2 py-0.5 rounded-full text-on-surface-variant uppercase tracking-wider">Coming Soon</span>
                 </div>
               </div>
             </div>
@@ -1177,10 +1194,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 7: Preferences & Settings (Theme Switcher inside) */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('preferences')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Sliders className="w-4 h-4 text-primary" />
@@ -1190,18 +1207,18 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'preferences' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               <div className="space-y-3.5 text-xs">
                 
                 {/* Theme Switcher */}
-                <div className="flex justify-between items-center bg-input border border-border/30 p-3 rounded-xl">
-                  <div>
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 bg-input border border-border/30 p-3 rounded-xl">
+                  <div className="min-w-0 flex-1">
                     <span className="block font-semibold text-text-primary">Application Theme</span>
                     <span className="text-[10px] text-text-secondary block mt-0.5">Toggle between Light and Dark interface layout.</span>
                   </div>
                   <button
                     onClick={handleToggleTheme}
-                    className="flex items-center gap-2 bg-primary/10 border border-primary/20 hover:border-primary/40 px-3.5 py-2 rounded-xl text-primary font-bold text-[10px] uppercase transition-all shadow-md shadow-primary/10 active:scale-95"
+                    className="flex items-center gap-2 bg-primary/10 border border-primary/20 hover:border-primary/40 px-3.5 py-2 rounded-xl text-primary font-bold text-[10px] uppercase transition-all shadow-md shadow-primary/10 active:scale-95 shrink-0"
                   >
                     {(preferences?.theme || profile?.theme) === 'dark' ? (
                       <>
@@ -1218,7 +1235,7 @@ export default function SecuritySettingsCenter() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-white mb-1">Date Format</label>
+                  <label className="block font-semibold text-text-primary mb-1">Date Format</label>
                   <select
                     value={generalPreferences.dateFormat || 'MM/DD/YYYY'}
                     onChange={(e) => handleSelectPreference('dateFormat', e.target.value)}
@@ -1231,7 +1248,7 @@ export default function SecuritySettingsCenter() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-white mb-1">Time Format</label>
+                  <label className="block font-semibold text-text-primary mb-1">Time Format</label>
                   <select
                     value={generalPreferences.timeFormat || '12h'}
                     onChange={(e) => handleSelectPreference('timeFormat', e.target.value)}
@@ -1243,7 +1260,7 @@ export default function SecuritySettingsCenter() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-white mb-1">Default Dashboard View</label>
+                  <label className="block font-semibold text-text-primary mb-1">Default Dashboard View</label>
                   <select
                     value={generalPreferences.defaultDashboardView || 'overview'}
                     onChange={(e) => handleSelectPreference('defaultDashboardView', e.target.value)}
@@ -1254,29 +1271,29 @@ export default function SecuritySettingsCenter() {
                   </select>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Enable Micro-Animations</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Enable Micro-Animations</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Render smooth graphic waves and pulse indicators.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.animationPreferences}
                     onChange={() => handleTogglePreference('animationPreferences', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="block font-semibold text-white">Accessibility Mode</span>
+                <div className="flex justify-between items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <span className="block font-semibold text-text-primary">Accessibility Mode</span>
                     <span className="text-[10px] text-on-surface-variant block mt-0.5">Increase container padding and color index contrast.</span>
                   </div>
                   <input
                     type="checkbox"
                     checked={generalPreferences.accessibilityOptions}
                     onChange={() => handleTogglePreference('accessibilityOptions', 'general')}
-                    className="w-9 h-5 bg-white/10 checked:bg-primary rounded-full appearance-none cursor-pointer relative before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-transform checked:before:translate-x-4 border border-white/10"
+                    className="checkbox-switch"
                   />
                 </div>
               </div>
@@ -1285,10 +1302,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 8: Activity & Usage */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('activity')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <BarChart3 className="w-4 h-4 text-primary" />
@@ -1298,29 +1315,29 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'activity' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 animate-[fadeIn_0.2s_ease-out]">
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">Total Scans</span>
-                  <span className="text-base font-black text-white">124</span>
+                  <span className="text-base font-black text-text-primary">124</span>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">Threats Blocked</span>
-                  <span className="text-base font-black text-red-400">12</span>
+                  <span className="text-base font-black text-danger">12</span>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">Clear Reports</span>
-                  <span className="text-base font-black text-emerald-400">112</span>
+                  <span className="text-base font-black text-success">112</span>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">AI Chats Logged</span>
-                  <span className="text-base font-black text-white">37</span>
+                  <span className="text-base font-black text-text-primary">37</span>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">SOS Triggers</span>
-                  <span className="text-base font-black text-white">0</span>
+                  <span className="text-base font-black text-text-primary">0</span>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 rounded-xl p-3">
+                <div className="bg-surface-secondary/10 border border-border/10 rounded-xl p-3">
                   <span className="block text-[8px] font-bold text-on-surface-variant uppercase tracking-wider">Member Since</span>
                   <span className="text-xs font-bold text-primary mt-1 block">July 2026</span>
                 </div>
@@ -1330,10 +1347,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 9: Data Management */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('data')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Database className="w-4 h-4 text-primary" />
@@ -1343,48 +1360,48 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'data' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-3.5 text-xs animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-3.5 text-xs animate-[fadeIn_0.2s_ease-out]">
               <button
                 onClick={() => handleExportData('threat_reports')}
-                className="w-full flex items-center justify-between bg-white/[0.01] border border-white/5 p-3 rounded-xl hover:bg-white/5 transition-colors text-left"
+                className="w-full flex items-center justify-between gap-3 bg-surface-secondary/10 border border-border/10 p-3 rounded-xl hover:bg-surface-secondary/30 transition-colors text-left"
               >
-                <div>
-                  <span className="block font-semibold text-white">Export Threat Reports</span>
+                <div className="min-w-0 flex-1">
+                  <span className="block font-semibold text-text-primary">Export Threat Reports</span>
                   <span className="text-[9px] text-on-surface-variant block mt-0.5">Download full history in JSON format.</span>
                 </div>
-                <Download className="w-4 h-4 text-primary" />
+                <Download className="w-4 h-4 text-primary shrink-0" />
               </button>
 
               <button
                 onClick={() => handleExportData('chat_history')}
-                className="w-full flex items-center justify-between bg-white/[0.01] border border-white/5 p-3 rounded-xl hover:bg-white/5 transition-colors text-left"
+                className="w-full flex items-center justify-between gap-3 bg-surface-secondary/10 border border-border/10 p-3 rounded-xl hover:bg-surface-secondary/30 transition-colors text-left"
               >
-                <div>
-                  <span className="block font-semibold text-white">Export AI Dialogs</span>
+                <div className="min-w-0 flex-1">
+                  <span className="block font-semibold text-text-primary">Export AI Dialogs</span>
                   <span className="text-[9px] text-on-surface-variant block mt-0.5">Download chat conversation history log.</span>
                 </div>
-                <Download className="w-4 h-4 text-primary" />
+                <Download className="w-4 h-4 text-primary shrink-0" />
               </button>
 
               <button
                 onClick={handleClearCache}
-                className="w-full flex items-center justify-between bg-red-500/5 border border-red-500/10 p-3 rounded-xl hover:bg-red-500/10 transition-colors text-left"
+                className="w-full flex items-center justify-between gap-3 bg-danger/5 border border-danger/10 p-3 rounded-xl hover:bg-danger/10 transition-colors text-left"
               >
-                <div>
-                  <span className="block font-semibold text-red-400">Clear Local Storage Cache</span>
-                  <span className="text-[9px] text-red-500/70 block mt-0.5">Wipe offline files and cached theme registers.</span>
+                <div className="min-w-0 flex-1">
+                  <span className="block font-semibold text-danger">Clear Local Storage Cache</span>
+                  <span className="text-[9px] text-danger/70 block mt-0.5">Wipe offline files and cached theme registers.</span>
                 </div>
-                <Trash2 className="w-4 h-4 text-red-400" />
+                <Trash2 className="w-4 h-4 text-danger shrink-0" />
               </button>
             </div>
           )}
         </section>
 
         {/* Section 10: Support & Feedback */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('support')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <HelpCircle className="w-4 h-4 text-primary" />
@@ -1394,22 +1411,22 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'support' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-3.5 text-xs animate-[fadeIn_0.2s_ease-out]">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-3.5 text-xs animate-[fadeIn_0.2s_ease-out]">
               <button
                 onClick={() => showToast('Feedback form opened (Placeholder).')}
-                className="w-full bg-white/[0.01] border border-white/5 p-3 rounded-xl text-left hover:bg-white/5 transition-colors block text-white font-semibold"
+                className="w-full bg-surface-secondary/10 border border-border/10 p-3 rounded-xl text-left hover:bg-surface-secondary/30 transition-colors block text-text-primary font-semibold"
               >
                 Report a Security Bug
               </button>
               <button
                 onClick={() => showToast('Feature request form opened (Placeholder).')}
-                className="w-full bg-white/[0.01] border border-white/5 p-3 rounded-xl text-left hover:bg-white/5 transition-colors block text-white font-semibold"
+                className="w-full bg-surface-secondary/10 border border-border/10 p-3 rounded-xl text-left hover:bg-surface-secondary/30 transition-colors block text-text-primary font-semibold"
               >
                 Request a Custom Shield Node
               </button>
               <button
                 onClick={() => showToast('Contact support initialized.')}
-                className="w-full bg-white/[0.01] border border-white/5 p-3 rounded-xl text-left hover:bg-white/5 transition-colors block text-white font-semibold"
+                className="w-full bg-surface-secondary/10 border border-border/10 p-3 rounded-xl text-left hover:bg-surface-secondary/30 transition-colors block text-text-primary font-semibold"
               >
                 Message Technical Support Staff
               </button>
@@ -1418,10 +1435,10 @@ export default function SecuritySettingsCenter() {
         </section>
 
         {/* Section 11: About Sentinel AI */}
-        <section className="glass-card rounded-2xl overflow-hidden border border-white/5">
+        <section className="glass-card rounded-2xl overflow-hidden border border-border/10">
           <button
             onClick={() => toggleSection('about')}
-            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-white focus:outline-none"
+            className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-text-primary focus:outline-none"
           >
             <span className="flex items-center gap-3">
               <Info className="w-4 h-4 text-primary" />
@@ -1431,37 +1448,37 @@ export default function SecuritySettingsCenter() {
           </button>
           
           {expandedSection === 'about' && (
-            <div className="px-5 pb-5 pt-1 border-t border-white/5 space-y-4 text-xs animate-[fadeIn_0.2s_ease-out]">
-              <div className="space-y-2 bg-white/[0.01] border border-white/5 p-3 rounded-xl font-mono text-[10px] text-on-surface-variant">
+            <div className="px-5 pb-5 pt-1 border-t border-border/10 space-y-4 text-xs animate-[fadeIn_0.2s_ease-out]">
+              <div className="space-y-2 bg-surface-secondary/10 border border-border/10 p-3 rounded-xl font-mono text-[10px] text-on-surface-variant">
                 <div className="flex justify-between">
                   <span>Version</span>
-                  <span className="text-white">v2.10.9-alpha</span>
+                  <span className="text-text-primary">v2.10.9-alpha</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Database Registry</span>
-                  <span className="text-emerald-400 font-bold">Online</span>
+                  <span className="text-success font-bold">Online</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Grok Threat Model</span>
-                  <span className="text-emerald-400 font-bold">Model 3.5 Ready</span>
+                  <span className="text-success font-bold">Model 3.5 Ready</span>
                 </div>
                 <div className="flex justify-between">
                   <span>License</span>
-                  <span className="text-white">Commercial Proprietary</span>
+                  <span className="text-text-primary">Commercial Proprietary</span>
                 </div>
               </div>
 
               <div className="flex justify-around text-[10px] text-primary font-bold">
                 <button onClick={() => showToast('Loading Privacy Policy...')} className="hover:underline">Privacy Policy</button>
-                <span className="text-white/20">•</span>
+                <span className="text-text-primary/20">•</span>
                 <button onClick={() => showToast('Loading Terms of Service...')} className="hover:underline">Terms of Service</button>
-                <span className="text-white/20">•</span>
+                <span className="text-text-primary/20">•</span>
                 <button onClick={() => showToast('Loading Licenses...')} className="hover:underline">OSS Credits</button>
               </div>
 
               <button
                 onClick={() => showToast('Checking central package registries... Your application is up to date!')}
-                className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] uppercase tracking-wider rounded-xl transition-all"
+                className="w-full py-2 bg-surface-secondary/30 hover:bg-surface-secondary/50 border border-border/10 text-text-primary font-bold text-[10px] uppercase tracking-wider rounded-xl transition-all"
               >
                 Check for Updates
               </button>

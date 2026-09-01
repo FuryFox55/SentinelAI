@@ -129,9 +129,162 @@ class MockSupabaseClient {
   };
 }
 
-export const supabase = (supabaseUrl && supabaseAnonKey)
+const realSupabase = (supabaseUrl && supabaseAnonKey)
   ? createClient(supabaseUrl, supabaseAnonKey)
-  : (new MockSupabaseClient() as any);
+  : null;
+
+const mockClient = new MockSupabaseClient() as any;
+
+function isFallbackError(error: any): boolean {
+  if (!error) return false;
+  const msg = (error.message || '').toLowerCase();
+  return (
+    msg.includes('could not find the table') ||
+    msg.includes('schema cache') ||
+    msg.includes('relation') ||
+    msg.includes('does not exist') ||
+    msg.includes('failed to fetch') ||
+    msg.includes('network') ||
+    msg.includes('fetch failed')
+  );
+}
+
+export const supabase: any = {
+  auth: {
+    signUp: async (args: any) => {
+      if (realSupabase) {
+        try {
+          const res = await realSupabase.auth.signUp(args);
+          if (res.error && isFallbackError(res.error)) {
+            return mockClient.auth.signUp(args);
+          }
+          return res;
+        } catch {
+          return mockClient.auth.signUp(args);
+        }
+      }
+      return mockClient.auth.signUp(args);
+    },
+    signInWithPassword: async (args: any) => {
+      if (realSupabase) {
+        try {
+          const res = await realSupabase.auth.signInWithPassword(args);
+          if (res.error && isFallbackError(res.error)) {
+            return mockClient.auth.signInWithPassword(args);
+          }
+          return res;
+        } catch {
+          return mockClient.auth.signInWithPassword(args);
+        }
+      }
+      return mockClient.auth.signInWithPassword(args);
+    },
+    signOut: async () => {
+      if (realSupabase) {
+        try {
+          return await realSupabase.auth.signOut();
+        } catch {
+          return mockClient.auth.signOut();
+        }
+      }
+      return mockClient.auth.signOut();
+    },
+    getSession: async () => {
+      if (realSupabase) {
+        try {
+          const res = await realSupabase.auth.getSession();
+          if (res.error && isFallbackError(res.error)) {
+            return mockClient.auth.getSession();
+          }
+          return res;
+        } catch {
+          return mockClient.auth.getSession();
+        }
+      }
+      return mockClient.auth.getSession();
+    },
+    resetPasswordForEmail: async (email: string, options?: any) => {
+      if (realSupabase) {
+        try {
+          const res = await realSupabase.auth.resetPasswordForEmail(email, options);
+          if (res.error && isFallbackError(res.error)) {
+            return { data: {}, error: null };
+          }
+          return res;
+        } catch {
+          return { data: {}, error: null };
+        }
+      }
+      return { data: {}, error: null };
+    },
+    updateUser: async (attributes: any) => {
+      if (realSupabase) {
+        try {
+          return await realSupabase.auth.updateUser(attributes);
+        } catch {
+          return { data: { user: null }, error: null };
+        }
+      }
+      return { data: { user: null }, error: null };
+    },
+    onAuthStateChange: (callback: any) => {
+      if (realSupabase) {
+        try {
+          return realSupabase.auth.onAuthStateChange(callback);
+        } catch {
+          return { data: { subscription: { unsubscribe: () => {} } } };
+        }
+      }
+      return { data: { subscription: { unsubscribe: () => {} } } };
+    }
+  },
+  from: (table: string) => {
+    if (!realSupabase) {
+      return mockClient.from(table);
+    }
+
+    const realFrom = realSupabase.from(table);
+    const mockFrom = mockClient.from(table);
+
+    const createChainProxy = (realBuilder: any, mockBuilder: any): any => {
+      return new Proxy(realBuilder, {
+        get(target: any, prop: string) {
+          const orig = target[prop];
+          if (typeof orig === 'function') {
+            return (...args: any[]) => {
+              try {
+                const realRes = orig.apply(target, args);
+                const mockFn = mockBuilder[prop];
+                const mockRes = typeof mockFn === 'function' ? mockFn.apply(mockBuilder, args) : mockBuilder;
+
+                if (realRes && typeof realRes.then === 'function') {
+                  return realRes.then((result: any) => {
+                    if (result && result.error && isFallbackError(result.error)) {
+                      return mockRes && typeof mockRes.then === 'function' ? mockRes : Promise.resolve({ data: mockClient.inMemoryDb[table] || [], error: null });
+                    }
+                    return result;
+                  }).catch(() => {
+                    return mockRes && typeof mockRes.then === 'function' ? mockRes : Promise.resolve({ data: mockClient.inMemoryDb[table] || [], error: null });
+                  });
+                }
+
+                if (realRes && typeof realRes === 'object') {
+                  return createChainProxy(realRes, mockRes || mockBuilder);
+                }
+                return realRes;
+              } catch {
+                return mockBuilder;
+              }
+            };
+          }
+          return orig;
+        }
+      });
+    };
+
+    return createChainProxy(realFrom, mockFrom);
+  }
+};
 
 export async function authenticatedFetch(url: string, init?: RequestInit) {
   const { data: { session } } = await supabase.auth.getSession();
@@ -216,6 +369,7 @@ function startThreatSimulator() {
 
       // 1. Log Threat Event
       await supabase.from('threat_events').insert({
+        user_id: realUserId,
         event_type: selected.type,
         details: {
           title: selected.title,

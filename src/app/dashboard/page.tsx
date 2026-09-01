@@ -171,6 +171,11 @@ export default function DashboardPage() {
     };
   }, []);
 
+  const handleStartSimulatedCall = () => {
+    startSimulatedPhoneCall();
+    router.push('/monitoring');
+  };
+
   // Trigger simulated phone call if active call generated on the backend
   useEffect(() => {
     if (apiSummary.liveCall?.active && !useAppStore.getState().callActive) {
@@ -178,11 +183,6 @@ export default function DashboardPage() {
       authenticatedFetch('/api/dashboard/call', { method: 'POST' }).catch(() => {});
     }
   }, [apiSummary.liveCall?.active]);
-
-  const handleStartSimulatedCall = () => {
-    startSimulatedPhoneCall();
-    router.push('/monitoring');
-  };
 
   const handleRunFullScan = () => {
     if (scanning) return;
@@ -220,7 +220,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text-primary flex flex-col pb-28 relative overflow-x-hidden">
+    <div className="min-h-screen w-full bg-background text-text-primary flex flex-col pb-28 relative overflow-x-hidden">
       
       {/* Background Radial Glows & Grid Particle Layers */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
@@ -229,7 +229,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Top Header */}
-      <header className="sticky top-0 left-0 w-full z-45 bg-surface/85 backdrop-blur-xl border-b border-border/40 px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 left-0 w-full z-45 bg-surface/85 backdrop-blur-xl border-b border-border/40 px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="text-primary flex items-center justify-center p-1.5 rounded-xl bg-primary/5 border border-primary/20 icon-glow">
             <Shield className="w-5 h-5 fill-primary/10" />
@@ -259,13 +259,13 @@ export default function DashboardPage() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="flex-grow max-w-md mx-auto w-full px-4 pt-6 space-y-6 relative z-10"
+        className="flex-grow max-w-7xl mx-auto w-full px-4 md:px-8 pt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10 auto-rows-min"
       >
         
         {/* 1. MEMORABLE HERO CARD */}
         <motion.section
           variants={itemVariants}
-          className={`glass-card rounded-[24px] p-6 border relative overflow-hidden flex flex-col justify-between gap-5 shadow-[0_16px_36px_rgba(0,0,0,0.05)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.4)] transition-all duration-300 ${
+          className={`col-span-full glass-card rounded-[24px] p-5 sm:p-6 border relative overflow-hidden flex flex-col justify-between gap-5 shadow-[0_16px_36px_rgba(0,0,0,0.05)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.4)] transition-all duration-300 ${
             isCritical ? 'border-danger/45 glow-danger pulse-danger-card' : 'border-border/30'
           }`}
         >
@@ -277,13 +277,13 @@ export default function DashboardPage() {
           <div className="flex justify-between items-start z-10">
             <div className="space-y-1">
               <span className="text-[8.5px] font-bold text-text-secondary uppercase tracking-wider block">Security Core Status</span>
-              <h2 className="text-lg font-black text-text-primary tracking-tight leading-tight">
+              <h2 className="text-base sm:text-lg font-black text-text-primary tracking-tight leading-tight">
                 {isCritical ? 'CRITICAL INCIDENT' : 'SYSTEM FULLY SECURED'}
               </h2>
             </div>
             
             {/* Pulsing Status Chip */}
-            <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shrink-0 ${
               isCritical 
                 ? 'bg-danger/10 border border-danger/30 text-danger shadow-[0_0_10px_rgba(255,77,103,0.1)]' 
                 : 'bg-success/10 border border-success/30 text-success shadow-[0_0_10px_rgba(0,230,118,0.1)]'
@@ -294,10 +294,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Radial Meter and Stats split */}
-          <div className="flex items-center gap-6 py-2 border-y border-border/20 z-10">
+          <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-4 sm:gap-6 py-2 border-y border-border/20 z-10">
             
             {/* Circular Shield Gauge */}
-            <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0">
               <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" fill="transparent" r="42" stroke="var(--divider)" strokeWidth="6" />
                 <circle
@@ -314,13 +314,13 @@ export default function DashboardPage() {
                 />
               </svg>
               <div className="flex flex-col items-center">
-                <span className="text-xl font-black text-text-primary leading-none">{animatedScore}%</span>
+                <span className="text-lg sm:text-xl font-black text-text-primary leading-none">{animatedScore}%</span>
                 <span className="text-[7px] text-text-secondary font-extrabold uppercase tracking-widest mt-1">G-Index</span>
               </div>
             </div>
 
             {/* Statistics grid */}
-            <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-3">
+            <div className="flex-1 grid grid-cols-2 gap-x-3 sm:gap-x-4 gap-y-3 w-full">
               <div className="space-y-0.5">
                 <span className="text-[8px] font-extrabold text-text-secondary uppercase tracking-widest block">Scams Prevented</span>
                 <span className="text-sm font-black text-text-primary tracking-tight">{animatedPrevented}</span>
@@ -343,7 +343,7 @@ export default function DashboardPage() {
 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 z-10">
             <div className="flex items-center gap-2 text-[10px] text-text-secondary font-medium">
-              <Activity className="w-3.5 h-3.5 text-primary animate-pulse" />
+              <Activity className="w-3.5 h-3.5 text-primary animate-pulse shrink-0" />
               <span>Background AI heuristics active</span>
             </div>
 
@@ -361,7 +361,7 @@ export default function DashboardPage() {
             ) : (
               <button
                 onClick={handleRunFullScan}
-                className="px-4 py-2 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(0,102,204,0.03)] hover:shadow-[0_0_20px_rgba(0,102,204,0.15)] hover:border-primary flex items-center gap-1.5 group"
+                className="px-4 py-2 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(0,102,204,0.03)] hover:shadow-[0_0_20px_rgba(0,102,204,0.15)] hover:border-primary flex items-center gap-1.5 group shrink-0"
               >
                 <span>Deep Scan</span>
                 <ArrowRight className="w-3 h-3 text-primary group-hover:translate-x-0.5 transition-transform" />
@@ -373,14 +373,14 @@ export default function DashboardPage() {
         {/* 2. AI STATUS BANNER WITH LIVE FEED */}
         <motion.div
           variants={itemVariants}
-          className="w-full bg-card border border-border/30 rounded-xl px-4 py-2.5 flex items-center justify-between shadow-md relative overflow-hidden"
+          className="col-span-full w-full bg-card border border-border/30 rounded-xl px-4 py-2.5 flex items-center justify-between gap-2 shadow-md relative overflow-hidden"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <div className="w-5 h-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
               <Bot className="w-3.5 h-3.5 text-primary animate-pulse" />
             </div>
-            <span className="text-[9.5px] text-text-secondary font-extrabold uppercase tracking-widest">SENTINEL FEED:</span>
-            <div className="h-4 relative overflow-hidden w-48">
+            <span className="text-[9.5px] text-text-secondary font-extrabold uppercase tracking-widest shrink-0 hidden sm:inline">SENTINEL FEED:</span>
+            <div className="h-4 relative overflow-hidden flex-1 min-w-0">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={bannerIndex}
@@ -395,14 +395,14 @@ export default function DashboardPage() {
               </AnimatePresence>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-success animate-ping"></span>
             <span className="text-[8px] text-text-secondary font-bold uppercase tracking-wider">Sync Now</span>
           </div>
         </motion.div>
 
         {/* 3. CALL MONITORING (Visual Flagship Centerpiece) */}
-        <motion.section variants={itemVariants} className="space-y-3">
+        <motion.section variants={itemVariants} className="col-span-full md:col-span-1 space-y-3">
           <span className="text-[9.5px] font-extrabold text-text-secondary uppercase tracking-widest block px-1">
             Active Telephony Core
           </span>
@@ -454,7 +454,7 @@ export default function DashboardPage() {
         </motion.section>
 
         {/* 4. OTHER SCANNERS (Secondary Modules Grid) */}
-        <motion.section variants={itemVariants} className="grid grid-cols-2 gap-4">
+        <motion.section variants={itemVariants} className="col-span-full md:col-span-1 grid grid-cols-2 gap-4">
           
           {/* Convo Card */}
           <Link href="/protection/analysis/convo" className="block">
@@ -511,7 +511,7 @@ export default function DashboardPage() {
         </motion.section>
 
         {/* 5. RECENT ACTIVITY TIMELINE (Security Operations Center Feed) */}
-        <motion.section variants={itemVariants} className="space-y-3.5">
+        <motion.section variants={itemVariants} className="col-span-full md:col-span-1 xl:col-span-2 space-y-3.5">
           <span className="text-[9.5px] font-extrabold text-text-secondary uppercase tracking-widest block px-1">
             Recent Telemetry Activity (SOC Feed)
           </span>
@@ -566,7 +566,7 @@ export default function DashboardPage() {
         </motion.section>
 
         {/* 6. REFINED SYSTEM PERMISSION LAYERS */}
-        <motion.section variants={itemVariants} className="glass-card rounded-[24px] p-5 border border-border/30 space-y-4">
+        <motion.section variants={itemVariants} className="col-span-full md:col-span-1 glass-card rounded-[24px] p-5 border border-border/30 space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-border/20">
             <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider flex items-center gap-2">
               <Fingerprint className="w-4 h-4 text-primary" />
@@ -594,7 +594,7 @@ export default function DashboardPage() {
                 onClick={() => toggleProtection('backgroundAI')}
                 className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.backgroundAI ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.backgroundAI ? 'translate-x-5' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${activeProtections.backgroundAI ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
             </div>
 
@@ -612,7 +612,7 @@ export default function DashboardPage() {
                 onClick={() => toggleProtection('liveCallMonitor')}
                 className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.liveCallMonitor ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.liveCallMonitor ? 'translate-x-5' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${activeProtections.liveCallMonitor ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
             </div>
 
@@ -630,7 +630,7 @@ export default function DashboardPage() {
                 onClick={() => toggleProtection('urlBlocker')}
                 className={`relative inline-flex h-5.5 w-10 shrink-0 items-center rounded-full transition-colors active-press ${activeProtections.urlBlocker ? 'bg-primary shadow-[0_0_10px_rgba(0,102,204,0.25)]' : 'bg-input border border-border/30'}`}
               >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${activeProtections.urlBlocker ? 'translate-x-5' : 'translate-x-1'}`} />
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-surface transition-transform ${activeProtections.urlBlocker ? 'translate-x-5' : 'translate-x-1'}`} />
               </button>
             </div>
           </div>

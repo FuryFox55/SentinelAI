@@ -77,22 +77,22 @@ export default function EmergencyModePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-surface flex flex-col pb-16 relative pt-20">
+    <div className="min-h-screen w-full bg-background text-on-surface flex flex-col pb-16 relative pt-20">
       
       {/* Fixed Header */}
       <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-4 py-4 md:px-12">
         <div className="flex items-center gap-2">
           <button
             onClick={() => router.push('/dashboard')}
-            className="p-1 rounded-full hover:bg-white/5 text-on-surface-variant transition-colors"
+            className="p-1 rounded-full hover:bg-surface-secondary/30 text-on-surface-variant transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-text-primary" />
           </button>
-          <ShieldAlert className="w-6 h-6 text-red-500 fill-red-500/20" />
-          <h1 className="text-lg md:text-xl font-bold tracking-tight text-red-500">SENTINEL AI</h1>
+          <ShieldAlert className="w-6 h-6 text-danger fill-danger/20" />
+          <h1 className="text-lg md:text-xl font-bold tracking-tight text-danger">SENTINEL AI</h1>
         </div>
         <div>
-          <span className="text-[10px] font-bold px-3 py-1 bg-red-950/80 text-red-300 border border-red-500/30 rounded-full uppercase tracking-wider animate-pulse">
+          <span className="text-[10px] font-bold px-3 py-1 bg-danger/80 text-danger border border-danger/30 rounded-full uppercase tracking-wider animate-pulse">
             Emergency Mode
           </span>
         </div>
@@ -102,19 +102,19 @@ export default function EmergencyModePage() {
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-4 md:px-12 py-6 flex flex-col gap-6 z-10">
         
         {/* Active Threat Status Bar */}
-        <section className="bg-red-500/10 backdrop-blur-md rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 border border-red-500/30 shadow-[0_0_25px_rgba(239,68,68,0.15)] relative overflow-hidden">
+        <section className="bg-danger/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row items-center gap-4 sm:gap-6 border border-danger/30 shadow-[0_0_25px_rgba(239,68,68,0.15)] relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_2px_2px,rgba(255,180,171,0.5)_1px,transparent_0)] bg-[size:24px_24px]"></div>
           
           <div className="shrink-0 relative z-10 flex flex-col items-center justify-center">
-            <ShieldAlert className="w-20 h-20 text-red-400" />
-            <span className="text-[9px] font-bold text-red-400 mt-2 uppercase tracking-widest">Active Threat</span>
+            <ShieldAlert className="w-14 h-14 sm:w-20 sm:h-20 text-danger" />
+            <span className="text-[9px] font-bold text-danger mt-1 sm:mt-2 uppercase tracking-widest">Active Threat</span>
           </div>
 
           <div className="flex-grow text-center md:text-left z-10 space-y-2">
-            <h2 className="text-3xl font-black text-red-400 tracking-tight leading-none uppercase">Lockdown Engaged</h2>
+            <h2 className="text-2xl sm:text-3xl font-black text-danger tracking-tight leading-none uppercase">Lockdown Engaged</h2>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-1 text-xs">
-              <span className="font-semibold text-white">System Security Level: High</span>
-              <span className="px-2.5 py-0.5 rounded-full bg-red-500/25 border border-red-500/30 font-bold text-[10px] uppercase text-red-300">
+              <span className="font-semibold text-text-primary">System Security Level: High</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-danger/25 border border-danger/30 font-bold text-[10px] uppercase text-danger">
                 Fraud Confidence: 96%
               </span>
             </div>
@@ -125,40 +125,40 @@ export default function EmergencyModePage() {
         </section>
 
         {/* Emergency Actions Grid */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
           <button
             onClick={() => {
               resetEmergencyMode();
               router.push('/dashboard');
             }}
-            className="bg-gradient-to-br from-red-800 to-red-950 hover:from-red-700 hover:to-red-900 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-lg transition-colors h-36 active:scale-95 text-center"
+            className="bg-gradient-to-br from-danger to-danger/80 hover:from-danger/90 hover:to-danger/70 rounded-2xl p-3 sm:p-4 flex flex-col items-center justify-center gap-2 shadow-lg transition-colors h-28 sm:h-36 active:scale-95 text-center cursor-pointer"
           >
-            <PhoneOff className="w-10 h-10 text-white animate-pulse" />
-            <span className="text-xs font-bold text-white uppercase tracking-wider">Disconnect Call</span>
+            <PhoneOff className="w-8 h-8 sm:w-10 sm:h-10 text-text-primary animate-pulse shrink-0" />
+            <span className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wider">Disconnect Call</span>
           </button>
 
           <button
             onClick={handleBlockCaller}
-            className="glass-card hover:bg-white/5 border-red-500/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 transition-all h-36 active:scale-95 text-center text-red-400"
+            className="glass-card hover:bg-surface-secondary/30 border-danger/20 rounded-2xl p-3 sm:p-4 flex flex-col items-center justify-center gap-2 transition-all h-28 sm:h-36 active:scale-95 text-center text-danger cursor-pointer"
           >
-            <UserX className="w-10 h-10 text-red-400" />
-            <span className="text-xs font-bold uppercase tracking-wider">{blocked ? 'Blocking...' : 'Block Caller'}</span>
+            <UserX className="w-8 h-8 sm:w-10 sm:h-10 text-danger shrink-0" />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{blocked ? 'Blocking...' : 'Block Caller'}</span>
           </button>
 
           <button
             onClick={handleReportCrime}
-            className="glass-card hover:bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 transition-all h-36 active:scale-95 text-center text-cyan-400"
+            className="glass-card hover:bg-surface-secondary/30 border border-border/10 rounded-2xl p-3 sm:p-4 flex flex-col items-center justify-center gap-2 transition-all h-28 sm:h-36 active:scale-95 text-center text-accent cursor-pointer"
           >
-            <FileSpreadsheet className="w-10 h-10 text-cyan-400" />
-            <span className="text-xs font-bold uppercase tracking-wider">{reported ? 'Reporting...' : 'Report Scam'}</span>
+            <FileSpreadsheet className="w-8 h-8 sm:w-10 sm:h-10 text-accent shrink-0" />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{reported ? 'Reporting...' : 'Report Scam'}</span>
           </button>
 
           <button
             onClick={handleNotifyContacts}
-            className="glass-card hover:bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 transition-all h-36 active:scale-95 text-center text-indigo-400"
+            className="glass-card hover:bg-surface-secondary/30 border border-border/10 rounded-2xl p-3 sm:p-4 flex flex-col items-center justify-center gap-2 transition-all h-28 sm:h-36 active:scale-95 text-center text-indigo-400 cursor-pointer"
           >
-            <Users className="w-10 h-10 text-indigo-400" />
-            <span className="text-xs font-bold uppercase tracking-wider">{notified ? 'Notifying...' : 'Notify Contacts'}</span>
+            <Users className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-400 shrink-0" />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{notified ? 'Notifying...' : 'Notify Contacts'}</span>
           </button>
         </section>
 
@@ -169,13 +169,13 @@ export default function EmergencyModePage() {
           <div className="lg:col-span-2 flex flex-col gap-6">
             
             {/* Evidence Package */}
-            <section className="glass-card rounded-[24px] p-6 border border-white/5 shadow-xl space-y-4">
-              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+            <section className="glass-card rounded-[24px] p-6 border border-border/10 shadow-xl space-y-4">
+              <div className="flex justify-between items-center border-b border-border/10 pb-4">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-indigo-400" />
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wider">Evidence Locker</h3>
+                  <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">Evidence Locker</h3>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-300 border border-emerald-500/25 rounded-full flex items-center gap-1">
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-success/10 text-success border border-success/25 rounded-full flex items-center gap-1">
                   <Lock className="w-3 h-3" />
                   <span>Secured locally</span>
                 </span>
@@ -185,11 +185,11 @@ export default function EmergencyModePage() {
                 {/* Voice Transcript file */}
                 <div
                   onClick={() => setShowEvidence(showEvidence === 'transcript' ? 'none' : 'transcript')}
-                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-cyan-400/50 transition-colors cursor-pointer border ${showEvidence === 'transcript' ? 'border-cyan-400 bg-cyan-950/15' : 'border-white/5 bg-white/[0.01]'}`}
+                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-accent/50 transition-colors cursor-pointer border ${showEvidence === 'transcript' ? 'border-accent bg-accent/15' : 'border-white/5 bg-surface-secondary/10'}`}
                 >
-                  <Mic className="w-8 h-8 text-cyan-400" />
+                  <Mic className="w-8 h-8 text-accent" />
                   <div>
-                    <h4 className="text-xs font-bold text-white">Call Transcript</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Call Transcript</h4>
                     <span className="text-[9px] text-outline font-semibold uppercase tracking-wider block mt-0.5">Spectral Audit</span>
                   </div>
                 </div>
@@ -197,11 +197,11 @@ export default function EmergencyModePage() {
                 {/* Geolocation file */}
                 <div
                   onClick={() => setShowEvidence(showEvidence === 'location' ? 'none' : 'location')}
-                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-cyan-400/50 transition-colors cursor-pointer border ${showEvidence === 'location' ? 'border-cyan-400 bg-cyan-950/15' : 'border-white/5 bg-white/[0.01]'}`}
+                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-accent/50 transition-colors cursor-pointer border ${showEvidence === 'location' ? 'border-accent bg-accent/15' : 'border-white/5 bg-surface-secondary/10'}`}
                 >
                   <MapPin className="w-8 h-8 text-indigo-400" />
                   <div>
-                    <h4 className="text-xs font-bold text-white">Location Index</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Location Index</h4>
                     <span className="text-[9px] text-outline font-semibold uppercase tracking-wider block mt-0.5">Cellular Tower</span>
                   </div>
                 </div>
@@ -209,11 +209,11 @@ export default function EmergencyModePage() {
                 {/* Summary file */}
                 <div
                   onClick={() => setShowEvidence(showEvidence === 'summary' ? 'none' : 'summary')}
-                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-cyan-400/50 transition-colors cursor-pointer border ${showEvidence === 'summary' ? 'border-cyan-400 bg-cyan-950/15' : 'border-white/5 bg-white/[0.01]'}`}
+                  className={`glass-card rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group hover:border-accent/50 transition-colors cursor-pointer border ${showEvidence === 'summary' ? 'border-accent bg-accent/15' : 'border-white/5 bg-surface-secondary/10'}`}
                 >
-                  <FileText className="w-8 h-8 text-emerald-400" />
+                  <FileText className="w-8 h-8 text-success" />
                   <div>
-                    <h4 className="text-xs font-bold text-white">Scam Summary</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Scam Summary</h4>
                     <span className="text-[9px] text-outline font-semibold uppercase tracking-wider block mt-0.5">AI Compiled</span>
                   </div>
                 </div>
@@ -221,13 +221,13 @@ export default function EmergencyModePage() {
 
               {/* Evidence details drawer preview */}
               {showEvidence !== 'none' && (
-                <div className="bg-white/5 p-4 rounded-xl border border-white/5 mt-4 space-y-2 animate-[fadeIn_0.3s_ease-out]">
+                <div className="bg-surface-secondary/30 p-4 rounded-xl border border-border/10 mt-4 space-y-2 animate-[fadeIn_0.3s_ease-out]">
                   <span className="text-[9px] font-bold text-outline uppercase tracking-wider block">Evidence File View</span>
                   {showEvidence === 'transcript' && (
                     <div className="text-xs space-y-2 text-on-surface-variant font-mono max-h-40 overflow-y-auto pr-1">
-                      <p className="text-red-400">[01:15] Caller: &quot;You are under digital arrest. Transfer 45,000 to the verification ledger immediately.&quot;</p>
-                      <p className="text-cyan-400">[01:45] AI Agent: (Alert) Intent pattern matched known banking extortions.</p>
-                      <p className="text-red-400">[02:03] Caller: &quot;Confirm your debit transaction PIN to verify.&quot;</p>
+                      <p className="text-danger">[01:15] Caller: &quot;You are under digital arrest. Transfer 45,000 to the verification ledger immediately.&quot;</p>
+                      <p className="text-accent">[01:45] AI Agent: (Alert) Intent pattern matched known banking extortions.</p>
+                      <p className="text-danger">[02:03] Caller: &quot;Confirm your debit transaction PIN to verify.&quot;</p>
                     </div>
                   )}
                   {showEvidence === 'location' && (
@@ -245,32 +245,32 @@ export default function EmergencyModePage() {
             </section>
 
             {/* Emergency Guidance */}
-            <section className="glass-card rounded-[24px] p-6 border border-white/5 border-l-4 border-l-cyan-400 shadow-xl space-y-4">
+            <section className="glass-card rounded-[24px] p-6 border border-border/10 border-l-4 border-l-accent shadow-xl space-y-4">
               <div className="flex items-center gap-2">
-                <Lightbulb className="w-5 h-5 text-cyan-400" />
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Emergency Guidance</h3>
+                <Lightbulb className="w-5 h-5 text-accent" />
+                <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">Emergency Guidance</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center shrink-0 text-xs font-bold text-cyan-400">1</div>
+                <div className="bg-surface-secondary/15 border border-border/10 rounded-xl p-4 flex gap-3">
+                  <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/25 flex items-center justify-center shrink-0 text-xs font-bold text-accent">1</div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">Remain Calm</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Remain Calm</h4>
                     <p className="text-[10px] text-on-surface-variant mt-1">Sentinel AI has successfully isolated your bank app keys and SMS cache.</p>
                   </div>
                 </div>
 
-                <div className="bg-white/[0.02] border border-red-500/10 rounded-xl p-4 flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-red-500/10 border border-red-500/25 flex items-center justify-center shrink-0 text-xs font-bold text-red-400">2</div>
+                <div className="bg-surface-secondary/15 border border-danger/10 rounded-xl p-4 flex gap-3">
+                  <div className="w-7 h-7 rounded-full bg-danger/10 border border-danger/25 flex items-center justify-center shrink-0 text-xs font-bold text-danger">2</div>
                   <div>
-                    <h4 className="text-xs font-bold text-red-400">Do not share PIN</h4>
+                    <h4 className="text-xs font-bold text-danger">Do not share PIN</h4>
                     <p className="text-[10px] text-on-surface-variant mt-1">Under no circumstances type or read passwords or OTP tokens to the caller.</p>
                   </div>
                 </div>
 
-                <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center shrink-0 text-xs font-bold text-cyan-400">3</div>
+                <div className="bg-surface-secondary/15 border border-border/10 rounded-xl p-4 flex gap-3">
+                  <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/25 flex items-center justify-center shrink-0 text-xs font-bold text-accent">3</div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">Report Number</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Report Number</h4>
                     <p className="text-[10px] text-on-surface-variant mt-1">Flag details to state authorities to compile local telecom blocks.</p>
                   </div>
                 </div>
@@ -280,39 +280,39 @@ export default function EmergencyModePage() {
 
           {/* Right Column: Timeline */}
           <div className="lg:col-span-1">
-            <section className="glass-card rounded-[24px] p-6 border border-white/5 shadow-xl flex flex-col gap-4 h-full">
-              <div className="flex items-center gap-2 border-b border-white/5 pb-3">
+            <section className="glass-card rounded-[24px] p-6 border border-border/10 shadow-xl flex flex-col gap-4 h-full">
+              <div className="flex items-center gap-2 border-b border-border/10 pb-3">
                 <Clock className="w-5 h-5 text-indigo-400" />
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Incident Log Timeline</h3>
+                <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">Incident Log Timeline</h3>
               </div>
 
               <div className="relative pl-4 mt-2 flex-grow">
-                <div className="absolute left-4 top-2 bottom-2 w-px bg-white/10 ml-[-0.5px]"></div>
+                <div className="absolute left-4 top-2 bottom-2 w-px bg-border/10 ml-[-0.5px]"></div>
                 <div className="flex flex-col gap-6">
                   
                   <div className="relative pl-6 py-1">
                     <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
-                    <span className="text-[9px] text-red-400 font-semibold block mb-1">02:03 PM</span>
-                    <h4 className="text-xs font-bold text-white">Call Threat Intercept</h4>
+                    <span className="text-[9px] text-danger font-semibold block mb-1">02:03 PM</span>
+                    <h4 className="text-xs font-bold text-text-primary">Call Threat Intercept</h4>
                     <p className="text-[10px] text-on-surface-variant mt-0.5">Vishing signatures detected in incoming voice stream.</p>
                   </div>
 
                   <div className="relative pl-6 py-1">
-                    <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-cyan-400"></div>
-                    <span className="text-[9px] text-cyan-400 font-semibold block mb-1">02:04 PM</span>
-                    <h4 className="text-xs font-bold text-white">Emergency Lockdown Active</h4>
+                    <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-accent"></div>
+                    <span className="text-[9px] text-accent font-semibold block mb-1">02:04 PM</span>
+                    <h4 className="text-xs font-bold text-text-primary">Emergency Lockdown Active</h4>
                     <p className="text-[10px] text-on-surface-variant mt-0.5">System access logs locked. Security banner popped up.</p>
                   </div>
 
                   <div className="relative pl-6 py-1">
                     <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-indigo-400"></div>
                     <span className="text-[9px] text-indigo-400 font-semibold block mb-1">02:05 PM</span>
-                    <h4 className="text-xs font-bold text-white">Evidence Packet Locked</h4>
+                    <h4 className="text-xs font-bold text-text-primary">Evidence Packet Locked</h4>
                     <p className="text-[10px] text-on-surface-variant mt-0.5">Audio transcription compiled and indexed locally.</p>
                   </div>
 
                   <div className="relative pl-6 py-1">
-                    <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-white/5 border border-white/20 animate-pulse"></div>
+                    <div className="absolute left-[-21px] top-3.5 w-2.5 h-2.5 rounded-full bg-surface-secondary/30 border border-border/20 animate-pulse"></div>
                     <span className="text-[9px] text-outline font-semibold block mb-1">Current</span>
                     <h4 className="text-xs font-semibold text-on-surface-variant italic">Awaiting User Decision</h4>
                   </div>

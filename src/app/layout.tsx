@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground antialiased font-sans">
+      <body className="min-h-screen w-full overflow-x-hidden relative flex flex-col bg-background text-foreground antialiased font-sans">
         <Providers>
           {children}
           <CallOverlay />

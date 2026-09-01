@@ -501,7 +501,7 @@ export default function AnalysisDetailPage() {
   const getThreatBadgeColors = (lvl: string) => {
     switch (lvl) {
       case 'Critical':
-        return 'bg-red-500/20 text-red-400 border-red-500/35';
+        return 'bg-danger/20 text-danger border-danger/35';
       case 'High':
         return 'bg-orange-500/20 text-orange-400 border-orange-500/35';
       case 'Medium':
@@ -509,7 +509,7 @@ export default function AnalysisDetailPage() {
       case 'Low':
         return 'bg-blue-500/20 text-blue-400 border-blue-500/35';
       default:
-        return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/35';
+        return 'bg-success/20 text-success border-success/35';
     }
   };
 
@@ -521,72 +521,72 @@ export default function AnalysisDetailPage() {
   const getModuleIcon = () => {
     switch (type) {
       case 'voice':
-        return <Volume2 className="w-8 h-8 text-cyan-400 animate-pulse" />;
+        return <Volume2 className="w-8 h-8 text-accent animate-pulse" />;
       case 'url':
-        return <Link2 className="w-8 h-8 text-cyan-400" />;
+        return <Link2 className="w-8 h-8 text-accent" />;
       case 'convo':
-        return <Bot className="w-8 h-8 text-cyan-400" />;
+        return <Bot className="w-8 h-8 text-accent" />;
       case 'document':
-        return <FileText className="w-8 h-8 text-cyan-400" />;
+        return <FileText className="w-8 h-8 text-accent" />;
       case 'qr':
-        return <QrCode className="w-8 h-8 text-cyan-400" />;
+        return <QrCode className="w-8 h-8 text-accent" />;
       case 'currency':
-        return <Coins className="w-8 h-8 text-cyan-400" />;
+        return <Coins className="w-8 h-8 text-accent" />;
       case 'screenshot':
-        return <Camera className="w-8 h-8 text-cyan-400" />;
+        return <Camera className="w-8 h-8 text-accent" />;
       case 'email':
-        return <Mail className="w-8 h-8 text-cyan-400" />;
+        return <Mail className="w-8 h-8 text-accent" />;
       case 'chat':
-        return <MessageSquare className="w-8 h-8 text-cyan-400" />;
+        return <MessageSquare className="w-8 h-8 text-accent" />;
       default:
-        return <Globe className="w-8 h-8 text-cyan-400" />;
+        return <Globe className="w-8 h-8 text-accent" />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-[#e0e3e5] flex flex-col pb-16 relative pt-20">
+    <div className="min-h-screen w-full bg-background text-text-primary flex flex-col pb-16 relative pt-20 overflow-x-hidden">
       
       {/* Background Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-15">
-        <div className="absolute top-[20%] left-[-10%] w-[320px] h-[320px] rounded-full bg-cyan-500/10 blur-[100px]"></div>
+        <div className="absolute top-[20%] left-[-10%] w-[320px] h-[320px] rounded-full bg-accent/10 blur-[100px]"></div>
       </div>
 
       {/* Top App Bar */}
-      <header className="fixed top-0 w-full z-45 bg-[#161B22]/80 backdrop-blur-xl border-b border-[#30363d]/40 px-4 py-3 flex items-center">
+      <header className="fixed top-0 w-full z-45 bg-surface/80 backdrop-blur-xl border-b border-border/40 px-3 sm:px-6 md:px-8 py-3.5 sm:py-4 flex items-center">
         <button
           onClick={() => router.push('/protection')}
-          className="mr-3 p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 text-[#8b949e] hover:text-white transition-colors"
+          className="mr-3 p-2 rounded-xl hover:bg-surface-secondary/30 border border-transparent hover:border-border/10 text-text-secondary hover:text-text-primary transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-sm font-bold text-white flex-grow truncate">{scenario.title}</h1>
+        <h1 className="text-sm font-bold text-text-primary flex-grow truncate">{scenario.title}</h1>
       </header>
 
       {/* Toast Alert popup */}
       {toastMsg && (
-        <div className="fixed top-18 right-4 left-4 z-50 p-4 bg-cyan-950/90 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs flex items-center justify-between shadow-2xl backdrop-blur-md animate-[slideDown_0.2s_ease-out_forwards]">
+        <div className="fixed top-18 right-4 left-4 z-50 p-4 bg-accent/10 border border-accent/30 text-accent rounded-xl text-xs flex items-center justify-between shadow-2xl backdrop-blur-md animate-[slideDown_0.2s_ease-out_forwards]">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4.5 h-4.5 text-cyan-400 shrink-0" />
+            <ShieldCheck className="w-4.5 h-4.5 text-accent shrink-0" />
             <span>{toastMsg}</span>
           </div>
-          <button onClick={() => setToastMsg(null)} className="text-outline hover:text-white">
+          <button onClick={() => setToastMsg(null)} className="text-outline hover:text-text-primary">
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
       {/* Main Container */}
-      <main className="flex-grow max-w-md mx-auto w-full px-4 pt-4 space-y-6 relative z-10">
+      <main className="flex-grow max-w-3xl mx-auto w-full px-3 sm:px-6 md:px-8 pt-4 sm:pt-6 space-y-6 relative z-10">
         
         {/* Workspace Form Card */}
-        <div className="glass-card rounded-2xl p-5 border border-white/5 space-y-4 shadow-2xl">
+        <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 space-y-4 shadow-2xl">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/5 rounded-xl border border-cyan-500/20">
+            <div className="p-2 bg-accent/5 rounded-xl border border-accent/20">
               {getModuleIcon()}
             </div>
             <div>
               <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Diagnostic Node</span>
-              <h2 className="text-sm font-bold text-white uppercase">{scenario.title}</h2>
+              <h2 className="text-sm font-bold text-text-primary uppercase">{scenario.title}</h2>
             </div>
           </div>
 
@@ -601,13 +601,13 @@ export default function AnalysisDetailPage() {
             </span>
             
             {type === 'url' ? (
-              <div className="relative glass-card rounded-xl overflow-hidden border border-white/10 flex items-center">
+              <div className="relative glass-card rounded-xl overflow-hidden border border-border/10 flex items-center">
                 <Globe className="absolute left-3 w-4 h-4 text-outline" />
                 <input
                   type="text"
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
-                  className="w-full bg-transparent border-none py-3.5 pl-9 pr-4 text-xs text-[#e0e3e5] placeholder-outline focus:outline-none"
+                  className="w-full bg-transparent border-none py-3.5 pl-9 pr-4 text-xs text-text-primary placeholder-outline focus:outline-none"
                   placeholder={scenario.placeholderText}
                 />
               </div>
@@ -622,21 +622,21 @@ export default function AnalysisDetailPage() {
                 />
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-white/10 hover:border-cyan-500/30 rounded-xl p-5 text-center cursor-pointer transition-colors bg-white/[0.01]"
+                  className="border-2 border-dashed border-border/10 hover:border-accent/30 rounded-xl p-5 text-center cursor-pointer transition-colors bg-surface-secondary/10"
                 >
                   <Upload className="w-8 h-8 text-outline mx-auto mb-2 animate-bounce" />
                   <span className="text-xs text-on-surface block font-semibold">Select File from Storage</span>
                   <span className="text-[9px] text-outline block mt-1">Images, PDF, DOCX, TXT, Audio, EML up to 10MB</span>
                 </div>
-                <div className="bg-white/5 px-3 py-2 rounded-lg text-xs text-on-surface-variant truncate border border-white/5 font-mono">
-                  Selected: <span className="font-bold text-white">{inputVal}</span>
+                <div className="bg-surface-secondary/50 px-3 py-2 rounded-lg text-xs text-on-surface-variant truncate border border-border/10 font-mono">
+                  Selected: <span className="font-bold text-text-primary">{inputVal}</span>
                 </div>
               </div>
             ) : (
               <textarea
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-[#e0e3e5] placeholder-outline focus:outline-none min-h-[90px] leading-relaxed font-mono"
+                className="w-full bg-surface-secondary/30 border border-border/10 rounded-xl p-4 text-xs text-text-primary placeholder-outline focus:outline-none min-h-[90px] leading-relaxed font-mono"
                 placeholder={scenario.placeholderText}
               />
             )}
@@ -644,8 +644,8 @@ export default function AnalysisDetailPage() {
             {/* Run Button */}
             <button
               onClick={handleRunAnalysis}
-              disabled={scanning}
-              className="w-full py-3.5 mt-2 rounded-xl text-white font-bold text-xs uppercase tracking-wider electric-flow hover:opacity-90 active-press transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 disabled:opacity-50"
+              disabled={!inputVal.trim() || scanning}
+              className="w-full py-3.5 mt-2 rounded-xl text-on-primary font-bold text-xs uppercase tracking-wider electric-flow hover:opacity-90 active-press transition-all flex items-center justify-center gap-2 shadow-lg shadow-accent/10 disabled:opacity-50"
             >
               {scanning ? (
                 <>
@@ -662,8 +662,8 @@ export default function AnalysisDetailPage() {
 
             {/* API Connection Error Toast */}
             {errorMsg && (
-              <div className="p-4 bg-red-950/20 border border-red-500/20 rounded-xl text-xs text-red-400 flex items-start gap-2.5 animate-pulse">
-                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+              <div className="p-4 bg-danger/10 border border-danger/20 rounded-xl text-xs text-danger flex items-start gap-2.5 animate-pulse">
+                <AlertTriangle className="w-4 h-4 text-danger shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold block uppercase tracking-wider">Analysis Failure</span>
                   <span className="text-[10px] opacity-90 block mt-0.5">{errorMsg}</span>
@@ -675,10 +675,10 @@ export default function AnalysisDetailPage() {
 
         {/* Scan animation overlay */}
         {scanning && (
-          <div className="glass-card rounded-2xl p-6 border border-white/5 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[160px]">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent scan-line-anim shadow-[0_0_8px_cyan]"></div>
-            <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin mb-3" />
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-1">{getProcessingStageText()}</h4>
+          <div className="glass-card rounded-2xl p-6 border border-border/10 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[160px]">
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent scan-line-anim shadow-[0_0_8px_var(--primary)]"></div>
+            <RefreshCw className="w-8 h-8 text-primary animate-spin mb-3" />
+            <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider mb-1">{getProcessingStageText()}</h4>
             <p className="text-[10px] text-on-surface-variant max-w-[240px]">
               Querying distributed national database pools and OCR signature indices...
             </p>
@@ -692,18 +692,18 @@ export default function AnalysisDetailPage() {
           <div className="space-y-5 animate-[fadeIn_0.5s_ease-out_forwards]">
             
             <div className="flex items-center gap-2 text-xs font-bold text-outline uppercase tracking-wider px-1">
-              <CheckCircle className="w-4.5 h-4.5 text-emerald-400" />
+              <CheckCircle className="w-4.5 h-4.5 text-success" />
               <span>FORENSIC SCAN ANALYSIS REPORT</span>
             </div>
 
             {/* 1. EXECUTIVE SUMMARY CARD */}
-            <div className="glass-card rounded-2xl p-5 border border-white/5 space-y-4 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 space-y-4 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-full blur-2xl pointer-events-none"></div>
               
-              <div className="flex justify-between items-start border-b border-white/5 pb-3">
+              <div className="flex justify-between items-start border-b border-divider pb-3">
                 <div>
                   <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Assessment Node</span>
-                  <h3 className="text-sm font-bold text-white uppercase">{resultData.classification} Assessment</h3>
+                  <h3 className="text-sm font-bold text-text-primary uppercase">{resultData.classification} Assessment</h3>
                 </div>
                 <span className={`px-2.5 py-0.5 rounded-full border text-[8.5px] font-extrabold uppercase tracking-widest ${getThreatBadgeColors(resultData.threat_level)}`}>
                   {resultData.threat_level} Level
@@ -722,7 +722,7 @@ export default function AnalysisDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               {/* Circular progress SVG */}
-              <div className="glass-card rounded-2xl p-5 border border-white/5 flex flex-col items-center justify-center text-center space-y-3">
+              <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 flex flex-col items-center justify-center text-center space-y-3">
                 <span className="text-[8px] font-bold text-outline uppercase tracking-widest block">Fraud Confidence Gauge</span>
                 
                 <div className="relative w-28 h-28 flex items-center justify-center">
@@ -732,25 +732,25 @@ export default function AnalysisDetailPage() {
                       cx="50" 
                       cy="50" 
                       r="40" 
-                      className={`fill-none transition-all duration-1000 ${resultData.fraud_confidence > 75 ? 'stroke-red-500' : resultData.fraud_confidence > 40 ? 'stroke-amber-400' : 'stroke-cyan-400'}`} 
+                      className={`fill-none transition-all duration-1000 ${resultData.fraud_confidence > 75 ? 'stroke-danger' : resultData.fraud_confidence > 40 ? 'stroke-warning' : 'stroke-accent'}`} 
                       strokeWidth="8" 
                       strokeDasharray={251.2}
                       strokeDashoffset={251.2 - (251.2 * resultData.fraud_confidence) / 100}
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center">
-                    <span className="text-xl font-black text-white">{resultData.fraud_confidence}%</span>
+                    <span className="text-xl font-black text-text-primary">{resultData.fraud_confidence}%</span>
                     <span className="text-[7.5px] font-bold text-outline uppercase tracking-widest leading-none">Risk Score</span>
                   </div>
                 </div>
 
                 {resultData.reasoning && resultData.reasoning.length > 0 && (
-                  <div className="mt-3 w-full text-left space-y-1.5 border-t border-white/5 pt-3">
+                  <div className="mt-3 w-full text-left space-y-1.5 border-t border-border/10 pt-3">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-widest block mb-1">Score Calculation</span>
                     {resultData.reasoning.map((item, idx) => (
                       <div key={idx} className="flex justify-between items-center text-[10px]">
                         <span className="text-on-surface-variant truncate max-w-[145px]">{item.name}</span>
-                        <span className="font-mono text-cyan-400">+{item.severity === 'High' ? 25 : item.severity === 'Medium' ? 20 : 15} pts</span>
+                        <span className="font-mono text-primary">+{item.severity === 'High' ? 25 : item.severity === 'Medium' ? 20 : 15} pts</span>
                       </div>
                     ))}
                   </div>
@@ -758,21 +758,21 @@ export default function AnalysisDetailPage() {
               </div>
 
               {/* Stats detail block */}
-              <div className="glass-card rounded-2xl p-5 border border-white/5 flex flex-col justify-around gap-3">
+              <div className="glass-card rounded-2xl p-5 border border-border/10 flex flex-col justify-around gap-3">
                 <div className="space-y-1">
                   <span className="text-[8px] font-bold text-outline uppercase tracking-widest block">AI Model Certainty</span>
                   <div className="flex justify-between items-baseline">
-                    <span className="text-xl font-black text-white">{resultData.ai_confidence}%</span>
+                    <span className="text-xl font-black text-text-primary">{resultData.ai_confidence}%</span>
                     <span className="text-[8.5px] text-[#00E676] font-bold uppercase tracking-wider">Optimal Match</span>
                   </div>
-                  <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                    <div className="h-full bg-cyan-400" style={{ width: `${resultData.ai_confidence}%` }}></div>
+                  <div className="w-full bg-surface-secondary/50 h-1.5 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary" style={{ width: `${resultData.ai_confidence}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-1 pt-1">
                   <span className="text-[8px] font-bold text-outline uppercase tracking-widest block">Scam Classification</span>
-                  <span className="text-xs font-bold text-white block uppercase tracking-wider">{resultData.classification}</span>
+                  <span className="text-xs font-bold text-text-primary block uppercase tracking-wider">{resultData.classification}</span>
                 </div>
               </div>
             </div>
@@ -785,29 +785,29 @@ export default function AnalysisDetailPage() {
 
               <div className="space-y-2.5">
                 {resultData.reasoning.map((item, idx) => (
-                  <div key={idx} className="border border-white/5 rounded-xl overflow-hidden glass-card">
+                  <div key={idx} className="border border-border/10 rounded-xl overflow-hidden glass-card">
                     <button
                       onClick={() => setExpandedReasonIndex(expandedReasonIndex === idx ? null : idx)}
-                      className="w-full bg-white/[0.02] px-4 py-3 flex justify-between items-center text-xs font-bold text-white uppercase tracking-wider"
+                      className="w-full bg-surface-secondary/20 px-3 sm:px-4 py-3 flex justify-between items-center gap-2 text-xs font-bold text-text-primary uppercase tracking-wider"
                     >
-                      <div className="flex items-center gap-2 text-left">
-                        <Zap className={`w-3.5 h-3.5 ${item.severity === 'High' ? 'text-red-400' : 'text-amber-400'}`} />
-                        <span className="truncate max-w-[200px]">{item.name}</span>
+                      <div className="flex items-center gap-2 text-left min-w-0 flex-1">
+                        <Zap className={`w-3.5 h-3.5 shrink-0 ${item.severity === 'High' ? 'text-danger' : 'text-warning'}`} />
+                        <span className="truncate flex-1 min-w-0">{item.name}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[8.5px] font-bold px-2 py-0.5 rounded uppercase ${item.severity === 'High' ? 'bg-red-500/10 text-red-400' : 'bg-amber-500/10 text-amber-400'}`}>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-[8.5px] font-bold px-2 py-0.5 rounded uppercase ${item.severity === 'High' ? 'bg-danger/10 text-danger' : 'bg-warning/10 text-warning'}`}>
                           {item.severity}
                         </span>
                         {expandedReasonIndex === idx ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
                       </div>
                     </button>
                     {expandedReasonIndex === idx && (
-                      <div className="p-4 space-y-2 bg-white/[0.01] text-xs border-t border-white/5">
+                      <div className="p-4 space-y-2 bg-surface-secondary/10 text-xs border-t border-border/10">
                         <div className="flex justify-between text-[9px] text-outline font-bold uppercase tracking-wider">
                           <span>Verification Confidence</span>
                           <span>{item.confidence}% matched</span>
                         </div>
-                        <p className="text-on-surface-variant font-medium leading-relaxed">
+                        <p className="text-on-surface-variant font-medium leading-relaxed break-words">
                           {item.explanation}
                         </p>
                       </div>
@@ -818,54 +818,54 @@ export default function AnalysisDetailPage() {
             </div>
 
             {/* 4. EVIDENCE BREAKDOWN CARDS */}
-            <div className="glass-card rounded-2xl p-5 border border-white/5 space-y-4">
+            <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 space-y-4">
               <span className="text-[9px] font-bold text-outline uppercase tracking-widest block">
                 Evidence Ledger Breakdown
               </span>
 
-              <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 
                 {resultData.evidence.detectedNumbers.length > 0 && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Flagged Contacts</span>
-                    <span className="font-mono text-[10px] text-white block truncate">{resultData.evidence.detectedNumbers.join(', ')}</span>
+                    <span className="font-mono text-[10px] text-text-primary block break-words">{resultData.evidence.detectedNumbers.join(', ')}</span>
                   </div>
                 )}
 
                 {resultData.evidence.governmentNames.length > 0 && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Impersonated Entity</span>
-                    <span className="font-bold text-white block truncate">{resultData.evidence.governmentNames.join(', ')}</span>
+                    <span className="font-bold text-text-primary block break-words">{resultData.evidence.governmentNames.join(', ')}</span>
                   </div>
                 )}
 
                 {resultData.evidence.bankNames.length > 0 && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Target Institution</span>
-                    <span className="font-bold text-white block truncate">{resultData.evidence.bankNames.join(', ')}</span>
+                    <span className="font-bold text-text-primary block break-words">{resultData.evidence.bankNames.join(', ')}</span>
                   </div>
                 )}
 
                 {resultData.evidence.urls.length > 0 && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Host Domains</span>
-                    <span className="font-mono text-[9px] text-cyan-400 block truncate">{resultData.evidence.urls.join(', ')}</span>
+                    <span className="font-mono text-[9px] text-accent block break-all">{resultData.evidence.urls.join(', ')}</span>
                   </div>
                 )}
 
                 {resultData.evidence.moneyAmount !== '0' && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1 col-span-2">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1 col-span-2">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Demanded Amount Vector</span>
-                    <span className="font-bold text-red-400 block">{resultData.evidence.moneyAmount} (Debited or target of extortion)</span>
+                    <span className="font-bold text-danger block">{resultData.evidence.moneyAmount} (Debited or target of extortion)</span>
                   </div>
                 )}
 
                 {resultData.evidence.urgentKeywords.length > 0 && (
-                  <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1 col-span-2">
+                  <div className="bg-surface-secondary/50 p-3 rounded-xl border border-border/10 space-y-1 col-span-2">
                     <span className="text-[8px] font-bold text-outline uppercase tracking-wider block">Urgent Keywords Flagged</span>
                     <div className="flex flex-wrap gap-1.5 mt-1">
                       {resultData.evidence.urgentKeywords.map((kw, i) => (
-                        <span key={i} className="px-2 py-0.5 bg-red-500/10 text-red-400 rounded text-[9px] font-bold uppercase">{kw}</span>
+                        <span key={i} className="px-2 py-0.5 bg-danger/10 text-danger rounded text-[9px] font-bold uppercase">{kw}</span>
                       ))}
                     </div>
                   </div>
@@ -880,25 +880,25 @@ export default function AnalysisDetailPage() {
               </span>
               <div className="flex flex-wrap gap-2">
                 {resultData.risk_indicators.map((ind, i) => (
-                  <span key={i} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] text-[#e0e3e5] font-bold uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                    <span>{ind}</span>
+                  <span key={i} className="px-2.5 py-1 bg-surface-secondary/50 border border-border/30 rounded-full text-[9px] text-text-secondary font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></span>
+                    <span className="break-words">{ind}</span>
                   </span>
                 ))}
               </div>
             </div>
 
             {/* 6. INCIDENT TIMELINE */}
-            <div className="glass-card rounded-2xl p-5 border border-white/5 space-y-4">
+            <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 space-y-4">
               <span className="text-[9px] font-bold text-outline uppercase tracking-widest block">
                 Forensic Incident Timeline
               </span>
-              <div className="relative pl-5 border-l border-white/10 flex flex-col gap-4 text-xs">
+              <div className="relative pl-5 border-l border-border/30 flex flex-col gap-4 text-xs">
                 {resultData.timeline.map((step, i) => (
                   <div key={i} className="relative">
-                    <div className="absolute -left-[24.5px] top-1.5 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_cyan]"></div>
+                    <div className="absolute -left-[24.5px] top-1.5 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]"></div>
                     <span className="text-[8px] text-outline font-bold uppercase block">Stage {i + 1}</span>
-                    <p className="text-white font-semibold mt-0.5">{step}</p>
+                    <p className="text-text-primary font-semibold mt-0.5 break-words">{step}</p>
                   </div>
                 ))}
               </div>
@@ -912,17 +912,17 @@ export default function AnalysisDetailPage() {
               <div className="space-y-2">
                 {resultData.recommendations.map((rec, i) => (
                   <div key={i} className="p-3.5 bg-emerald-950/20 border border-emerald-500/20 rounded-xl flex gap-2.5 text-xs text-emerald-300">
-                    <CheckCircle className="w-4.5 h-4.5 shrink-0 text-emerald-400" />
-                    <span className="font-semibold">{rec}</span>
+                    <CheckCircle className="w-4.5 h-4.5 shrink-0 text-success" />
+                    <span className="font-semibold break-words">{rec}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* 8. USER SAFETY GUIDE */}
-            <div className="glass-card rounded-2xl p-5 border border-white/5 space-y-2 bg-slate-950/30">
+            <div className="glass-card rounded-2xl p-3.5 sm:p-5 md:p-6 border border-border/10 space-y-2 bg-slate-950/30">
               <span className="text-[8.5px] font-bold text-outline uppercase tracking-wider block">Personalized User Safety Guide</span>
-              <p className="text-xs text-on-surface-variant leading-relaxed">
+              <p className="text-xs text-on-surface-variant leading-relaxed break-words">
                 {resultData.user_safety}
               </p>
             </div>
@@ -934,54 +934,53 @@ export default function AnalysisDetailPage() {
               </span>
               <div className="flex flex-wrap gap-2">
                 {resultData.related_scams.map((sc, i) => (
-                  <span key={i} className="px-2 py-0.5 bg-white/5 rounded text-[9px] text-outline font-bold uppercase">{sc}</span>
+                  <span key={i} className="px-2 py-0.5 bg-surface-secondary/50 rounded text-[9px] text-outline font-bold uppercase">{sc}</span>
                 ))}
               </div>
             </div>
 
             {/* 10. EXPORT ACTIONS */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-2">
               <button 
                 onClick={() => showSuccessToast("PDF forensic report downloaded to storage.")}
-                className="py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5"
+                className="py-3 px-2 sm:px-3 bg-surface-secondary/50 hover:bg-surface-secondary/80 text-text-primary border border-border/30 rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 truncate"
               >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download PDF</span>
+                <Download className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Download PDF</span>
               </button>
 
               <button 
                 onClick={() => showSuccessToast("Analysis saved to historical profile.")}
-                className="py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5"
+                className="py-3 px-2 sm:px-3 bg-surface-secondary/50 hover:bg-surface-secondary/80 text-text-primary border border-border/30 rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 truncate"
               >
-                <Save className="w-3.5 h-3.5" />
-                <span>Save Analysis</span>
+                <Save className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Save Analysis</span>
               </button>
 
               <button 
                 onClick={() => showSuccessToast("Clearance URL copied to clipboard!")}
-                className="py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5"
+                className="py-3 px-2 sm:px-3 bg-surface-secondary/50 hover:bg-surface-secondary/80 text-text-primary border border-border/30 rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 truncate"
               >
-                <Share2 className="w-3.5 h-3.5" />
-                <span>Share Report</span>
+                <Share2 className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Share Report</span>
               </button>
 
               <button 
                 onClick={() => router.push('/emergency')}
-                className="py-3 bg-red-950/20 hover:bg-red-900/20 text-red-300 border border-red-500/25 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 animate-pulse"
+                className="py-3 px-2 sm:px-3 bg-danger/20 hover:bg-danger/30 text-danger border border-danger/25 rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 animate-pulse truncate"
               >
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <span>Report Scam</span>
+                <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Report Scam</span>
               </button>
 
               <button 
                 onClick={() => {
-                  // Navigate to chatbot prefilled with context query
                   router.push('/assistant');
                 }}
-                className="py-3 bg-cyan-500 text-slate-950 hover:bg-cyan-400 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 col-span-2 shadow-lg shadow-cyan-500/10 active:scale-95 transition-all"
+                className="py-3 px-3 bg-accent text-background hover:bg-accent/90 rounded-xl text-[9px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 col-span-2 shadow-lg shadow-accent/10 active:scale-95 transition-all truncate"
               >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Ask AI About This Report</span>
+                <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Ask AI About This Report</span>
               </button>
             </div>
 
@@ -989,7 +988,7 @@ export default function AnalysisDetailPage() {
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => router.push('/protection')}
-                className="px-6 py-3 bg-white/5 hover:bg-white/10 text-on-surface border border-white/10 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all active-press"
+                className="px-6 py-3 bg-surface-secondary/50 hover:bg-surface-secondary/80 text-text-primary border border-border/30 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all active-press"
               >
                 Back to Center
               </button>

@@ -1,7 +1,6 @@
--- ====================================================
--- Sentinel AI - PostgreSQL & Supabase Database Schema
--- Architecture Specification for Cyber Threat Forensics
--- ====================================================
+-- Migration: Sentinel AI Production-Ready Architecture Upgrade
+-- Timestamp: 2026-07-20T15:01:00Z
+-- Version: 20260720043000_production_architecture.sql
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -30,10 +29,45 @@ BEGIN
 END$$;
 
 -- ====================================================
+-- DROP ALL LEGACY TABLES TO ENSURE CLEAN NORMALIZATION
+-- ====================================================
+DROP TABLE IF EXISTS public.profiles CASCADE;
+DROP TABLE IF EXISTS public.fraud_reports CASCADE;
+DROP TABLE IF EXISTS public.analysis_history CASCADE;
+DROP TABLE IF EXISTS public.voice_analysis CASCADE;
+DROP TABLE IF EXISTS public.conversation_analysis CASCADE;
+DROP TABLE IF EXISTS public.document_analysis CASCADE;
+DROP TABLE IF EXISTS public.qr_analysis CASCADE;
+DROP TABLE IF EXISTS public.url_analysis CASCADE;
+DROP TABLE IF EXISTS public.currency_analysis CASCADE;
+DROP TABLE IF EXISTS public.protection_logs CASCADE;
+DROP TABLE IF EXISTS public.device_sessions CASCADE;
+DROP TABLE IF EXISTS public.command_center_cases CASCADE;
+DROP TABLE IF EXISTS public.system_health CASCADE;
+DROP TABLE IF EXISTS public.audit_logs CASCADE;
+DROP TABLE IF EXISTS public.threat_events CASCADE;
+DROP TABLE IF EXISTS public.trusted_contacts CASCADE;
+DROP TABLE IF EXISTS public.notifications CASCADE;
+DROP TABLE IF EXISTS public.user_profiles CASCADE;
+DROP TABLE IF EXISTS public.user_preferences CASCADE;
+DROP TABLE IF EXISTS public.analysis_requests CASCADE;
+DROP TABLE IF EXISTS public.analysis_reports CASCADE;
+DROP TABLE IF EXISTS public.scan_history CASCADE;
+DROP TABLE IF EXISTS public.protection_history CASCADE;
+DROP TABLE IF EXISTS public.ai_chat_history CASCADE;
+DROP TABLE IF EXISTS public.dashboard_statistics CASCADE;
+DROP TABLE IF EXISTS public.saved_reports CASCADE;
+DROP TABLE IF EXISTS public.scam_patterns CASCADE;
+DROP TABLE IF EXISTS public.scam_campaigns CASCADE;
+DROP TABLE IF EXISTS public.threat_feed CASCADE;
+DROP TABLE IF EXISTS public.intelligence_events CASCADE;
+DROP TABLE IF EXISTS public.investigations CASCADE;
+
+-- ====================================================
 -- MODULE 1: USER MANAGEMENT
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.user_profiles (
+CREATE TABLE public.user_profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   full_name TEXT,
@@ -47,7 +81,7 @@ CREATE TABLE IF NOT EXISTS public.user_profiles (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.user_preferences (
+CREATE TABLE public.user_preferences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   theme TEXT DEFAULT 'light' CHECK (theme IN ('light', 'dark')),
@@ -63,7 +97,7 @@ CREATE TABLE IF NOT EXISTS public.user_preferences (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.trusted_contacts (
+CREATE TABLE public.trusted_contacts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   contact_name TEXT NOT NULL,
@@ -84,7 +118,7 @@ CREATE TABLE IF NOT EXISTS public.trusted_contacts (
   CONSTRAINT unique_user_phone UNIQUE (user_id, phone_number)
 );
 
-CREATE TABLE IF NOT EXISTS public.connected_devices (
+CREATE TABLE public.connected_devices (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   device_name TEXT NOT NULL,
@@ -97,7 +131,7 @@ CREATE TABLE IF NOT EXISTS public.connected_devices (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.login_history (
+CREATE TABLE public.login_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   login_time TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -114,17 +148,21 @@ CREATE TABLE IF NOT EXISTS public.login_history (
 -- MODULE 3: THREAT ANALYSIS (Pre-requisites for AI Assistant & Analysis Reports)
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.analysis_requests (
+-- We define analysis_requests, uploaded_files, ocr_results, speech_transcripts first.
+-- In order to handle circular dependencies, ocr_result_id and speech_transcript_id in analysis_requests
+-- will be defined as foreign keys via ALTER TABLE at the end.
+
+CREATE TABLE public.analysis_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   analysis_type TEXT NOT NULL CHECK (analysis_type IN ('voice', 'document', 'screenshot', 'QR', 'URL', 'chat', 'currency')),
   input_text TEXT,
-  ocr_result_id UUID,
+  ocr_result_id UUID, -- Foreign keys added via ALTER TABLE later
   speech_transcript_id UUID,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.uploaded_files (
+CREATE TABLE public.uploaded_files (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   analysis_request_id UUID REFERENCES public.analysis_requests(id) ON DELETE SET NULL,
@@ -137,7 +175,7 @@ CREATE TABLE IF NOT EXISTS public.uploaded_files (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.ocr_results (
+CREATE TABLE public.ocr_results (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   file_id UUID UNIQUE REFERENCES public.uploaded_files(id) ON DELETE CASCADE,
@@ -147,7 +185,7 @@ CREATE TABLE IF NOT EXISTS public.ocr_results (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.speech_transcripts (
+CREATE TABLE public.speech_transcripts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   file_id UUID UNIQUE REFERENCES public.uploaded_files(id) ON DELETE CASCADE,
@@ -158,7 +196,7 @@ CREATE TABLE IF NOT EXISTS public.speech_transcripts (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.analysis_reports (
+CREATE TABLE public.analysis_reports (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   request_id UUID UNIQUE REFERENCES public.analysis_requests(id) ON DELETE CASCADE,
@@ -170,7 +208,7 @@ CREATE TABLE IF NOT EXISTS public.analysis_reports (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.scan_history (
+CREATE TABLE public.scan_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   analysis_report_id UUID REFERENCES public.analysis_reports(id) ON DELETE SET NULL,
@@ -184,7 +222,7 @@ CREATE TABLE IF NOT EXISTS public.scan_history (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.protection_history (
+CREATE TABLE public.protection_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   module TEXT NOT NULL,
@@ -195,7 +233,7 @@ CREATE TABLE IF NOT EXISTS public.protection_history (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.threat_indicators (
+CREATE TABLE public.threat_indicators (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   report_id UUID NOT NULL REFERENCES public.analysis_reports(id) ON DELETE CASCADE,
@@ -205,7 +243,7 @@ CREATE TABLE IF NOT EXISTS public.threat_indicators (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.fraud_scores (
+CREATE TABLE public.fraud_scores (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   report_id UUID UNIQUE NOT NULL REFERENCES public.analysis_reports(id) ON DELETE CASCADE,
@@ -215,7 +253,7 @@ CREATE TABLE IF NOT EXISTS public.fraud_scores (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.recommendations (
+CREATE TABLE public.recommendations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   report_id UUID NOT NULL REFERENCES public.analysis_reports(id) ON DELETE CASCADE,
@@ -225,7 +263,7 @@ CREATE TABLE IF NOT EXISTS public.recommendations (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.evidence_items (
+CREATE TABLE public.evidence_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   report_id UUID NOT NULL REFERENCES public.analysis_reports(id) ON DELETE CASCADE,
@@ -236,7 +274,7 @@ CREATE TABLE IF NOT EXISTS public.evidence_items (
 );
 
 -- System telemetry tables for pipeline.ts compatibility
-CREATE TABLE IF NOT EXISTS public.threat_events (
+CREATE TABLE public.threat_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE DEFAULT auth.uid(),
   event_type TEXT NOT NULL,
@@ -244,7 +282,7 @@ CREATE TABLE IF NOT EXISTS public.threat_events (
   detected_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.system_health (
+CREATE TABLE public.system_health (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL DEFAULT auth.uid(),
   node_name TEXT NOT NULL,
@@ -254,7 +292,7 @@ CREATE TABLE IF NOT EXISTS public.system_health (
   recorded_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.investigations (
+CREATE TABLE public.investigations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE DEFAULT auth.uid(),
   report_id UUID REFERENCES public.analysis_reports(id) ON DELETE CASCADE NOT NULL,
@@ -268,7 +306,7 @@ CREATE TABLE IF NOT EXISTS public.investigations (
 -- MODULE 2: AI ASSISTANT
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.ai_conversations (
+CREATE TABLE public.ai_conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title TEXT NOT NULL DEFAULT 'New Conversation',
@@ -276,7 +314,7 @@ CREATE TABLE IF NOT EXISTS public.ai_conversations (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.ai_messages (
+CREATE TABLE public.ai_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID NOT NULL REFERENCES public.ai_conversations(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -287,7 +325,7 @@ CREATE TABLE IF NOT EXISTS public.ai_messages (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.ai_reasoning_logs (
+CREATE TABLE public.ai_reasoning_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   message_id UUID REFERENCES public.ai_messages(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -297,7 +335,7 @@ CREATE TABLE IF NOT EXISTS public.ai_reasoning_logs (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.prompt_history (
+CREATE TABLE public.prompt_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   prompt_text TEXT NOT NULL,
@@ -306,7 +344,7 @@ CREATE TABLE IF NOT EXISTS public.prompt_history (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.conversation_context (
+CREATE TABLE public.conversation_context (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID UNIQUE NOT NULL REFERENCES public.ai_conversations(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -318,7 +356,7 @@ CREATE TABLE IF NOT EXISTS public.conversation_context (
 -- MODULE 4: THREAT INTELLIGENCE
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.known_phone_numbers (
+CREATE TABLE public.known_phone_numbers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   phone_number TEXT UNIQUE NOT NULL,
@@ -330,7 +368,7 @@ CREATE TABLE IF NOT EXISTS public.known_phone_numbers (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.known_domains (
+CREATE TABLE public.known_domains (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   domain TEXT UNIQUE NOT NULL,
@@ -342,7 +380,7 @@ CREATE TABLE IF NOT EXISTS public.known_domains (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.known_urls (
+CREATE TABLE public.known_urls (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   url TEXT UNIQUE NOT NULL,
@@ -354,7 +392,7 @@ CREATE TABLE IF NOT EXISTS public.known_urls (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.known_upi_ids (
+CREATE TABLE public.known_upi_ids (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   upi_id TEXT UNIQUE NOT NULL,
@@ -366,7 +404,7 @@ CREATE TABLE IF NOT EXISTS public.known_upi_ids (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.known_wallets (
+CREATE TABLE public.known_wallets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   wallet_address TEXT UNIQUE NOT NULL,
@@ -379,7 +417,7 @@ CREATE TABLE IF NOT EXISTS public.known_wallets (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.known_email_addresses (
+CREATE TABLE public.known_email_addresses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   email_address TEXT UNIQUE NOT NULL,
@@ -391,7 +429,7 @@ CREATE TABLE IF NOT EXISTS public.known_email_addresses (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.community_reports (
+CREATE TABLE public.community_reports (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   report_type TEXT NOT NULL, -- e.g. 'phone', 'url', 'domain', 'upi', 'wallet', 'email'
@@ -402,7 +440,7 @@ CREATE TABLE IF NOT EXISTS public.community_reports (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.scam_campaigns (
+CREATE TABLE public.scam_campaigns (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
@@ -417,7 +455,7 @@ CREATE TABLE IF NOT EXISTS public.scam_campaigns (
 -- MODULE 5: DASHBOARD
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.dashboard_statistics (
+CREATE TABLE public.dashboard_statistics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   protection_score INT DEFAULT 92 NOT NULL,
@@ -427,7 +465,7 @@ CREATE TABLE IF NOT EXISTS public.dashboard_statistics (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.recent_activity (
+CREATE TABLE public.recent_activity (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   activity_type TEXT NOT NULL, -- e.g. 'scan', 'sos', 'profile_update'
@@ -436,7 +474,7 @@ CREATE TABLE IF NOT EXISTS public.recent_activity (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.security_metrics (
+CREATE TABLE public.security_metrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   metric_name TEXT NOT NULL, -- e.g. 'block_rate', 'response_time_ms'
@@ -448,7 +486,7 @@ CREATE TABLE IF NOT EXISTS public.security_metrics (
 -- MODULE 6: EMERGENCY
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.emergency_events (
+CREATE TABLE public.emergency_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   trigger_type TEXT NOT NULL,
@@ -462,7 +500,7 @@ CREATE TABLE IF NOT EXISTS public.emergency_events (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.emergency_contacts_log (
+CREATE TABLE public.emergency_contacts_log (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   emergency_event_id UUID NOT NULL REFERENCES public.emergency_events(id) ON DELETE CASCADE,
@@ -473,7 +511,7 @@ CREATE TABLE IF NOT EXISTS public.emergency_contacts_log (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.location_history (
+CREATE TABLE public.location_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   latitude NUMERIC(9, 6) NOT NULL,
@@ -482,7 +520,7 @@ CREATE TABLE IF NOT EXISTS public.location_history (
   recorded_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.sos_reports (
+CREATE TABLE public.sos_reports (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   emergency_event_id UUID UNIQUE NOT NULL REFERENCES public.emergency_events(id) ON DELETE CASCADE,
@@ -496,7 +534,7 @@ CREATE TABLE IF NOT EXISTS public.sos_reports (
 -- MODULE 7: NOTIFICATIONS
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.notifications (
+CREATE TABLE public.notifications (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
@@ -509,9 +547,9 @@ CREATE TABLE IF NOT EXISTS public.notifications (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.notification_preferences (
+CREATE TABLE public.notification_preferences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   enable_email BOOLEAN DEFAULT TRUE NOT NULL,
   enable_sms BOOLEAN DEFAULT TRUE NOT NULL,
   enable_push BOOLEAN DEFAULT TRUE NOT NULL,
@@ -524,7 +562,7 @@ CREATE TABLE IF NOT EXISTS public.notification_preferences (
 -- MODULE 8: SUPPORT
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.support_tickets (
+CREATE TABLE public.support_tickets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   subject TEXT NOT NULL,
@@ -535,7 +573,7 @@ CREATE TABLE IF NOT EXISTS public.support_tickets (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public.ticket_messages (
+CREATE TABLE public.ticket_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   ticket_id UUID NOT NULL REFERENCES public.support_tickets(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -547,7 +585,7 @@ CREATE TABLE IF NOT EXISTS public.ticket_messages (
 -- AUDIT LOGGING SYSTEM
 -- ====================================================
 
-CREATE TABLE IF NOT EXISTS public.audit_logs (
+CREATE TABLE public.audit_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   action TEXT NOT NULL,
@@ -568,6 +606,7 @@ ALTER TABLE public.analysis_requests
 -- OPTIMIZED RETRIEVAL INDEXES
 -- ====================================================
 
+-- Index helper function for user_id and created_at on all tables
 CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON public.user_profiles(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_profiles_email ON public.user_profiles(email);
 CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON public.user_preferences(user_id);
